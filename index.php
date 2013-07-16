@@ -9,18 +9,18 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 		if (!$_POST["username"]) {
 			header('Location: /');
 		} else {
-			$App_username = string_filter($_POST["username"]);
+			$App_user = string_filter($_POST["username"]);
 			$App_passwd = $_POST["password"];
 
 			$App_sql = new APP_SQL();
-			$App_auth = $App_sql -> LoginAuth($App_username);
+			$App_auth = $App_sql -> LoginAuth($App_user);
 			if ($_POST['encrypto'] == "on"){
-				$App_auth['passwd'] = sha1($App_auth['passwd'].$_SESSION["timestamp"]);
+				$App_auth_passwd = sha1($App_auth['passwd'].$_SESSION["timestamp"]);
 			} else {
-				$App_auth['passwd'] = $App_passwd;
+				$App_auth_passwd = $App_passwd;
 			}
-			if ($App_auth['passwd'] == $App_passwd) {
-				$App_info = $App_sql -> getTableAllWhere("s_staff","account",$App_username);
+			if ($App_auth_passwd == $App_passwd) {
+				$App_info = $App_sql -> getTableAllWhere("s_staff","account",$App_user);
 				$_SESSION['AuthToken'] = sha1($_SERVER["REMOTE_ADDR"]);
 				$_SESSION['timeout_check'] = time();
 				$_SESSION['Login_name'] = $App_info['name'];
