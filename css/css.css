@@ -442,6 +442,9 @@ body.scroll {
 	float: right;
 	margin-right: 20px;
 }
+#APP_foot_copyright a {
+	color:#777;
+}
 
 #APP_home_left {
 	margin-left: 20px;

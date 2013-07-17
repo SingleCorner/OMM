@@ -92,9 +92,7 @@ function APP_html_header() {
 		<nav id="APP_top_nav">
 			<ul>
 				<li><a href="./">首页</a></li>
-<?php if (has_policy('MANAGE_*')) { ?>
-				<li><a href="./admin">后台管理</a></li>
-<?php } ?>
+				<li><a href="./admin.php">后台管理</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -120,9 +118,12 @@ function APP_html_footer(){
 	<!-- 主容器结束 -->
 	<!-- 页脚开始 -->
 	<footer id="APP_foot">
-		<div id="APP_foot_copyright">Copyright © 2013 Single Corner</div>
+		<div id="APP_foot_copyright">
+			Copyright © 2013 - 2015 SingleCorner<br />
+			<a  href="https://github.com/SingleCorner/OMM" target="_blank">https://github.com/SingleCorner/OMM</a>
+		</div>
 		<div id="APP_foot_license">
-			<div>Single Corner 版权所有</div>
+			<div>SingleCorner 版权所有</div>
 			<div>授权 Leyoung 使用</div>
 		</div>
 	</footer>

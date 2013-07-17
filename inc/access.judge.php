@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * 配置文件不允许访问
+ *
+ */
+if ($_SERVER['REQUEST_URI'] == "/inc/access.judge.php") {
+	header("Status: 404");
+	exit;
+}
+
 /**
  * 检测登出操作
  *
