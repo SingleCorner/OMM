@@ -91,7 +91,7 @@ function APP_html_header() {
 	<header id="APP_top">
 		<!-- LOGO开始 -->
 		<div id="APP_top_logo">
-			<a href="/"><img src="<?php echo LOGO;?>" /></a>
+			<a href="/"><img src="./images/logo.png" /></a>
 		</div>
 		<!-- LOGO结束 -->
 		<!-- 用户区开始 -->
@@ -101,7 +101,9 @@ function APP_html_header() {
 		<nav id="APP_top_nav">
 			<ul>
 				<li><a href="./">首页</a></li>
+<?php if (has_policy($_SESSION['policy'])){ ?>
 				<li><a href="./admin.php">后台管理</a></li>
+<?php } ?>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -113,7 +115,6 @@ function APP_html_header() {
 		<div id="APP_main">
 <?php
 }
-
 /**
  * 输出页脚信息与版权信息
  * TODO: 把CNZZ换成Google Analytics吧

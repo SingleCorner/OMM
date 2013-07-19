@@ -122,4 +122,20 @@ function job_converter($val_1,$val_2) {
 	return $result;
 }
 
+
+
+/**
+ * 权限检测
+ *
+ */
+function has_policy ($val) {
+	$policies = explode('|', $val);
+	if (in_array("SU",$policies,true)) {
+		return true;
+	} else if (in_array("MGR",$policies,true)) {
+		return true;
+	} else {
+		return false;
+	}
+}
 ?>
