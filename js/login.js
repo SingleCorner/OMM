@@ -10,7 +10,7 @@ $(document).ready(function() {
 		
 		// 检查输入
 		if (user.length != 8) {
-			$('#APP_login_status').html("No No No,账号不对>_< ");
+			$('#APP_login_status').html("No No No,账号格式错误>_< ");
 			$('#APP_login_user').focus();
 			return false;
 		}

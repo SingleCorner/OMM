@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * 文件不允许访问
+ *
+ */
+if ($_SERVER['REQUEST_URI'] == $_SERVER["PHP_SELF"]) {
+	header("Status: 404");
+	exit;
+}
+
 //*******Part1 User Defined Variales***********//
 
 /* Project Name */

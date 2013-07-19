@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * 文件不允许访问
+ *
+ */
+if ($_SERVER['REQUEST_URI'] == $_SERVER["PHP_SELF"]) {
+	header("Status: 404");
+	exit;
+}
+
+/**
  * 输出登录界面
  *
  */
@@ -37,7 +46,7 @@ function APP_full_login($APP_login_error = "") {
 			<input type="hidden" id="APP_login_timestamp" value=<?php echo $_SESSION["timestamp"];?> />
 			<ul>
 				<li>
-					<label for="APP_login_user">账号</label>
+					<label for="APP_login_user">数字账号</label>
 					<input type="text" name="username" id="APP_login_user" maxlength="8" />
 				</li>
 				<li>
@@ -86,7 +95,7 @@ function APP_html_header() {
 		</div>
 		<!-- LOGO结束 -->
 		<!-- 用户区开始 -->
-		<div id="APP_top_user"><?php echo $_SESSION["Login_department"]; ?><?php echo $_SESSION["Login_level"]; ?><?php echo $_SESSION["Login_position"]; ?> <?php echo $_SESSION["Login_name"]; ?> 正在使用本系统 <a href="./?logout=<?php echo md5($_SESSION["timestamp"]); ?>">安全退出</a></div>
+		<div id="APP_top_user"><?php echo $_SESSION['Login_jobtitle']." ".$_SESSION["Login_name"]; ?> 正在使用本系统 <a href="./?logout=<?php echo md5($_SESSION["timestamp"]); ?>">安全退出</a></div>
 		<!-- 用户区结束 -->
 		<!-- 导航区开始 -->
 		<nav id="APP_top_nav">

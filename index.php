@@ -23,10 +23,9 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 				$App_info = $App_sql -> getTableAllWhere("s_staff","account",$App_user);
 				$_SESSION['AuthToken'] = sha1($_SERVER["REMOTE_ADDR"]);
 				$_SESSION['timeout_check'] = time();
+				$_SESSION['Login_account'] = $App_info['account'];
 				$_SESSION['Login_name'] = $App_info['name'];
-				$_SESSION['Login_department'] = $App_info['department'];
-				$_SESSION['Login_level'] = $App_info['level'];
-				$_SESSION['Login_position'] = $App_info['position'];
+				$_SESSION['Login_jobtitle'] = job_converter($App_info['department'],$App_info['position']);
 				$result = array(
 					"code" => 0
 				);
@@ -36,7 +35,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 			} else {
 				$result = array(
 					"code" => -1,
-					"message" => 'Ajax:验证失败或用户尚未激活'
+					"message" => 'Ajax:用户验证失败或尚未激活'
 				);
 				header('Content-Type: application/json');
 				echo json_encode($result);
