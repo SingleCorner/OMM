@@ -38,7 +38,7 @@ function APP_html_header() {
 		</div>
 		<!-- LOGO结束 -->
 		<!-- 用户区开始 -->
-		<div id="APP_top_user"><a href="../">离开后台</a></div>
+		<div id="APP_top_user"><?php echo $_SESSION['Login_jobtitle']." ".$_SESSION["Login_name"]; ?> 正在管理本系统 <a href="../">离开后台</a></div>
 		<!-- 用户区结束 -->
 		<!-- 导航区开始 -->
 		<nav id="APP_top_nav">
@@ -61,14 +61,8 @@ function APP_html_header() {
 /**
  * 输出页脚信息与版权信息
  *
- * @author YourNameHere
- *
- * @access global
- *
- * @return void
- *
  */
-function APP_html_footer(){
+function APP_html_footer() {
 ?>
 		</div>
 		<!-- 内容区结束 -->
@@ -90,4 +84,17 @@ function APP_html_footer(){
 </html>
 <?php
 }
+
+
+/**
+ * 页首信息
+ *
+ */
+ function APP_mgr_main() {
+	 if ($_GET['a'] == "") {
+?>
+			<div>欢迎使用Leyoung运维管理系统</div>
+<?php
+	}
+ }
 ?>

@@ -106,6 +106,7 @@ function APP_html_header() {
 <?php } else if (check_policy($_SESSION['policy']) == "TMP_MGR") {?>
 				<li><a href="./admin.php">临时管理</a></li>
 <?php } ?>
+				<li><a href="./">首页</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->

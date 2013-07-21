@@ -7,6 +7,7 @@ if (check_policy($_SESSION['policy']) != "SU" && check_policy($_SESSION['policy'
 	exit;
 } else {
 		APP_html_header();
+		APP_mgr_main();
 		APP_html_footer();
 }
 ?>
