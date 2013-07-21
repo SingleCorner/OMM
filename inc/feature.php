@@ -4,7 +4,7 @@
  * 文件不允许访问
  *
  */
-if ($_SERVER['REQUEST_URI'] == $_SERVER["PHP_SELF"]) {
+if (!defined('__ROOT__')) {
 	header("Status: 404");
 	exit;
 }
@@ -128,12 +128,14 @@ function job_converter($val_1,$val_2) {
  * 权限检测
  *
  */
-function has_policy ($val) {
+function check_policy ($val) {
 	$policies = explode('|', $val);
 	if (in_array("SU",$policies,true)) {
-		return true;
+		return "SU";
 	} else if (in_array("MGR",$policies,true)) {
-		return true;
+		return "MGR";
+	} else if (in_array("TMP_MGR",$policies,true)) {
+		return "TMP_MGR";
 	} else {
 		return false;
 	}

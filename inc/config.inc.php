@@ -4,7 +4,7 @@
  * 文件不允许访问
  *
  */
-if ($_SERVER['REQUEST_URI'] == $_SERVER["PHP_SELF"]) {
+if (!defined('__ROOT__')) {
 	header("Status: 404");
 	exit;
 }

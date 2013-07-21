@@ -4,7 +4,7 @@
  * 文件不允许访问
  *
  */
-if ($_SERVER['REQUEST_URI'] == $_SERVER["PHP_SELF"]) {
+if (!defined('__ROOT__')) {
 	header("Status: 404");
 	exit;
 }
@@ -101,8 +101,10 @@ function APP_html_header() {
 		<nav id="APP_top_nav">
 			<ul>
 				<li><a href="./">首页</a></li>
-<?php if (has_policy($_SESSION['policy'])){ ?>
+<?php if (check_policy($_SESSION['policy']) == "SU" || check_policy($_SESSION['policy']) == "MGR" ){ ?>
 				<li><a href="./admin.php">后台管理</a></li>
+<?php } else if (check_policy($_SESSION['policy']) == "TMP_MGR") {?>
+				<li><a href="./admin.php">临时管理</a></li>
 <?php } ?>
 			</ul>
 		</nav>
