@@ -51,7 +51,7 @@ function APP_html_header() {
 	</header>
 	<!-- 顶栏结束 -->
 	<!-- 主容器开始 -->
-	<div id="AM">
+	<div id="APP">
 		<!-- 内容区开始 -->
 		<div id="APP_main">
 <?php
@@ -91,7 +91,7 @@ function APP_html_footer() {
  *
  */
  function APP_mgr_main() {
-	 if ($_GET['a'] == "") {
+	 if ($_GET['a'] == "changepasswd") {
 ?>
 			<div>欢迎使用Leyoung运维管理系统</div>
 <?php

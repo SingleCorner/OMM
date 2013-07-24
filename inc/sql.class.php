@@ -57,7 +57,7 @@ class APP_SQL {
 	}
 	
 	/**
-	 * 获取表的全部数据
+	 * 查询 -> 表的全部数据
 	 */
 	public function getTableAll($value_table, $start = -1, $count = -1) {
 		$sql = "SELECT * FROM `{$value_table}`";
@@ -111,11 +111,17 @@ class APP_SQL {
 	}
 	
 	//修改数据
-	public function updateTable($value_table, $field, $field_value, $task_id) {
-		$sql = "UPDATE `{$value_table}` SET `{$field}` = '{$field_value}' WHERE `t_id` = '{$task_id}';";
+//	public function updateTable($value_table, $field, $field_value, $task_id) {
+//		$sql = "UPDATE `{$value_table}` SET `{$field}` = '{$field_value}' WHERE `t_id` = '{$task_id}';";
+//		return $this -> db -> query($sql);
+//	}
+
+	//更新 -> 修改用户密码
+	public function updateLoginPasswd($newpasswd, $account) {
+		$sql = "UPDATE `view_LoginAuth` SET `passwd` = '{$newpasswd}' WHERE `account` = '{$account}';";
 		return $this -> db -> query($sql);
 	}
-	
+
 	//插入数据
 	public function insertTable($value_table, $field, $field_value) {
 		$sql = "INSERT INTO `{$value_table}` ($field) VALUES ($field_value)";

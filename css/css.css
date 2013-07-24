@@ -7,7 +7,8 @@ STYLESHEET
 
 body {
 	margin: 0px;
-	padding: 0px;
+	padding: 0px;	
+	overflow-y:scroll;
 	font-family: 'Microsoft Yahei', Tahoma, 'Simsun';
 	font-size: 14px;
 	/*background: url(deepblue/bg.gif) #72B0DF;*/
@@ -325,11 +326,11 @@ form .form-actions {
 
 
 
-#OMM {
+#APP {
 	width: 100%;
 }
 
-#OMM > div {
+#APP > div {
 	width: 980px;
 	margin: 0px auto;
 }
@@ -554,233 +555,11 @@ body.scroll {
 	width:500px;
 }
 
-#APP_staff_head {
-	height:300px;
-	background:url(/images/deepblue/staff_query.gif) no-repeat;
-}
-#APP_staff_query {
-	padding-top:145px;
-	padding-left:130px;
-	height:35px;
-}
-#APP_staff_query input#id1 {
-	margin-left:98px;
-
-}
-#APP_staff_query input#id2 {
-	margin-left:80px;
-}
-#APP_staff_query input#id3 {
-	margin-left:40px;
-	overflow:hidden;
-}
-#APP_staff_list {
-	overflow:hidden;
-}
-#APP_staff_list > div {
-	margin: 20px 15px;
-	width: 150px;
-	height: 260px;
-	float: left;
-	overflow: hidden;
-}
-#APP_staff_list img {
-	width: 150px;
-	height: 190px;
-	border: none;
-	background: #DDD;
-}
-#APP_staff_info {
-	margin:0px auto;
-	width:550px;
+#APP_chgpass {
+	margin:20px auto;
+	width:200px;
 	min-height:300px;
-	overflow:hidden;
 }
-#APP_staff_base {
-	margin-top:10px;
-	width:350px;
-	float:left;
-	border-right: 1px solid #ccc;
-}
-#APP_staff_base > li {
-	height:40px;
-	line-height:40px;
+#APP_chgpass  ul {
 	list-style-type:none;
-}
-#APP_staff_base > li > span {
-	width:200px;
-	float:right;
-	font-family: '微软雅黑', Tahoma, 'Simsun';
-}
-#APP_staff_right {
-	margin-top:10px;
-	margin-left:350px;
-	width:200px;
-	min-height:200px;
-}
-#APP_staff_right > img {
-	margin-left:10px;
-	width:150px;
-	height:190px;
-}
-
-#APP_task_item {
-		margin-top:10px;
-		width:920px;
-		height:30px;
-		line-height:30px;
-		}
-		
-#APP_task_item > div.title {
-		margin-left:15px;
-		width:70px;
-		float:left;
-		}
-#APP_task_item > div.content {
-		margin-left:15px;
-		width:200px;
-		height:inherit;
-		float:left;
-		overflow:auto;
-		}
-#APP_task_textarea {
-		margin-left:30px;
-		width:500px;
-		}
-#content_segline {
-		height:50px;
-		background:url(/images/deepblue/seg_line.png) no-repeat left center;
-		}
-.APP_tasks_list th.APP_tasks_status {
-	width: 20px;
-	text-align: center;
-}
-.APP_tasks_list th.APP_tasks_id {
-}
-.APP_tasks_list th.APP_tasks_start {
-	width: 100px;
-}
-.APP_tasks_list th.APP_tasks_end {
-	width: 100px;
-}
-.APP_tasks_list th.APP_tasks_progress {
-	width: 100px;
-}
-.APP_tasks_list th.APP_tasks_master {
-	width: 100px;
-}
-.APP_tasks_list .APP_tasks_status_light {
-	text-align: center;
-}
-.APP_tasks_list .APP_tasks_status_light span.light {
-	background: url(/images/deepblue/task-status-lights.gif) no-repeat;
-}
-.APP_tasks_list .APP_tasks_status_light span.light.status_0 {
-	background-position: 0px 0px;
-}
-.APP_tasks_list .APP_tasks_status_light span.light.status_1 {
-	background-position: -12px 0px;
-}
-.APP_tasks_list .APP_tasks_status_light span.light.status_2 {
-	background-position: -24px 0px;
-}
-
-#APP_device_item {
-		margin-top:10px;
-		width:920px;
-		height:30px;
-		line-height:30px;
-}
-#APP_device_item > div.title {
-		margin-left:15px;
-		width:70px;
-		float:left;
-}
-#APP_device_item > div.content {
-		margin-left:15px;
-		min-width:200px;
-		height:inherit;
-		float:left;
-		overflow:hidden;
-}
-#APP_device_textarea {
-		margin-left:30px;
-		width:500px;
-}
-#APP_devices_list th#APP_devices_id {
-	width: 100px;
-}
-#APP_devices_list th#APP_devices_status {
-	width: 50px;
-	text-align: center;
-}
-#APP_devices_list td.APP_devices_operate {
-	width: 50px;
-	text-align: right;
-}
-#APP_devices_list td.APP_devices_operate span {
-	display: none;
-}
-#APP_devices_list tr:hover td.APP_devices_operate span {
-	display: initial;
-}
-.APP_devices_status {
-	text-align: center;
-}
-.APP_devices_status span.light {
-	background: url(/images/deepblue/device-status-lights.gif) no-repeat;
-}
-.APP_devices_status span.light.status_0 {
-	background-position: 0px 0px;
-}
-.APP_devices_status span.light.status_1 {
-	background-position: -12px 0px;
-}
-.APP_devices_status span.light.status_2 {
-	background-position: -24px 0px;
-}
-
-#APP_devicemg_applied table th.device {
-	width: 150px;
-}
-#APP_devicemg_applied table th.status {
-	width: 70px;
-}
-#APP_devicemg_applied table th.user {
-	width: 70px;
-}
-#APP_devicemg_applied table th.time {
-	width: 200px;
-}
-#APP_devicemg_applied table th.reason {
-}
-#APP_devicemg_applied table th.operation {
-	width: 120px;
-}
-
-#APP_devicemg_approved table th.device {
-	width: 150px;
-}
-#APP_devicemg_approved table th.user {
-	width: 70px;
-}
-#APP_devicemg_approved table th.time {
-	width: 200px;
-}
-#APP_devicemg_approved table th.reason {
-}
-#APP_devicemg_approved table th.operation {
-	width: 60px;
-}
-
-#APP_devicemg_list table th.serial {
-}
-#APP_devicemg_list table th.name {
-	width: 150px;
-}
-#APP_devicemg_list table th.model {
-	width: 150px;
-}
-#APP_devicemg_list table th.status {
-	width: 70px;
 }

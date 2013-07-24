@@ -86,7 +86,7 @@ function APP_html_header() {
 	<script src="./js/jquery-1.7.2.min.js"></script>
 	<script src="./js/app.js"></script>
 </head>
-<body>
+<body scroll=auto>
 	<!-- 顶栏开始 -->
 	<header id="APP_top">
 		<!-- LOGO开始 -->
@@ -106,14 +106,14 @@ function APP_html_header() {
 <?php } else if (check_policy($_SESSION['policy']) == "TMP_MGR") {?>
 				<li><a href="./admin.php">临时管理</a></li>
 <?php } ?>
-				<li><a href="./">首页</a></li>
+				<li><a href="./?a=changepasswd">修改密码</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
 	</header>
 	<!-- 顶栏结束 -->
 	<!-- 主容器开始 -->
-	<div id="OMM">
+	<div id="APP">
 		<!-- 内容区开始 -->
 		<div id="APP_main">
 <?php
@@ -144,5 +144,61 @@ function APP_html_footer(){
 </body>
 </html>
 <?php
+}
+
+/**
+ * 操作区模块
+ *
+ */
+function APP_html_module(){
+	/**
+	 * 功能 - > 更改密码
+	 *
+	 */
+	if ($_GET['a'] == "changepasswd") {
+		if (isset($_POST['password']) && $_GET['p'] == "TRUE") {
+			$APP_newpasswd = sha1($_POST['password']);
+			$APP_sql = new APP_SQL();
+			$APP_chgpass = $APP_sql -> updateLoginPasswd($APP_newpasswd,$_SESSION['Login_account']);
+
+			$APP_sql -> close();
+			$result = array(
+				"code" => 0,
+				"message" => "密码修改成功"
+			);
+			header('Content-Type: application/json');
+			echo json_encode($result);
+			exit;
+		} else {
+?>
+	<div id="APP_chgpass">
+		<form action="./?a=changepasswd&p=TRUE" method="post">
+			<ul>
+				<li>
+					<label>新密码</label>
+					<input type="password" name="password" id="APP_new_pswd" autocomplete="off" />
+				</li>
+				<li>
+					<label>确认密码</label>
+					<input type="password" name="password2" id="APP_new2_pswd" autocomplete="off" />
+				</li>
+				<li>
+					<input type="submit" value="确认修改" id="APP_chgpass_submit" title="确认更改密码" />
+				</li>
+			</ul>
+		</form>
+	</div>
+<?php
+		}
+	}
+	/**
+	 * 功能 - > 测试功能
+	 *
+	 */
+	if ($_GET['a'] == "test") {
+		echo "123";
+	}
+
+
 }
 ?>
