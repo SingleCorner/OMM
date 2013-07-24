@@ -17,7 +17,8 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 			if ($_POST['encrypto'] == "on"){
 				$App_auth_passwd = sha1($App_auth['passwd'].$_SESSION["timestamp"]);
 			} else {
-				$App_auth_passwd = $App_passwd;
+				$App_passwd = sha1($App_passwd);
+				$App_auth_passwd = $App_auth['passwd'];
 			}
 			if ($App_auth_passwd == $App_passwd) {
 				$App_info = $App_sql -> getTableAllWhere("s_staff","account",$App_user);
@@ -30,7 +31,8 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 				$_SESSION['policy'] = $App_policy['authority'];
 				$App_sql -> close();
 				$result = array(
-					"code" => 0
+					"code" => 0,
+					"message" => "Login success ,but the browser do not support JavaScript.We're sorry to Pls you to PRESS F5."
 				);
 				header('Content-Type: application/json');
 				echo json_encode($result);
@@ -49,6 +51,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 } else {
 	if (isset($_SESSION['AuthToken']) && $_SESSION['AuthToken'] != ""){
 		APP_html_header();
+		APP_html_module();
 		APP_html_footer();
 	} else {
 		APP_full_login();
