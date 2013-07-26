@@ -106,7 +106,7 @@ function APP_html_header() {
 <?php } else if (check_policy($_SESSION['policy']) == "TMP_MGR") {?>
 				<li><a href="./admin.php">临时管理</a></li>
 <?php } ?>
-				<li><a href="./?a=changepasswd">修改密码</a></li>
+				<li><a href="./?a=chgpasswd">修改密码</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -137,7 +137,7 @@ function APP_html_footer(){
 		</div>
 		<div id="APP_foot_license">
 			<div>SingleCorner 版权所有</div>
-			<div>授权 Leyoung 使用</div>
+			<div>授权 <a href="http://www.leyoung.com.cn" target="_blank">Leyoung</a> 使用</div>
 		</div>
 	</footer>
 	<!-- 页脚结束 -->
@@ -155,24 +155,11 @@ function APP_html_module(){
 	 * 功能 - > 更改密码
 	 *
 	 */
-	if ($_GET['a'] == "changepasswd") {
-		if (isset($_POST['password']) && $_GET['p'] == "TRUE") {
-			$APP_newpasswd = sha1($_POST['password']);
-			$APP_sql = new APP_SQL();
-			$APP_chgpass = $APP_sql -> updateLoginPasswd($APP_newpasswd,$_SESSION['Login_account']);
-
-			$APP_sql -> close();
-			$result = array(
-				"code" => 0,
-				"message" => "密码修改成功"
-			);
-			header('Content-Type: application/json');
-			echo json_encode($result);
-			exit;
-		} else {
+	 switch ($_GET['a']) {
+		 case "chgpasswd":
 ?>
 	<div id="APP_chgpass">
-		<form action="./?a=changepasswd&p=TRUE" method="post">
+		<form action="./?a=chgpasswd&p=TRUE" method="post">
 			<ul>
 				<li>
 					<label>新密码</label>
@@ -189,16 +176,12 @@ function APP_html_module(){
 		</form>
 	</div>
 <?php
-		}
+			 break;
+		 default:
+?>
+	<div id="APP_chgpass">上海利银电子科技有限公司</div>
+<?php
+			 break;
 	}
-	/**
-	 * 功能 - > 测试功能
-	 *
-	 */
-	if ($_GET['a'] == "test") {
-		echo "123";
-	}
-
-
 }
 ?>

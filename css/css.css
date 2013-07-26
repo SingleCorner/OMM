@@ -443,7 +443,7 @@ body.scroll {
 	float: right;
 	margin-right: 20px;
 }
-#APP_foot_copyright a {
+#APP_foot_copyright,#APP_foot_license a {
 	color:#777;
 }
 

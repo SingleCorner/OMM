@@ -85,7 +85,8 @@ class APP_SQL {
 			$sql .= " LIMIT {$start},{$count}";
 		}
 		$sql .= ";";
-		return $this -> db -> query($sql);
+		$query = $this -> db -> query($sql);
+		return $query -> fetch_assoc();
 	}
 	
 	public function getTableAllAsc($value_table, $field, $start = -1, $count = -1) {
@@ -94,7 +95,8 @@ class APP_SQL {
 			$sql .= " LIMIT {$start},{$count}";
 		}
 		$sql .= ";";
-		return $this -> db -> query($sql);
+		$query = $this -> db -> query($sql);
+		return $query -> fetch_assoc();
 	}
 	
 	public function getTableAllDesc($value_table, $field, $start = -1, $count = -1) {
@@ -103,7 +105,8 @@ class APP_SQL {
 			$sql .= " LIMIT {$start},{$count}";
 		}
 		$sql .= ";";
-		return $this -> db -> query($sql);
+		$query = $this -> db -> query($sql);
+		return $query -> fetch_assoc();
 	}
 	
 	public function userDefine($sql){
@@ -128,14 +131,9 @@ class APP_SQL {
 		return $this -> db -> query($sql);
 	}
 	
-	public function fetch($query) {
-		return $query -> fetch_assoc();
-	}
-	
-	public function rows($query){
-		return $query -> num_rows;
-	}
-	
+	public function affected() {
+		return $this -> db -> affected_rows;
+	}	
 	public function close() {
 		return $this -> db -> close();
 	}

@@ -50,6 +50,9 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 	}
 } else {
 	if (isset($_SESSION['AuthToken']) && $_SESSION['AuthToken'] != ""){
+		if (isset($_GET['p'])) {
+			include("./data_proc.php");
+		}
 		APP_html_header();
 		APP_html_module();
 		APP_html_footer();
