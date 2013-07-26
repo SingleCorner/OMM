@@ -84,6 +84,7 @@ function APP_html_header() {
 	<title>运维管理系统</title>
 	<link rel="stylesheet" href="./css/css.css" />
 	<script src="./js/jquery-1.7.2.min.js"></script>
+	<script src="./js/jquery.sha1.js"></script>
 	<script src="./js/app.js"></script>
 </head>
 <body scroll=auto>
@@ -148,38 +149,59 @@ function APP_html_footer(){
 
 /**
  * 操作区模块
+ * 功能索引
+ 1.首页
+ 2.更改密码
  *
  */
 function APP_html_module(){
-	/**
-	 * 功能 - > 更改密码
-	 *
-	 */
 	 switch ($_GET['a']) {
+		/**
+		 * 功能 - > 1.首页
+		 *
+		 */
+		 case "":
+?>
+	<div id="APP_chgpass">首页正在开发中，敬请期待</div>
+<?php
+			 break;
+
+		/**
+		 * 功能 - > 2.更改密码
+		 *
+		 */
 		 case "chgpasswd":
 ?>
 	<div id="APP_chgpass">
-		<form action="./?a=chgpasswd&p=TRUE" method="post">
+		<form id="APP_chgpass_form" action="./?a=chgpasswd&p=TRUE" method="post">
 			<ul>
 				<li>
-					<label>新密码</label>
-					<input type="password" name="password" id="APP_new_pswd" autocomplete="off" />
+					<p>
+						<label>新密码</label>
+						<input type="password" name="password" id="APP_new_pswda" placeholder="请输入密码" autocomplete="off" />
+					</p>
 				</li>
 				<li>
-					<label>确认密码</label>
-					<input type="password" name="password2" id="APP_new2_pswd" autocomplete="off" />
+					<p>
+						<label>确认密码</label>
+						<input type="password" name="password2" id="APP_new_pswdb" placeholder="请再输入一次" autocomplete="off" />
+					</p>
 				</li>
 				<li>
-					<input type="submit" value="确认修改" id="APP_chgpass_submit" title="确认更改密码" />
+					<p>
+						<input type="submit" value="确认修改" id="APP_chgpass_submit" title="确认更改密码" />
+					</p>
 				</li>
 			</ul>
 		</form>
+		<div id="APP_chgpass_status"></div>
 	</div>
 <?php
 			 break;
+
 		 default:
 ?>
-	<div id="APP_chgpass">上海利银电子科技有限公司</div>
+	<div id="APP_chgpass">其余模块正在开发中，敬请期待</div>
 <?php
 			 break;
 	}

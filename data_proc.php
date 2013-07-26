@@ -30,9 +30,22 @@ if (isset($_GET['a'])) {
 				$App_affected = $APP_sql -> affected();
 				$APP_sql -> close();
 				if ($App_affected >= 1) {
-					echo "正常";
+					$result = array(
+						"code" => 1,
+						"message" => "你已经成功修改了密码"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				} else {
+					$result = array(
+						"code" => 0,
+						"message" => "密码修改失败，或者密码未变更"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
 				}
-			} else {
 			}
 			 break;
 		 default:

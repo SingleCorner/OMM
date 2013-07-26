@@ -561,5 +561,14 @@ body.scroll {
 	min-height:300px;
 }
 #APP_chgpass  ul {
+	padding:0;
+	margin:0;
 	list-style-type:none;
+}
+#APP_chgpass_status {
+	margin-top: 20px;
+	font-family: "Microsoft Yahei", Tahoma, Simsun;
+	font-size: 12px;
+	text-align: center;
+	color: #555;
 }
