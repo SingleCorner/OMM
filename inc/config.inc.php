@@ -11,8 +11,8 @@ if (!defined('__ROOT__')) {
 
 //*******Part1 User Defined Variales***********//
 
-/* Project Name */
-$AppID = "OMM";
+/* Company Name */
+$COM = "Leyoung";
 
 /* Database Address */
 $DB_HOST = "localhost";
@@ -41,7 +41,7 @@ $sys_timeout = '1800';//Logout without operating in 5 minutes
 
 /* Prevent the program has change extremely */
 
-define("__APP_ID__",$AppID);
+define("__COM__",$COM);
 define("__DB_HOST__",$DB_HOST);
 define("__DB_USER__",$DB_USER);
 define("__DB_PASSWD__",$DB_PASSWD);

@@ -1,7 +1,7 @@
 <?php
 require_once("global.inc.php");
 
-/* 判断登录指令 */
+/* 初始登录验证 */
 if (isset($_GET['a']) && $_GET['a'] == 'login'){
 	if (isset($_SESSION['AuthToken']) && $_SESSION['AuthToken'] != ""){
 		header('Location: /');
@@ -29,6 +29,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 				$_SESSION['Login_jobtitle'] = job_converter($App_info['department'],$App_info['position']);
 				$App_policy = $App_sql -> getTableAllWhere("s_authority","account",$App_user);
 				$_SESSION['policy'] = $App_policy['authority'];
+				$_SESSION['policy_time'] = $App_policy['timeout'];
 				$App_sql -> close();
 				$result = array(
 					"code" => 0,
@@ -40,7 +41,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 			} else {
 				$result = array(
 					"code" => -1,
-					"message" => 'Ajax:用户验证失败或尚未激活'
+					"message" => 'OMM:用户验证失败或尚未激活'
 				);
 				header('Content-Type: application/json');
 				echo json_encode($result);
@@ -50,7 +51,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 	}
 } else {
 	if (isset($_SESSION['AuthToken']) && $_SESSION['AuthToken'] != ""){
-		if (isset($_GET['p'])) {
+		if (!empty($_GET['p'])) {
 			include("./data_proc.php");
 		}
 		APP_html_header();

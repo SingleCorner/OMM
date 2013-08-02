@@ -43,8 +43,11 @@ function APP_html_header() {
 		<!-- 导航区开始 -->
 		<nav id="APP_top_nav">
 			<ul>
-				<li><a href="./admin.php">公告发布</a></li>
-				<li><a href="./admin.php?a=member">成员管理</a></li>
+				<li><a href="./admin.php?a=T_notice">公告发布</a></li>
+				<li><a href="./admin.php?a=T_member">人员管理</a></li>
+				<li><a href="./admin.php?a=T_customer">客户管理</a></li>
+				<li><a href="./admin.php?a=T_device">设备管理</a></li>
+				<li><a href="./admin.php?a=T_sparepart">备件管理</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -91,10 +94,16 @@ function APP_html_footer() {
  *
  */
  function APP_mgr_main() {
-	 if ($_GET['a'] == "changepasswd") {
+	 if ($_GET['a'] !=  "") {
+		 if (is_policy($_GET['a'])) {
+		 } else {
+			echo "权限错误";
+	//		header('Location: /admin.php');
+		 }
+	 } else {
 ?>
 			<div>欢迎使用Leyoung运维管理系统</div>
 <?php
-	}
- }
+	 }
+}
 ?>

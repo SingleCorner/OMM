@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	$(document).scroll(navbar_ajust);
 	navbar_ajust();
+
+	//修改密码过程
 	$('#APP_chgpass_form').submit(function(evt) {
 		// 阻断默认提交过程
 		evt.preventDefault();
@@ -12,7 +14,8 @@ $(document).ready(function() {
 		// 检查输入
 		if (newpassa != newpassb) {
 			$('#APP_chgpass_status').html("密码对比失败");
-			$('£APP_new_pswda').focus();
+			$('#APP_new_pswdb').val('');
+			$('#APP_new_pswdb').focus();
 			return false;
 		}
 		$.ajax({
@@ -27,17 +30,18 @@ $(document).ready(function() {
 					$('#APP_new_pswda').val('');
 					$('#APP_new_pswdb').val('');
 					$('#APP_chgpass_status').html(data.message);
-				} else {
-					if (data.code == 0) {
-						$('#APP_new_pswda').val('');
-						$('#APP_new_pswdb').val('');
-					}
+					$('#APP_new_pswda').focus();
+				} else if (data.code == 0) {
+					$('#APP_new_pswda').val('');
+					$('#APP_new_pswdb').val('');
 					$('#APP_chgpass_status').html(data.message);
+					$('#APP_new_pswda').focus();
 				}
 			},
 			dataType: 'json'
 		});
 	});
+	$('#APP_new_pswda').focus();
 
 });
 

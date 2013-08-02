@@ -102,12 +102,13 @@ function APP_html_header() {
 		<nav id="APP_top_nav">
 			<ul>
 				<li><a href="./">首页</a></li>
-<?php if (check_policy($_SESSION['policy']) == "SU" || check_policy($_SESSION['policy']) == "MGR" ){ ?>
-				<li><a href="./admin.php">后台管理</a></li>
-<?php } else if (check_policy($_SESSION['policy']) == "TMP_MGR") {?>
-				<li><a href="./admin.php">临时管理</a></li>
-<?php } ?>
+				<li><a href="./?a=maintenance">运维管理</a></li>
+				<li><a href="./?a=report">工作报告</a></li>
+				<li><a href="./?a=knowledge">知识库</a></li>
 				<li><a href="./?a=chgpasswd">修改密码</a></li>
+<?php if (check_policy()){ ?>
+				<li><a href="./admin.php">后台管理</a></li>
+<?php } ?>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -121,7 +122,6 @@ function APP_html_header() {
 }
 /**
  * 输出页脚信息与版权信息
- * TODO: 把CNZZ换成Google Analytics吧
  *
  */
 function APP_html_footer(){
@@ -151,7 +151,10 @@ function APP_html_footer(){
  * 操作区模块
  * 功能索引
  1.首页
- 2.更改密码
+ 2.运维管理
+ 3.工作报告
+ 4.知识库
+ 5.更改密码
  *
  */
 function APP_html_module(){
@@ -166,8 +169,41 @@ function APP_html_module(){
 <?php
 			 break;
 
+		
 		/**
-		 * 功能 - > 2.更改密码
+		 * 功能 - > 2.运维管理
+		 *
+		 */
+		 case "maintenance":
+?>
+	<div id="APP_chgpass">运维管理模块正在开发中，敬请期待</div>
+<?php
+			 break;
+
+		/**
+		 * 功能 - > 3.工作报告
+		 *
+		 */
+		 case "report":
+?>
+	<div id="APP_chgpass">工作报告模块正在开发中，敬请期待</div>
+<?php
+			 break;
+
+
+		/**
+		 * 功能 - > 4.知识库
+		 *
+		 */
+		 case "knowledge":
+?>
+	<div id="APP_chgpass">知识库模块正在开发中，敬请期待</div>
+<?php
+			 break;
+
+
+		/**
+		 * 功能 - > 5.更改密码
 		 *
 		 */
 		 case "chgpasswd":
@@ -199,6 +235,11 @@ function APP_html_module(){
 <?php
 			 break;
 
+		
+		/**
+		 * 功能 - > 0.其他模块
+		 *
+		 */
 		 default:
 ?>
 	<div id="APP_chgpass">其余模块正在开发中，敬请期待</div>

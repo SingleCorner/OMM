@@ -16,7 +16,7 @@ if (!defined('__ROOT__')) {
 	exit;
 }
 
-if (isset($_GET['a'])) {
+if (isset($_GET['p'])) {
 	 switch ($_GET['a']) {
 		/**
 		 * 功能 - > 1
@@ -40,7 +40,7 @@ if (isset($_GET['a'])) {
 				} else {
 					$result = array(
 						"code" => 0,
-						"message" => "密码修改失败，或者密码未变更"
+						"message" => "未变更的密码"
 					);
 					header('Content-Type: application/json');
 					echo json_encode($result);
@@ -48,6 +48,13 @@ if (isset($_GET['a'])) {
 				}
 			}
 			 break;
+		/**
+		 * 功能 - > 2
+		 *
+		 */
+		case 'maintanance':
+			echo 123;
+			break;
 		 default:
 			 
 			 break;
