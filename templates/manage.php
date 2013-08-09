@@ -48,6 +48,7 @@ function APP_html_header() {
 				<li><a href="./admin.php?a=T_customer">客户管理</a></li>
 				<li><a href="./admin.php?a=T_device">设备管理</a></li>
 				<li><a href="./admin.php?a=T_sparepart">备件管理</a></li>
+				<li><a href="./admin.php?a=test">测试连接</a></li>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -93,17 +94,50 @@ function APP_html_footer() {
  * 页首信息
  *
  */
- function APP_mgr_main() {
-	 if ($_GET['a'] !=  "") {
-		 if (is_policy($_GET['a'])) {
-		 } else {
-			echo "权限错误";
-	//		header('Location: /admin.php');
-		 }
-	 } else {
+function APP_mgr_main() {
+	if (is_policy($_GET['a'])||$_GET['a'] == null) {
+		if ($_GET['a']=="") {
+		} else {
+			$action = explode('_',$_GET['a']);
+			$module_name = $action[1];
+			switch ($module_name) {
+				case "":
+					echo "不存在的模块";
+					break;
+				case "notice":
+					break;
+				case "member":
 ?>
-			<div>欢迎使用Leyoung运维管理系统</div>
+			<div class="title_container">
+				<span class="title_more">
+					<form action="?a=&p=query" method="post">
+						<input type="text" size="10" name="account " placeholder="编号" />
+						<input type="text" size="10" name="name" placeholder="姓名" />
+						<input type="submit" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<input type="button" value="新账户" />
+					<input type="button" value="新账户审核" />
+				</h1>
+			</div>
 <?php
-	 }
+					break;
+				case "customer":
+					break;
+				case "device":
+					break;
+				case "sparepart":
+					break;
+				default:
+					echo "不存在的模块";
+					break;
+			}
+		}
+	} else {
+		echo "未授权的模块";
+//		header('Location: /admin.php');
+		
+	}
 }
 ?>

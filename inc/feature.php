@@ -11,15 +11,24 @@ if (!defined('__ROOT__')) {
 
 
 /**
+ * 功能索引
+ *	
+ * 字符过滤 -> 过滤数据库的限制字符
+ * 职位标签转换 -> 将职位代码转换为文字
+ * 后台权限检测 -> 判断用户是否拥有后台权限
+ * 后台模块权限验证 -> 加载模块时验证权限
+ */
+
+
+/**
  * 字符过滤
  *
- * param $string -> 接收的字符串
+ * param $string -> 传入的字符串
  */
 function string_filter($string){
 	if (preg_match("/[\<\>]+/", $string) !== 0) {
 		return false;
 	}
-
 	if (preg_match("/(union)|[,='\"]/i", $string) !== 0) {
 		return false;
 	}
@@ -29,7 +38,7 @@ function string_filter($string){
 
 
 /**
- * 职位标签输出
+ * 职位标签转换
  *
  * param $val_1 -> 部门
  * param $val_2 -> 职位
@@ -152,13 +161,13 @@ function check_policy() {
 }
 
 /**
- * 后台模块加载验证
+ * 后台模块权限验证
  *
  * param $module_name -> 需要验证的模块名
  */
  function is_policy($module_name) {
 	$policies = explode('|', $_SESSION['policy']);
-	$attr = explode('_' , $module_name);
+	$attr = explode('_' , $module_name);		//权限数组化，遍历主权限与模块权限
 	foreach($policies as $value) {
 		$policy = explode('_' , $value);
 		switch($policy[0]) {
@@ -173,6 +182,8 @@ function check_policy() {
 			case "TMGR":
 				if ($policy[1] == $attr[0] && strtotime($_SESSION['policy_time']) > time()) {
 					$module_auth = "pass";
+				} else {
+					//保留代码，用于日后进行单个模块的权限控制
 				}
 				break;
 			default:
@@ -185,4 +196,7 @@ function check_policy() {
 		return false;
 	}
  }
+
+
+
 ?>
