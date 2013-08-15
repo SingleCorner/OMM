@@ -38,6 +38,21 @@ function string_filter($string){
 
 
 /**
+ * 数字检测
+ *
+ * param $string -> 传入的数字字符串
+ */
+function numeric_filter($string){
+	if (is_numeric($string)) {
+		return $string;
+	} else {
+		return false;
+	}
+	
+}
+
+
+/**
  * 职位标签转换
  *
  * param $val_1 -> 部门
@@ -133,6 +148,25 @@ function job_converter($val_1,$val_2) {
 	return $result;
 }
 
+
+/**
+ * 性别转换
+ *
+ * param $val -> 性别代码
+ */
+function gender_converter($val) {
+	switch($val) {
+		case "0":
+			return "女";
+			break;
+		case "1":
+			return "男";
+			break;
+		default:
+			return "N/A";
+			break;
+	}
+}
 
 
 /**

@@ -7,11 +7,13 @@ $(document).ready(function() {
 		//准备变量
 		var name = $('#APP_newStaff_name').val();
 		var gender = $('#APP_newStaff_gender').val();
+		var department = $('#APP_newStaff_department').val();
 		var position = $('#APP_newStaff_position').val();
 		var tel = $('#APP_newStaff_tel').val();
 		
 		// 检查输入
 		if (name == "") {
+			$('#APP_newStaff_status').html('填写资料不详');
 			return false;
 		}
 
@@ -21,6 +23,7 @@ $(document).ready(function() {
 			data: {
 				'name': name,
 				'gender': gender,
+				'department': department,
 				'position': position,
 				'tel': tel
 			},

@@ -108,6 +108,9 @@ function APP_mgr_main() {
 				case "notice":
 					break;
 				case "member":
+					$APP_sql = new APP_SQL();
+					$App_verifyStaff = $APP_sql -> getTableAll("view_unLoginAuth");
+					$APP_sql -> close();
 ?>
 			<div class="title_container">
 				<span class="title_more">
@@ -118,8 +121,8 @@ function APP_mgr_main() {
 					</form>
 				</span>
 				<h1>
-					<input type="button" value="新账户" onclick="load_newStaff()" />
-					<input type="button" value="账户审核" onclick="load_verifyStaff()" />
+					<button onclick="load_newStaff()">新账户</button>
+					<button onclick="load_verifyStaff()">账户审核</button>
 				</h1>
 			</div>
 			<div id="APP_newStaff">
@@ -129,6 +132,10 @@ function APP_mgr_main() {
 					<select name="gender" id="APP_newStaff_gender">
 						<option value="1" selected>男</option>
 						<option value="0" >女</option>
+					</select>
+					部门
+					<select name="department" id="APP_newStaff_department">
+						<option value="4" >技术部</option>
 					</select>
 					职位
 					<select name="position" id="APP_newStaff_position">
@@ -142,7 +149,20 @@ function APP_mgr_main() {
 				</form>
 			</div>
 			<div id="APP_verifyStaff">
-				<div>test2</div>
+				<table class="datatable">
+					<tr>
+						<th>姓名</th>
+						<th>性别</th>
+						<th>部门&职位</th>
+						<th>电话</th>
+						<th>验证码</th>
+						<th>操作</th>
+					</tr>
+<?php
+
+?>
+
+				</table>
 			</div>
 <?php
 					break;

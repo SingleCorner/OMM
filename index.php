@@ -41,7 +41,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 			} else {
 				$result = array(
 					"code" => -1,
-					"message" => 'OMM:用户验证失败或尚未激活'
+					"message" => 'OMM验证失败：账户尚未激活或已过期'
 				);
 				header('Content-Type: application/json');
 				echo json_encode($result);
