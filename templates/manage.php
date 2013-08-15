@@ -28,6 +28,7 @@ function APP_html_header() {
 	<link rel="stylesheet" href="./css/css.css" />
 	<script src="./js/jquery-1.7.2.min.js"></script>
 	<script src="./js/app.js"></script>
+	<script src="./js/mgr.js"></script>
 </head>
 <body>
 	<!-- 顶栏开始 -->
@@ -110,16 +111,38 @@ function APP_mgr_main() {
 ?>
 			<div class="title_container">
 				<span class="title_more">
-					<form action="?a=&p=query" method="post">
-						<input type="text" size="10" name="account " placeholder="编号" />
-						<input type="text" size="10" name="name" placeholder="姓名" />
+					<form id="APP_queryStaff_form" action="?a=&p=query" method="post">
+						<input type="text" size="10" name="account" id="APP_queryStaff_id" placeholder="编号" />
+						<input type="text" size="10" name="name" id="APP_queryStaff_name" placeholder="姓名" />
 						<input type="submit" value="查询" />
 					</form>
 				</span>
 				<h1>
-					<input type="button" value="新账户" />
-					<input type="button" value="新账户审核" />
+					<input type="button" value="新账户" onclick="load_newStaff()" />
+					<input type="button" value="账户审核" onclick="load_verifyStaff()" />
 				</h1>
+			</div>
+			<div id="APP_newStaff">
+				<form id="APP_newstaff_form" action="?a=T_member&p=add" method="post">
+					姓名<input type="text" name="name" id="APP_newStaff_name" />
+					性别
+					<select name="gender" id="APP_newStaff_gender">
+						<option value="1" selected>男</option>
+						<option value="0" >女</option>
+					</select>
+					职位
+					<select name="position" id="APP_newStaff_position">
+						<option value="2" selected>系统工程师</option>
+						<option value="3" >PC工程师</option>
+						<option value="4" >数据库工程师</option>
+					</select>
+					电话<input type="text" name="tel" size="11" maxlength="11" id="APP_newStaff_tel" />
+					<input type="submit" value="生成账号" />
+					<span id="APP_newStaff_status"></span>
+				</form>
+			</div>
+			<div id="APP_verifyStaff">
+				<div>test2</div>
 			</div>
 <?php
 					break;

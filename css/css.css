@@ -5,6 +5,9 @@ STYLESHEET
 @version 1.0.0
 */
 
+/*
+	本段为前后台共用css	
+*/
 body {
 	margin: 0px;
 	padding: 0px;	
@@ -448,6 +451,9 @@ body.scroll #APP_top_user {
 	color:#777;
 }
 
+/*
+	前台CSS
+*/
 
 #APP_home_left {
 	margin-left: 20px;
@@ -573,4 +579,20 @@ body.scroll #APP_top_user {
 	font-size: 12px;
 	text-align: left;
 	color: #555;
+}
+
+/*
+	后台CSS
+*/
+#APP_newStaff {
+	margin-top:10px;
+}
+#APP_newStaff #APP_newStaff_status {
+	float:right;
+	color:red;
+	line-height:30px;
+}
+
+#APP_verifyStaff {
+	margin-top:10px;
 }

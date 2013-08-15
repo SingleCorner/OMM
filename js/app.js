@@ -42,7 +42,6 @@ $(document).ready(function() {
 		});
 	});
 	$('#APP_new_pswda').focus();
-
 });
 
 function navbar_ajust() {

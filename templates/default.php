@@ -165,7 +165,7 @@ function APP_html_module(){
 		 */
 		 case "":
 ?>
-	<div id="APP_chgpass">首页正在开发中，敬请期待</div>
+	<center>首页正在开发中，敬请期待</center>
 <?php
 			 break;
 
@@ -176,7 +176,7 @@ function APP_html_module(){
 		 */
 		 case "maintenance":
 ?>
-	<div id="APP_chgpass">运维管理模块正在开发中，敬请期待</div>
+	<center>运维管理模块正在开发中，敬请期待</center>
 <?php
 			 break;
 
@@ -186,7 +186,7 @@ function APP_html_module(){
 		 */
 		 case "report":
 ?>
-	<div id="APP_chgpass">工作报告模块正在开发中，敬请期待</div>
+	<center>工作报告模块正在开发中，敬请期待</center>
 <?php
 			 break;
 
@@ -197,7 +197,7 @@ function APP_html_module(){
 		 */
 		 case "knowledge":
 ?>
-	<div id="APP_chgpass">知识库模块正在开发中，敬请期待</div>
+	<center>知识库模块正在开发中，敬请期待</center>
 <?php
 			 break;
 
@@ -242,7 +242,7 @@ function APP_html_module(){
 		 */
 		 default:
 ?>
-	<div id="APP_chgpass">其余模块正在开发中，敬请期待</div>
+	<center>其余模块正在开发中，敬请期待</center>
 <?php
 			 break;
 	}

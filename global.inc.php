@@ -4,7 +4,7 @@
  * 配置文件不允许访问
  *
  */
-if ($_SERVER['REQUEST_URI'] == "/global.inc.php") {
+if ($_SERVER['PHP_SELF'] == "/global.inc.php") {
 	header("Status: 404");
 	exit;
 }
