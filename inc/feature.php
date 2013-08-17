@@ -231,6 +231,4 @@ function check_policy() {
 	}
  }
 
-
-
 ?>

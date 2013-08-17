@@ -58,7 +58,7 @@ class APP_SQL {
 		}
 		$sql .= ";";
 		$query = $this -> db -> query($sql);
-		return $query -> fetch_assoc();
+		return $query;
 	}
 	/**
 	 * 查询 -> 单条件数据
@@ -81,10 +81,34 @@ class APP_SQL {
 		return $query -> fetch_assoc();
 	}
 	/**
+	 * 执行事务处理
+	 */
+	public function transationSQL() {
+		$this -> db -> autocommit(false);
+		$sql = func_get_args();
+		foreach ($sql as $query) {
+			$result = $this -> db -> query($sql);
+			if (!$result) {
+				$check = "1";
+			}
+		}
+		if ($check == "1") {
+			$this -> db -> rollback();
+		} else {
+			$this -> db -> commit();
+		}
+	}
+	/**
 	 * 查询影响数据
 	 */
 	public function affected() {
 		return $this -> db -> affected_rows;
+	}	
+	/**
+	 * 查询结果数组化
+	 */
+	public function fetch_assoc($query) {
+		return $query -> fetch_assoc();
 	}	
 	/**
 	 * 自定义SQL（临时调用）
@@ -110,31 +134,42 @@ class APP_SQL {
 		$sql = "SELECT * FROM `view_LoginAuth` WHERE `account` = '{$value_user}';";
 		$query = $this -> db -> query($sql);
 		return $query -> fetch_assoc();
-	}
-	
-
-	//更新 -> 修改用户密码
+	}	
+	/**
+	 * 更新 -> 修改用户密码
+	 */
 	public function updateLoginPasswd($newpasswd, $account) {
 		$sql = "UPDATE `view_LoginAuth` SET `passwd` = '{$newpasswd}' WHERE `account` = '{$account}';";
 		return $this -> db -> query($sql);
 	}
+	/**
+	 * 更新 -> 生成新用户授权码
+	 */
+	public function updateStaffAuthorizer($id,$authorizer) {
+		$sql = "UPDATE `view_unLoginAuth` SET `authorizer` = '{$authorizer}' WHERE `id` = '{$id}';";
+		return $this -> db -> query($sql);
+	}
 
-	
-	//事务处理
-	public function transationSQL() {
-		$this -> db -> autocommit(false);
-		$sql = func_get_args();
-		foreach ($sql as $query) {
-			$result = $this -> db -> query($sql);
-			if (!$result) {
-				$check = "1";
-			}
-		}
-		if ($check == "1") {
-			$this -> db -> rollback();
-		} else {
-			$this -> db -> commit();
-		}
+
+
+	/**
+	 * 查询 -> 列出所有账号
+	 */
+	public function getStaffList() {
+		$sql = "SELECT * from `s_staff` ORDER BY `status` DESC,`regist_time`;";
+		$query = $this -> db -> query($sql);
+		return $query;
+		//请用fetch_assoc()函数进行数组化
+	}
+
+
+	/**
+	 * 删除 -> 审核新账号未通过
+	 */
+	public function deleteNoStaff($id) {
+		$sql = "DELETE from `view_unLoginAuth`  WHERE `id` = '{$id}';";
+		$query = $this -> db -> query($sql);
+		return $query;
 	}
 }
 ?>

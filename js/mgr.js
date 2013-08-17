@@ -46,7 +46,16 @@ $(document).ready(function() {
 	//页面默认行为
 	$('#APP_queryStaff_id').focus();
 	$('#APP_newStaff').hide();
-	$('#APP_verifyStaff').hide();
+	$('#APP_verifyStaff').hide(function() {
+		$.ajax({
+			type: 'POST',
+			url: 'admin.php?a=T_member&p=listverify',
+			success: function(data, status, xhr) {
+				$('#APP_verifyStaff').html(data);
+			},
+			dataType: 'html'
+		});
+	});
 });
 function load_newStaff() {
 	if ($('#APP_newStaff').is(':hidden')) {
@@ -60,11 +69,53 @@ function load_newStaff() {
 }
 function load_verifyStaff() {
 	if ($('#APP_verifyStaff').is(':hidden')) {
-		$('#APP_verifyStaff').show();
+		$('#APP_verifyStaff').show(function() {
+			$.ajax({
+				type: 'POST',
+				url: 'admin.php?a=T_member&p=listverify',
+				success: function(data, status, xhr) {
+					$('#APP_verifyStaff').html(data);
+				},
+				dataType: 'html'
+			});
+		});
 		$('#APP_queryStaff_id').focus();
 		$('#APP_newStaff').hide();
 	} else {
 		$('#APP_verifyStaff').hide();
 		$('#APP_queryStaff_id').focus();
 	}
+}
+function verifyStaff_allow(id) {
+	tdclass = ".authorizer_" + id;
+	btnclass = "#allowbtn_" + id;
+	$.ajax({
+		type: 'POST',
+		url: 'admin.php?a=T_member&p=allowverify',
+		data: {
+			'id': id
+		},
+		success: function(data, status, xhr) {
+			$(tdclass).html(data.authorizer);
+			$(btnclass).hide();
+		},
+		dataType: 'json'
+	});
+}
+function verifyStaff_deny(id) {
+	trclass = ".verify_" + id;
+	$.ajax({
+		type: 'POST',
+		url: 'admin.php?a=T_member&p=denyverify',
+		data: {
+			'id': id
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1)
+			{
+				$(trclass).hide();
+			}
+		},
+		dataType: 'json'
+	});
 }

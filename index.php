@@ -26,6 +26,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 				$_SESSION['timeout_check'] = time();
 				$_SESSION['Login_account'] = $App_info['account'];
 				$_SESSION['Login_name'] = $App_info['name'];
+				$_SESSION['Login_section'] = $App_info['department'];
 				$_SESSION['Login_jobtitle'] = job_converter($App_info['department'],$App_info['position']);
 				$App_policy = $App_sql -> getTableAllWhere("s_authority","account",$App_user);
 				$_SESSION['policy'] = $App_policy['authority'];

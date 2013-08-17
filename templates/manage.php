@@ -62,35 +62,6 @@ function APP_html_header() {
 <?php
 }
 
-
-/**
- * 输出页脚信息与版权信息
- *
- */
-function APP_html_footer() {
-?>
-		</div>
-		<!-- 内容区结束 -->
-	</div>
-	<!-- 主容器结束 -->
-	<!-- 页脚开始 -->
-	<footer id="APP_foot">
-		<div id="APP_foot_copyright">
-			Copyright © 2013 - 2015 SingleCorner<br />
-			<a  href="https://github.com/SingleCorner/OMM" target="_blank">https://github.com/SingleCorner/OMM</a>
-		</div>
-		<div id="APP_foot_license">
-			<div>SingleCorner 版权所有</div>
-			<div>授权 Leyoung 使用</div>
-		</div>
-	</footer>
-	<!-- 页脚结束 -->
-</body>
-</html>
-<?php
-}
-
-
 /**
  * 页首信息
  *
@@ -108,9 +79,9 @@ function APP_mgr_main() {
 				case "notice":
 					break;
 				case "member":
-					$APP_sql = new APP_SQL();
-					$App_verifyStaff = $APP_sql -> getTableAll("view_unLoginAuth");
-					$APP_sql -> close();
+//					$APP_sql = new APP_SQL();
+//					$App_listStaff = $APP_sql -> getStaffList();
+//					$App_listStaff_query = $APP_sql -> fetch_assoc($App_listStaff);
 ?>
 			<div class="title_container">
 				<span class="title_more">
@@ -148,21 +119,9 @@ function APP_mgr_main() {
 					<span id="APP_newStaff_status"></span>
 				</form>
 			</div>
-			<div id="APP_verifyStaff">
-				<table class="datatable">
-					<tr>
-						<th>姓名</th>
-						<th>性别</th>
-						<th>部门&职位</th>
-						<th>电话</th>
-						<th>验证码</th>
-						<th>操作</th>
-					</tr>
-<?php
-
-?>
-
-				</table>
+			<div id="APP_verifyStaff"> 
+			</div>
+			<div id="APP_listStaff">
 			</div>
 <?php
 					break;
