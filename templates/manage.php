@@ -45,7 +45,7 @@ function APP_html_header() {
 		<nav id="APP_top_nav">
 			<ul>
 				<li><a href="./admin.php?a=T_notice">公告发布</a></li>
-				<li><a href="./admin.php?a=T_member">人员管理</a></li>
+				<li><a href="./admin.php?a=T_member">账号管理</a></li>
 				<li><a href="./admin.php?a=T_customer">客户管理</a></li>
 				<li><a href="./admin.php?a=T_device">设备管理</a></li>
 				<li><a href="./admin.php?a=T_sparepart">备件管理</a></li>

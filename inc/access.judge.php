@@ -26,7 +26,7 @@ if (isset($_GET["logout"]) && $_GET["logout"] == md5($_SESSION["timestamp"])) {
  */
 if (isset($_SESSION["AuthToken"])) {
 	if (sha1($_SERVER["REMOTE_ADDR"]) != $_SESSION["AuthToken"]) {
-		session_regenerate_id();	//遇到伪造session登陆的，先改变其PHPSESSID，
+		session_regenerate_id();	//遇到伪造session登陆的，先改变其sessionID，
 		session_destroy();			//再将所有值清空.
 		echo "<script>alert('Warning: 在线状态异常，请重启浏览器。');window.open('','_self');window.close();</script>";
 		exit;

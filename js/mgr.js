@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	// 账号创建 - 表单提交过程
+	/* 
+	 * 账号管理 -> 新建账号
+	 */
 	$('#APP_newstaff_form').submit(function(evt) {
 		// 阻断默认提交过程
 		evt.preventDefault();
@@ -43,7 +45,9 @@ $(document).ready(function() {
 			dataType: 'json'
 		});
 	});
-	//页面默认行为
+	/* 
+	 * 页面 -> 默认行为
+	 */
 	$('#APP_queryStaff_id').focus();
 	$('#APP_newStaff').hide();
 	$('#APP_verifyStaff').hide(function() {
@@ -57,6 +61,10 @@ $(document).ready(function() {
 		});
 	});
 });
+
+/* 
+ * 账号管理 -> 加载新账号添加模块
+ */
 function load_newStaff() {
 	if ($('#APP_newStaff').is(':hidden')) {
 		$('#APP_newStaff').show();
@@ -67,6 +75,9 @@ function load_newStaff() {
 		$('#APP_queryStaff_id').focus();
 	}
 }
+/* 
+ * 账号管理 -> 加载新账号授权模块
+ */
 function load_verifyStaff() {
 	if ($('#APP_verifyStaff').is(':hidden')) {
 		$('#APP_verifyStaff').show(function() {
@@ -86,6 +97,9 @@ function load_verifyStaff() {
 		$('#APP_queryStaff_id').focus();
 	}
 }
+/* 
+ * 账号管理 -> 账号授权允许操作
+ */
 function verifyStaff_allow(id) {
 	tdclass = ".authorizer_" + id;
 	btnclass = "#allowbtn_" + id;
@@ -102,6 +116,9 @@ function verifyStaff_allow(id) {
 		dataType: 'json'
 	});
 }
+/* 
+ * 账号管理 -> 账号授权拒绝操作
+ */
 function verifyStaff_deny(id) {
 	trclass = ".verify_" + id;
 	$.ajax({
@@ -119,3 +136,4 @@ function verifyStaff_deny(id) {
 		dataType: 'json'
 	});
 }
+

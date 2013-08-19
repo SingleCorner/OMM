@@ -63,20 +63,16 @@ class APP_SQL {
 	/**
 	 * 查询 -> 单条件数据
 	 */
-	public function getTableAllWhere($value_table, $field, $field_value, $start = -1, $count = -1) {
-		$sql="SELECT * FROM `{$value_table}` WHERE `{$field}` = '{$field_value}'";
-		if ($start >= 0 && $count > 0) {
-			$sql .= " LIMIT {$start},{$count}";
-		}
-		$sql .= ";";
+	public function getTableAllWhere($value_table, $field, $field_value) {
+		$sql="SELECT * FROM `{$value_table}` WHERE `{$field}` = '{$field_value}';";
 		$query = $this -> db -> query($sql);
 		return $query -> fetch_assoc();
 	}
 	/**
 	 * 更新 -> 单列数据
 	 */
-	public function updateTable($value_table, $field, $field_value, $task_id) {
-		$sql = "UPDATE `{$value_table}` SET `{$field}` = '{$field_value}' WHERE `t_id` = '{$task_id}';";
+	public function updateTable($table, $field, $field_value, $col, $col_value) {
+		$sql = "UPDATE `{$table}` SET `{$field}` = '{$field_value}' WHERE `{$col}` = '{$col_value}';";
 		$query = $this -> db -> query($sql);
 		return $query -> fetch_assoc();
 	}
@@ -87,7 +83,7 @@ class APP_SQL {
 		$this -> db -> autocommit(false);
 		$sql = func_get_args();
 		foreach ($sql as $query) {
-			$result = $this -> db -> query($sql);
+			$result = $this -> db -> query($query);
 			if (!$result) {
 				$check = "1";
 			}
@@ -96,10 +92,11 @@ class APP_SQL {
 			$this -> db -> rollback();
 		} else {
 			$this -> db -> commit();
+			return "commit";
 		}
 	}
 	/**
-	 * 查询影响数据
+	 * 查询上次query影响行数
 	 */
 	public function affected() {
 		return $this -> db -> affected_rows;
@@ -145,8 +142,15 @@ class APP_SQL {
 	/**
 	 * 更新 -> 生成新用户授权码
 	 */
-	public function updateStaffAuthorizer($id,$authorizer) {
+	public function updateStaffAuthorizer($id, $authorizer) {
 		$sql = "UPDATE `view_unLoginAuth` SET `authorizer` = '{$authorizer}' WHERE `id` = '{$id}';";
+		return $this -> db -> query($sql);
+	}
+	/**
+	 * 更新 -> 个性化用户名检查
+	 */
+	public function updateAccountCheck($id, $account) {
+		$sql = "UPDATE `s_staff` SET `account` = '{$account}' WHERE `id` = '{$id}';";
 		return $this -> db -> query($sql);
 	}
 
@@ -163,6 +167,19 @@ class APP_SQL {
 	}
 
 
+	/**
+	 * 事务操作 -> 注册账号{更新密码，清除授权码，加入授权表}
+	 */
+	public function registStaff($id, $account, $passwd) {
+		$sql_updatepasswd = "UPDATE `s_staff` SET `passwd` = '{$passwd}',`authorizer` = '',`status` = '1' WHERE `id` = '{$id}';";
+		$sql_insertauthority = "INSERT INTO `s_authority` (`account`) values ('{$account}');";
+		$sql_result = $this -> transationSQL($sql_updatepasswd, $sql_insertauthority);
+		if ($sql_result == "commit") {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	/**
 	 * 删除 -> 审核新账号未通过
 	 */

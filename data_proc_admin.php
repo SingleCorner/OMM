@@ -33,7 +33,7 @@ switch ($module_name) {
 				$department = numeric_filter($_POST['department']);
 				$position = numeric_filter($_POST['position']);
 				$tel = numeric_filter($_POST['tel']);
-				if (empty($name) || empty($gender) || empty($department) || empty($position)) {
+				if (empty($name) || is_int($gender) || is_int($department) || is_int($position)) {
 					$result = array(
 						"code" => 0,
 						"message" => "数据提交异常"
@@ -93,7 +93,7 @@ switch ($module_name) {
 						<td><?php echo $gender;?></td>
 						<td><?php echo $job;?></td>
 						<td><?php echo $tel;?></td>
-						<td class="authorizer_<?php echo $id; ?>"><?php echo $authorizer;?></td>
+						<td class="authorizer_<?php echo $id; ?>"><a href="valid.php?code=<?php echo $authorizer;?>"><?php echo $authorizer;?></td>
 						<td>
 						<?php if ($authorizer == "") {?>
 							<button class="btn" id="allowbtn_<?php echo $id; ?>" onclick="verifyStaff_allow(<?php echo $id; ?>)">允许</button>
@@ -113,15 +113,16 @@ switch ($module_name) {
 			case "allowverify":
 				$id = numeric_filter($_POST['id']);
 				$start = mt_rand(3,10);
-				$long = mt_rand(5,10);
+				$long = mt_rand(5,15);
 				$authorizer = substr(sha1(time()),$start,$long);
 				$APP_sql = new APP_SQL();
 				$APP_sql -> updateStaffAuthorizer($id,$authorizer);
 				$App_affected = $APP_sql -> affected();
 				$APP_sql -> close();
 				if ($App_affected == 1) {
+					$authorizerurl = "<a href='valid.php?code=".$authorizer."'>$authorizer</a>";
 					$result = array(
-						"authorizer" => $authorizer
+						"authorizer" => $authorizerurl
 					);
 					header('Content-Type: application/json');
 					echo json_encode($result);

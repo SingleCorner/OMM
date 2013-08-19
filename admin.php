@@ -1,7 +1,7 @@
 <?php
 require_once("global.inc.php");
 
-if (!isset($_SESSION['AuthToken'])){
+if (!isset($_SESSION['AuthToken']) || empty($_SESSION['AuthToken'])){
 	header("http/1.1 403 Forbidden");
 	header("Status: 403");
 	exit;
