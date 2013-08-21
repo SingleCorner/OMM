@@ -7,12 +7,12 @@ if (!isset($_SESSION['AuthToken']) || empty($_SESSION['AuthToken'])){
 	exit;
 }
 //检测权限值通过后加载页面
-if (false === check_policy()) {
+if (false === access_policy()) {
 	header("Status: 403");
 	exit;
 } else {
 	if (!empty($_GET['p'])) {
-		if (is_policy($_GET['a'])){
+		if (($_GET['a'])){
 			include("./data_proc_admin.php");
 		} else {
 			exit;

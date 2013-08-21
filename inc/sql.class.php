@@ -160,10 +160,14 @@ class APP_SQL {
 	 * 查询 -> 列出所有账号
 	 */
 	public function getStaffList() {
-		$sql = "SELECT * from `s_staff` ORDER BY `status` DESC,`regist_time`;";
+//		$sql = "create or replace view `view_listStaff` as select a.id,a.name,a.department,a.position,a.tel,a.regist_time,a.status,b.authority,b.timeout from s_staff as a,s_authority as b where a.account = b.account ORDER BY `status` DESC,`regist_time`;"
+		if ($_SESSION['Login_section'] == 0) {
+			$sql = "SELECT * from `view_listStaff`;";
+		} else {
+			$sql = "SELECT * from `view_listStaff` WHERE `department` = '{$_SESSION['Login_section']}';";
+		}
 		$query = $this -> db -> query($sql);
 		return $query;
-		//请用fetch_assoc()函数进行数组化
 	}
 
 

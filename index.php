@@ -21,6 +21,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 				$App_auth_passwd = $App_auth['passwd'];
 			}
 			if ($App_auth_passwd == $App_passwd) {
+				$_SESSION['policy'] = $App_auth['authority'];
 				$App_info = $App_sql -> getTableAllWhere("s_staff","account",$App_user);
 				$_SESSION['AuthToken'] = sha1($_SERVER["REMOTE_ADDR"]);
 				$_SESSION['timeout_check'] = time();
@@ -28,9 +29,6 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 				$_SESSION['Login_name'] = $App_info['name'];
 				$_SESSION['Login_section'] = $App_info['department'];
 				$_SESSION['Login_jobtitle'] = job_converter($App_info['department'],$App_info['position']);
-				$App_policy = $App_sql -> getTableAllWhere("s_authority","account",$App_user);
-				$_SESSION['policy'] = $App_policy['authority'];
-				$_SESSION['policy_time'] = $App_policy['timeout'];
 				$App_sql -> close();
 				$result = array(
 					"code" => 0,

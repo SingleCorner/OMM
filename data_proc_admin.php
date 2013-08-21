@@ -17,15 +17,14 @@ if (!defined('__ROOT__')) {
 }
 
 
-$action = explode('_',$_GET['a']);
-$module_name = $action[1];
+$module_name = $_GET['a'];
 
 switch ($module_name) {
 	/**
 	 * 功能 - > 1
 	 *
 	 */
-	case "member":
+	case "staff":
 		switch($_GET['p']){
 			case "add":
 				$name = string_filter($_POST['name']);

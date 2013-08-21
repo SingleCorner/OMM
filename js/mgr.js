@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			type: 'POST',
-			url: 'admin.php?a=T_member&p=add',
+			url: 'admin.php?a=staff&p=add',
 			data: {
 				'name': name,
 				'gender': gender,
@@ -53,7 +53,7 @@ $(document).ready(function() {
 	$('#APP_verifyStaff').hide(function() {
 		$.ajax({
 			type: 'POST',
-			url: 'admin.php?a=T_member&p=listverify',
+			url: 'admin.php?a=staff&p=listverify',
 			success: function(data, status, xhr) {
 				$('#APP_verifyStaff').html(data);
 			},
@@ -83,7 +83,7 @@ function load_verifyStaff() {
 		$('#APP_verifyStaff').show(function() {
 			$.ajax({
 				type: 'POST',
-				url: 'admin.php?a=T_member&p=listverify',
+				url: 'admin.php?a=staff&p=listverify',
 				success: function(data, status, xhr) {
 					$('#APP_verifyStaff').html(data);
 				},
@@ -105,7 +105,7 @@ function verifyStaff_allow(id) {
 	btnclass = "#allowbtn_" + id;
 	$.ajax({
 		type: 'POST',
-		url: 'admin.php?a=T_member&p=allowverify',
+		url: 'admin.php?a=staff&p=allowverify',
 		data: {
 			'id': id
 		},
@@ -123,7 +123,7 @@ function verifyStaff_deny(id) {
 	trclass = ".verify_" + id;
 	$.ajax({
 		type: 'POST',
-		url: 'admin.php?a=T_member&p=denyverify',
+		url: 'admin.php?a=staff&p=denyverify',
 		data: {
 			'id': id
 		},

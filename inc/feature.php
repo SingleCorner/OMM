@@ -13,15 +13,22 @@ if (!defined('__ROOT__')) {
 /**
  * 功能索引
  *	
- * 字符过滤 -> 过滤数据库的限制字符
- * 职位标签转换 -> 将职位代码转换为文字
- * 后台权限检测 -> 判断用户是否拥有后台权限
- * 后台模块权限验证 -> 加载模块时验证权限
+ * 1.	过滤 -> 注入检测
+ * 2.	过滤 -> 数字检测
+ * 
+ * 1.	转换 -> 职位代码转换
+ * 2.	转换 -> 性别代码转换
+ * 3.	转换 -> 账号状态转换
+ *
+ * 1.	用户端 -> 模块检测
+ *
+ * 1.	管理端 -> 访问权限检测
+ * 2.	管理端 -> 模块权限检测
  */
 
 
 /**
- * 字符过滤
+ * 1.	过滤 -> 注入检测
  *
  * param $string -> 传入的字符串
  */
@@ -38,7 +45,7 @@ function string_filter($string){
 
 
 /**
- * 数字检测
+ * 2.	过滤 -> 数字检测
  *
  * param $string -> 传入的数字字符串
  */
@@ -53,7 +60,7 @@ function numeric_filter($string){
 
 
 /**
- * 职位标签转换
+ * 1.	转换 -> 职位代码转换
  *
  * param $val_1 -> 部门
  * param $val_2 -> 职位
@@ -150,7 +157,7 @@ function job_converter($val_1,$val_2) {
 
 
 /**
- * 性别转换
+ * 2.	转换 -> 性别代码转换
  *
  * param $val -> 性别代码
  */
@@ -170,12 +177,68 @@ function gender_converter($val) {
 
 
 /**
- * 后台权限检测
+ * 3.	转换 -> 账号状态转换
  *
- * param $policy -> 获取的用户权限
- * 用户拥有多个权限时，以最高权限为准
+ * param $val -> 状态代码
  */
-function check_policy() {
+function status_converter($val) {
+	switch($val) {
+		case "0":
+			return "冻结";
+			break;
+		case 1:
+			return "激活";
+			break;
+		default:
+			return "N/A";
+			break;
+	}
+}
+
+
+/**
+ * 1.	用户端 -> 模块检测
+ *
+ * param $val -> 用户所属部门
+ */
+function module_usercheck($val) {
+	switch ($val) {
+		case "0":
+			$url = array(
+				"修改密码" => "chgpasswd",
+			);
+			break;
+		case "1":
+			break;
+		case "2":
+			break;
+		case "3":
+			break;
+		case "4":
+			$url = array(
+				"服务报告" => "services",
+				"工作报告" => "report",
+				"WIKI" => "wiki",
+				"修改密码" => "chgpasswd"
+			);
+			break;
+		case "5":
+			break;
+	}
+	if (!empty($_GET['a']) && !in_array($_GET['a'],$url)) {
+		header('status: 404');
+	} else {
+		return $url;
+	}
+}
+
+
+/**
+ * 1.	管理端 -> 访问权限检测
+ *
+ * param $val -> 用户所属部门
+ */
+function access_policy() {
 	$policies = explode('|' , $_SESSION['policy']);
 	foreach ($policies as $value) {
 		$policy = explode('_' , $value);
@@ -195,11 +258,38 @@ function check_policy() {
 }
 
 /**
- * 后台模块权限验证
+ * 2.	管理端 -> 模块权限检测
  *
- * param $module_name -> 需要验证的模块名
+ * param $val -> 需要验证的模块名
  */
- function is_policy($module_name) {
+ function module_mgrcheck($val) {
+	switch ($val) {
+		case "1":
+			break;
+		case "2":
+			break;
+		case "3":
+			break;
+		case "4":
+			$url = array(
+				"公告发布" => "bulletin",
+				"账号管理" => "staff",
+				"客户管理" => "customer",
+				"设备管理" => "device",
+				"备件管理" => "sparepart"
+			);
+			break;
+		case "5":
+			break;
+	}
+	if (!empty($_GET['a']) && !in_array($_GET['a'],$url)) {
+		header('status: 404');
+	} else {
+		return $url;
+	}
+}
+
+function is_policy($module_name) {
 	$policies = explode('|', $_SESSION['policy']);
 	$attr = explode('_' , $module_name);		//权限数组化，遍历主权限与模块权限
 	foreach($policies as $value) {
@@ -214,7 +304,7 @@ function check_policy() {
 				}
 				break;
 			case "TMGR":
-				if ($policy[1] == $attr[0] && strtotime($_SESSION['policy_time']) > time()) {
+				if ($policy[1] == $attr[0]) {
 					$module_auth = "pass";
 				} else {
 					//保留代码，用于日后进行单个模块的权限控制

@@ -44,12 +44,12 @@ function APP_html_header() {
 		<!-- 导航区开始 -->
 		<nav id="APP_top_nav">
 			<ul>
-				<li><a href="./admin.php?a=T_notice">公告发布</a></li>
-				<li><a href="./admin.php?a=T_member">账号管理</a></li>
-				<li><a href="./admin.php?a=T_customer">客户管理</a></li>
-				<li><a href="./admin.php?a=T_device">设备管理</a></li>
-				<li><a href="./admin.php?a=T_sparepart">备件管理</a></li>
-				<li><a href="./admin.php?a=test">测试连接</a></li>
+			<?php 
+			$module = module_mgrcheck($_SESSION['Login_section']);
+			foreach ($module as $key => $value) {
+			?>
+				<li><a href="./admin.php?a=<?php echo $value;?>"><?php echo $key;?></a></li>
+			<?php } ?>
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -67,21 +67,12 @@ function APP_html_header() {
  *
  */
 function APP_mgr_main() {
-	if (is_policy($_GET['a'])||$_GET['a'] == null) {
-		if ($_GET['a']=="") {
-		} else {
-			$action = explode('_',$_GET['a']);
-			$module_name = $action[1];
-			switch ($module_name) {
-				case "":
-					echo "不存在的模块";
-					break;
-				case "notice":
-					break;
-				case "member":
-//					$APP_sql = new APP_SQL();
-//					$App_listStaff = $APP_sql -> getStaffList();
-//					$App_listStaff_query = $APP_sql -> fetch_assoc($App_listStaff);
+	if ($_GET['a']=="") {
+	} else {
+		switch ($_GET['a']) {
+			case "bulletin":
+				break;
+			case "staff":
 ?>
 			<div class="title_container">
 				<span class="title_more">
@@ -107,6 +98,7 @@ function APP_mgr_main() {
 					部门
 					<select name="department" id="APP_newStaff_department">
 						<option value="4" >技术部</option>
+						<option value="5" >商务部</option>
 					</select>
 					职位
 					<select name="position" id="APP_newStaff_position">
@@ -122,24 +114,52 @@ function APP_mgr_main() {
 			<div id="APP_verifyStaff"> 
 			</div>
 			<div id="APP_listStaff">
+				<table class="datatable">
+					<tr>
+						<th width=15%>姓名</th>
+						<th width=20%>部门&职位</th>
+						<th width=15%>电话</th>
+						<th width=15%>状态</th>
+						<th>操作</th>
+					</tr>
+				<?php 
+				$APP_sql = new APP_SQL();
+				$App_listStaff = $APP_sql -> getStaffList();
+				while ($App_listStaff_query = $APP_sql -> fetch_assoc($App_listStaff)) {
+					$id = $App_listStaff_query['id'];
+					$name = $App_listStaff_query['name'];
+					$job = job_converter($App_listStaff_query['department'],$App_listStaff_query['position']);
+					$tel = $App_listStaff_query['tel'];
+					$status = status_converter($App_listStaff_query['status']);
+				?>
+					<tr>
+						<td><?php echo $name;?></td>
+						<td><?php echo $job;?></td>
+						<td><?php echo $tel;?></td>
+						<td><?php echo $status;?></td>
+						<td>
+							<button>权限变更</button>
+							<button>冻结账号</button>
+							<button>资料变更</button>
+						</td>
+					</tr>
+				<?php
+				} 
+				?>
+				</table>
 			</div>
 <?php
-					break;
-				case "customer":
-					break;
-				case "device":
-					break;
-				case "sparepart":
-					break;
-				default:
-					echo "不存在的模块";
-					break;
-			}
+				break;
+			case "customer":
+				break;
+			case "device":
+				break;
+			case "sparepart":
+				break;
+			default:
+				echo "不存在的模块";
+				break;
 		}
-	} else {
-		echo "未授权的模块";
-//		header('Location: /admin.php');
-		
 	}
 }
 ?>
