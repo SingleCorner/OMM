@@ -22,6 +22,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 			}
 			if ($App_auth_passwd == $App_passwd) {
 				$_SESSION['policy'] = $App_auth['authority'];
+				$_SESSION['tmpmodule'] = $App_auth['tmpmodule'];
 				$App_info = $App_sql -> getTableAllWhere("s_staff","account",$App_user);
 				$_SESSION['AuthToken'] = sha1($_SERVER["REMOTE_ADDR"]);
 				$_SESSION['timeout_check'] = time();

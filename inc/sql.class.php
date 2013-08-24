@@ -160,7 +160,7 @@ class APP_SQL {
 	 * 查询 -> 列出所有账号
 	 */
 	public function getStaffList() {
-//		$sql = "create or replace view `view_listStaff` as select a.id,a.name,a.department,a.position,a.tel,a.regist_time,a.status,b.authority,b.timeout from s_staff as a,s_authority as b where a.account = b.account ORDER BY `status` DESC,`regist_time`;"
+		//$sql = "create or replace view `view_listStaff` as select a.id,a.name,a.department,a.position,a.tel,a.regist_time,a.status,b.authority,b.timeout from s_staff as a,s_authority as b where a.account = b.account ORDER BY `status` DESC,`regist_time`;"
 		if ($_SESSION['Login_section'] == 0) {
 			$sql = "SELECT * from `view_listStaff`;";
 		} else {

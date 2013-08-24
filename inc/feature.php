@@ -13,22 +13,22 @@ if (!defined('__ROOT__')) {
 /**
  * 功能索引
  *	
- * 1.	过滤 -> 注入检测
- * 2.	过滤 -> 数字检测
+ * 1.1	过滤 -> 注入检测
+ * 1.2	过滤 -> 数字检测
  * 
- * 1.	转换 -> 职位代码转换
- * 2.	转换 -> 性别代码转换
- * 3.	转换 -> 账号状态转换
+ * 2.1	转换 -> 职位代码转换
+ * 2.2	转换 -> 性别代码转换
+ * 2.3	转换 -> 账号状态转换
  *
- * 1.	用户端 -> 模块检测
+ * 3.1	用户端 -> 模块检测
  *
- * 1.	管理端 -> 访问权限检测
- * 2.	管理端 -> 模块权限检测
+ * 4.1	管理端 -> 访问权限检测
+ * 4.2	管理端 -> 模块权限检测
  */
 
 
 /**
- * 1.	过滤 -> 注入检测
+ * 1.1	过滤 -> 注入检测
  *
  * param $string -> 传入的字符串
  */
@@ -45,7 +45,7 @@ function string_filter($string){
 
 
 /**
- * 2.	过滤 -> 数字检测
+ * 1.2	过滤 -> 数字检测
  *
  * param $string -> 传入的数字字符串
  */
@@ -60,7 +60,7 @@ function numeric_filter($string){
 
 
 /**
- * 1.	转换 -> 职位代码转换
+ * 2.1	转换 -> 职位代码转换
  *
  * param $val_1 -> 部门
  * param $val_2 -> 职位
@@ -157,7 +157,7 @@ function job_converter($val_1,$val_2) {
 
 
 /**
- * 2.	转换 -> 性别代码转换
+ * 2.2	转换 -> 性别代码转换
  *
  * param $val -> 性别代码
  */
@@ -177,7 +177,7 @@ function gender_converter($val) {
 
 
 /**
- * 3.	转换 -> 账号状态转换
+ * 2.3	转换 -> 账号状态转换
  *
  * param $val -> 状态代码
  */
@@ -197,7 +197,7 @@ function status_converter($val) {
 
 
 /**
- * 1.	用户端 -> 模块检测
+ * 3.1	用户端 -> 模块检测
  *
  * param $val -> 用户所属部门
  */
@@ -234,91 +234,68 @@ function module_usercheck($val) {
 
 
 /**
- * 1.	管理端 -> 访问权限检测
+ * 4.1	管理端 -> 访问权限检测
  *
  * param $val -> 用户所属部门
  */
 function access_policy() {
 	$policies = explode('|' , $_SESSION['policy']);
 	foreach ($policies as $value) {
-		$policy = explode('_' , $value);
-		if (in_array("SU",$policy)) {
-			$mgr_auth = "pass";
-		} else if (in_array("MGR",$policy)) {
-			$mgr_auth = "pass";
-		} else if (in_array("TMGR",$policy)) {
-			$mgr_auth = "pass";
-		}
-	}
-	if ($mgr_auth == "pass") {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-/**
- * 2.	管理端 -> 模块权限检测
- *
- * param $val -> 需要验证的模块名
- */
- function module_mgrcheck($val) {
-	switch ($val) {
-		case "1":
-			break;
-		case "2":
-			break;
-		case "3":
-			break;
-		case "4":
-			$url = array(
-				"公告发布" => "bulletin",
-				"账号管理" => "staff",
-				"客户管理" => "customer",
-				"设备管理" => "device",
-				"备件管理" => "sparepart"
-			);
-			break;
-		case "5":
-			break;
-	}
-	if (!empty($_GET['a']) && !in_array($_GET['a'],$url)) {
-		header('status: 404');
-	} else {
-		return $url;
-	}
-}
-
-function is_policy($module_name) {
-	$policies = explode('|', $_SESSION['policy']);
-	$attr = explode('_' , $module_name);		//权限数组化，遍历主权限与模块权限
-	foreach($policies as $value) {
-		$policy = explode('_' , $value);
-		switch($policy[0]) {
-			case "SU":
-				$module_auth = "pass";
-				break;
+		switch ($value) {
 			case "MGR":
-				if ($policy[1] == $attr[0]){
-					$module_auth = "pass";
-				}
+				$mgr_auth = "MGR";
+				return $mgr_auth;
 				break;
 			case "TMGR":
-				if ($policy[1] == $attr[0]) {
-					$module_auth = "pass";
-				} else {
-					//保留代码，用于日后进行单个模块的权限控制
+				if ($_SESSION['tmpmodule'] != "") {
+					$mgr_auth = "TMGR";
 				}
 				break;
 			default:
 				break;
 		}
 	}
-	if ($module_auth == "pass") {
-		return true;
+	return $mgr_auth;
+}
+
+/**
+ * 4.2	管理端 -> 模块权限检测
+ *
+ * param $val -> 部门代码
+ */
+function module_mgrcheck($val) {
+	if (access_policy() == "MGR") {
+		switch ($val) {
+			case "1":
+				break;
+			case "2":
+				break;
+			case "3":
+				break;
+			case "4":
+				$url = array(
+					"公告发布" => "bulletin",
+					"账号管理" => "staff",
+					"客户管理" => "customer",
+					"设备管理" => "device",
+					"备件管理" => "sparepart"
+				);
+				break;
+			case "5":
+				break;
+		}
 	} else {
-		return false;
+		$url = array();
 	}
- }
+	if (isset($_SESSION['tmpmodule'])){
+		$urltmp = array("临时管理" => "tmp");
+		$url = array_merge($url,$urltmp);
+	}
+	if (!empty($_GET['a']) && !in_array($_GET['a'],$url) && access_policy() != "MGR") {
+		header('status: 404');
+	} else {
+		return $url;
+	}
+}
 
 ?>

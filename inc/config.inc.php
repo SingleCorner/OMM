@@ -58,7 +58,12 @@ require_once(__ROOT__."/inc/access.judge.php");
 /* Operating the database */
 require_once(__ROOT__."/inc/sql.class.php");
 
-/* Filter and Converter */
+/* Features */
 require_once(__ROOT__."/inc/feature.php");
+
+/* SMTP services */
+require_once(__ROOT__."/inc/mailer.php");
+
+
 
 ?>

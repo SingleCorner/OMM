@@ -32,7 +32,8 @@ switch ($module_name) {
 				$department = numeric_filter($_POST['department']);
 				$position = numeric_filter($_POST['position']);
 				$tel = numeric_filter($_POST['tel']);
-				if (empty($name) || is_int($gender) || is_int($department) || is_int($position)) {
+				$mail = string_filter($_POST['mail']);
+				if (empty($name) || is_int($gender) || is_int($department) || is_int($position) || empty($name)) {
 					$result = array(
 						"code" => 0,
 						"message" => "数据提交异常"
@@ -42,7 +43,7 @@ switch ($module_name) {
 					exit;
 				} else {
 					$APP_sql = new APP_SQL();
-					$sql = "INSERT INTO `s_staff` (`name`,`gender`,`department`,`position`,`tel`,`status`,`regist_time`) values ('{$name}', '{$gender}', '{$department}', '{$position}', '{$tel}', '0', now());";
+					$sql = "INSERT INTO `s_staff` (`name`,`gender`,`department`,`position`,`tel`,`mail`,`status`,`regist_time`) values ('{$name}', '{$gender}', '{$department}', '{$position}', '{$tel}', '{$mail}', '0', now());";
 					$APP_sql -> userDefine($sql);
 					$App_affected = $APP_sql -> affected();
 					$APP_sql -> close();
@@ -50,7 +51,7 @@ switch ($module_name) {
 				if ($App_affected == 1) {
 					$result = array(
 						"code" => 1,
-						"message" => "新账号已生成，请去<button onclick=load_verifyStaff()>审核账号</button>"
+						"message" => "信息已录入，请<button onclick=load_verifyStaff()>审核账号</button>"
 					);
 					header('Content-Type: application/json');
 					echo json_encode($result);
@@ -67,14 +68,15 @@ switch ($module_name) {
 				break;
 			case "listverify":
 ?>
+				<div class="title_container"><h1>待审核账号</h1></div><br />
 				<table class="datatable">
 					<tr>
 						<th>姓名</th>
 						<th>性别</th>
 						<th>部门&职位</th>
 						<th>电话</th>
-						<th>验证码</th>
 						<th>操作</th>
+						<th>状态</th>
 					</tr>
 <?php
 				$APP_sql = new APP_SQL();
@@ -85,20 +87,25 @@ switch ($module_name) {
 					$gender = gender_converter($App_verifyStaff_query['gender']);
 					$job = job_converter($App_verifyStaff_query['department'],$App_verifyStaff_query['position']);
 					$tel = $App_verifyStaff_query['tel'];
-					$authorizer = $App_verifyStaff_query['authorizer'];
+					$mail = $App_verifyStaff_query['mail'];
+					if (!empty($App_verifyStaff_query['authorizer'])) {
+						$authorizer = "邮件已发送";
+					} else {
+						$authorizer = "";
+					}
 ?>
 					<tr class="verify_<?php echo $id; ?>">
 						<td><?php echo $name;?></td>
 						<td><?php echo $gender;?></td>
 						<td><?php echo $job;?></td>
 						<td><?php echo $tel;?></td>
-						<td class="authorizer_<?php echo $id; ?>"><a href="valid.php?code=<?php echo $authorizer;?>"><?php echo $authorizer;?></td>
 						<td>
 						<?php if ($authorizer == "") {?>
-							<button class="btn" id="allowbtn_<?php echo $id; ?>" onclick="verifyStaff_allow(<?php echo $id; ?>)">允许</button>
+							<button class="btn" id="allowbtn_<?php echo $id; ?>" onclick="verifyStaff_allow(<?php echo $id.",'".$mail."'"; ?>)">允许</button>
 						<?php } ?>
 							<button class="btn red" onclick="verifyStaff_deny(<?php echo $id; ?>)">拒绝</button>
 						</td>
+						<td class="authorizer_<?php echo $id; ?>"><?php echo $authorizer;?></td>
 					</tr>
 <?php
 				}
@@ -111,6 +118,7 @@ switch ($module_name) {
 				break;
 			case "allowverify":
 				$id = numeric_filter($_POST['id']);
+				$mail = string_filter($_POST['mail']);
 				$start = mt_rand(3,10);
 				$long = mt_rand(5,15);
 				$authorizer = substr(sha1(time()),$start,$long);
@@ -119,14 +127,22 @@ switch ($module_name) {
 				$App_affected = $APP_sql -> affected();
 				$APP_sql -> close();
 				if ($App_affected == 1) {
-					$authorizerurl = "<a href='valid.php?code=".$authorizer."'>$authorizer</a>";
-					$result = array(
-						"authorizer" => $authorizerurl
-					);
-					header('Content-Type: application/json');
-					echo json_encode($result);
+					$mailsubject = "OMM运维管理系统注册确认邮件";
+					$mailbody = "您在利银运维管理系统的个人信息已经生成，请访问 http://192.168.235.251/valid.php?code=$authorizer 进行账号激活 ";
+					if (send_mail($mail,$mailsubject,$mailbody) == "") {
+						$result = array(
+							"authorizer" => "邮件发送成功"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+					} else {
+						$result = array(
+							"authorizer" => "邮件发送失败"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+					}
 				}
-				$APP_sql -> close();
 				exit;
 				break;
 			case "denyverify":

@@ -12,6 +12,7 @@ $(document).ready(function() {
 		var department = $('#APP_newStaff_department').val();
 		var position = $('#APP_newStaff_position').val();
 		var tel = $('#APP_newStaff_tel').val();
+		var mail = $('#APP_newStaff_mail').val();
 		
 		// 检查输入
 		if (name == "") {
@@ -27,18 +28,21 @@ $(document).ready(function() {
 				'gender': gender,
 				'department': department,
 				'position': position,
-				'tel': tel
+				'tel': tel,
+				'mail': mail
 			},
 			success: function(data, status, xhr) {
 				if (data.code == 1) {
 					$('#APP_newStaff_status').html(data.message);
 					$('#APP_newStaff_name').val('');
 					$('#APP_newStaff_tel').val('');
+					$('#APP_newStaff_mail').val('');
 					$('#APP_newStaff_name').focus();
 				} else if (data.code == 0) {
 					$('#APP_newStaff_status').html(data.message);
 					$('#APP_newStaff_name').val('');
 					$('#APP_newStaff_tel').val('');
+					$('#APP_newStaff_mail').val('');
 					$('#APP_newStaff_name').focus();
 				}
 			},
@@ -100,14 +104,16 @@ function load_verifyStaff() {
 /* 
  * 账号管理 -> 账号授权允许操作
  */
-function verifyStaff_allow(id) {
+function verifyStaff_allow(id,mail) {
 	tdclass = ".authorizer_" + id;
 	btnclass = "#allowbtn_" + id;
+	$(tdclass).html('邮件正在发送。。。');
 	$.ajax({
 		type: 'POST',
 		url: 'admin.php?a=staff&p=allowverify',
 		data: {
-			'id': id
+			'id': id,
+			'mail': mail
 		},
 		success: function(data, status, xhr) {
 			$(tdclass).html(data.authorizer);

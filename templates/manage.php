@@ -49,7 +49,11 @@ function APP_html_header() {
 			foreach ($module as $key => $value) {
 			?>
 				<li><a href="./admin.php?a=<?php echo $value;?>"><?php echo $key;?></a></li>
-			<?php } ?>
+			<?php 
+			}
+			?>
+			
+
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -88,8 +92,9 @@ function APP_mgr_main() {
 				</h1>
 			</div>
 			<div id="APP_newStaff">
-				<form id="APP_newstaff_form" action="?a=T_member&p=add" method="post">
-					姓名<input type="text" name="name" id="APP_newStaff_name" />
+				<div class="title_container"><h1>新账号</h1></div><br />
+				<form id="APP_newstaff_form" action="?a=staff&p=add" method="post">
+					姓名<input type="text" name="name" size="5" id="APP_newStaff_name" />
 					性别
 					<select name="gender" id="APP_newStaff_gender">
 						<option value="1" selected>男</option>
@@ -107,6 +112,7 @@ function APP_mgr_main() {
 						<option value="4" >数据库工程师</option>
 					</select>
 					电话<input type="text" name="tel" size="11" maxlength="11" id="APP_newStaff_tel" />
+					email<input type="text" name="mail" size="11" id="APP_newStaff_mail" />
 					<input type="submit" value="生成账号" />
 					<span id="APP_newStaff_status"></span>
 				</form>
@@ -114,6 +120,7 @@ function APP_mgr_main() {
 			<div id="APP_verifyStaff"> 
 			</div>
 			<div id="APP_listStaff">
+				<div class="title_container"><h1>在库账号</h1></div><br />
 				<table class="datatable">
 					<tr>
 						<th width=15%>姓名</th>
