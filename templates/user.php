@@ -133,10 +133,35 @@ function APP_html_module(){
 		 * 功能 - > 1.首页
 		 *
 		 */
-		 case "":
+		case "":
+			$APP_sql = new APP_SQL();
+			$App_worktime = $APP_sql -> getTableAllWhere("s_worktime", "account", $_SESSION['Login_account']);
+			if($App_worktime['account'] != "") {			
 ?>
-	<center>首页正在开发中，敬请期待</center>
+			<!-- 签到系统 -->
+			<div id="APP_main_signal">
+				<div>
+					<div><?php echo date("Y-m-d");?></div>
+					<span class="signal_btn"><button>公司签到</button></span>
+					<span class="signal_btn"><button>中心签到</button></span>
+					<span class="signal_btn"><button>今日调休</button></span>
+				</div>
+				<div>
+					<div>累积加班时间</div>
+					<div>累积调休时间</div>
+					<div>当前剩余时间</div>
+
+				</div>
+				<div>
+				</div>
+			</div>
+
+
+
+
 <?php
+			}
+			$APP_sql -> close();
 			 break;
 
 		

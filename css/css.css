@@ -238,6 +238,47 @@ input[type="reset"].red:active {
 }
 
 
+.btn.blue,
+button.red,
+input[type="button"].red,
+input[type="submit"].red,
+input[type="reset"].red {
+	color: #FFF;
+	border-color: rgba(40, 40, 160, 0.50);
+	border-bottom-color: rgba(40, 40, 160, 1.00);
+	background: #e8776f;
+	background: -moz-linear-gradient(top,  #e8776f 0%, #bf5b5b 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8776f), color-stop(100%,#bf5b5b));
+	background: -webkit-linear-gradient(top,  #e8776f 0%,#bf5b5b 100%);
+	background: -o-linear-gradient(top,  #e8776f 0%,#bf5b5b 100%);
+	background: -ms-linear-gradient(top,  #e8776f 0%,#bf5b5b 100%);
+	background: linear-gradient(to bottom,  #e8776f 0%,#bf5b5b 100%);
+}
+.btn.blue:hover,
+button.red:hover,
+input[type="button"].red:hover,
+input[type="submit"].red:hover,
+input[type="reset"].red:hover {
+	border-color: rgba(160, 40, 40, 1.00);
+	color: #FFF;
+	background: #e8776f;
+	background: -moz-linear-gradient(top,  #e8776f 0%, #bf5d5d 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8776f), color-stop(100%,#bf5d5d));
+	background: -webkit-linear-gradient(top,  #e8776f 0%,#bf5d5d 100%);
+	background: -o-linear-gradient(top,  #e8776f 0%,#bf5d5d 100%);
+	background: -ms-linear-gradient(top,  #e8776f 0%,#bf5d5d 100%);
+	background: linear-gradient(to bottom,  #e8776f 0%,#bf5d5d 100%);
+}
+.btn.blue:active,
+button.red:active,
+input[type="button"].red:active,
+input[type="submit"].red:active,
+input[type="reset"].red:active {
+	color: #FFF;
+	background: #bf5b5b;
+}
+
+
 input[type="text"],
 input[type="password"] {
 	display: inline-block;
@@ -455,46 +496,28 @@ body.scroll #APP_top_user {
 	前台CSS
 */
 
-#APP_home_left {
+#APP_main_signal {
 	margin-left: 20px;
 	float: left;
 	width: 290px;
+	word-break:break-all;
 	color: #600;
 }
-#APP_home_notice {
-	width: 290px;
+#APP_main_signal > div {
+	margin-top: 20px;
 }
-#APP_home_notice .head {
-	padding: 50px 15px 5px;
-	background: url(/images/deepblue/note-head.png) no-repeat left top;
-	font-size: 16px;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
+#APP_main_signal > div button {
 }
-#APP_home_notice .body {
-	padding: 5px 15px;
-	background: url(/images/deepblue/note-body.png) repeat-y;
-	font-size: 14px;
+#APP_main_signal .signal_center {
+	text-align: center;
+
 }
-#APP_home_notice .foot {
-	padding: 5px 20px 45px;
-	background: url(/images/deepblue/note-head.png) no-repeat left bottom;
-	font-size: 12px;
-	text-align: right;
+.signal_btn {
+	padding-right: 10px;
 }
-#APP_home_notice a {
-	color: #600;
-}
-#APP_home_member {
-	margin:30px auto;
-	width:190px;
-}
-#APP_home_member > img {
-	width:150px;
-	height:190px;
-	border:none;
-}
+
+
+
 #APP_home_right {
 	margin: 20px 0px 0px 330px;
 	padding: 0px 20px;

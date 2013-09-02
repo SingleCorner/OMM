@@ -52,11 +52,16 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 } else {
 	if (isset($_SESSION['AuthToken']) && $_SESSION['AuthToken'] != ""){
 		if (!empty($_GET['p'])) {
-			include("./data_proc.php");
+			if ($_GET['a'] != "" && module_usercheck($_SESSION['Login_section'])) {
+				include("./data_proc.php");
+			} else {
+				exit;
+			}
+		} else {
+			APP_html_header();
+			APP_html_module();
+			APP_html_footer();
 		}
-		APP_html_header();
-		APP_html_module();
-		APP_html_footer();
 	} else {
 		APP_full_login();
 	}

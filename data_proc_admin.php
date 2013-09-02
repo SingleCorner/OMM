@@ -29,11 +29,15 @@ switch ($module_name) {
 			case "add":
 				$name = string_filter($_POST['name']);
 				$gender = numeric_filter($_POST['gender']);
-				$department = numeric_filter($_POST['department']);
+				if ($_POST['department'] == $_SESSION['Login_section'] || $_SESSION['Login_section'] == "0") {
+					$department = numeric_filter($_POST['department']);
+				} else {
+					$department = "";
+				}
 				$position = numeric_filter($_POST['position']);
 				$tel = numeric_filter($_POST['tel']);
 				$mail = string_filter($_POST['mail']);
-				if (empty($name) || is_int($gender) || is_int($department) || is_int($position) || empty($name)) {
+				if (empty($name) || is_int($gender) || empty($department) || is_int($position) || empty($mail)) {
 					$result = array(
 						"code" => 0,
 						"message" => "数据提交异常"
@@ -71,10 +75,10 @@ switch ($module_name) {
 				<div class="title_container"><h1>待审核账号</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th>姓名</th>
-						<th>性别</th>
-						<th>部门&职位</th>
-						<th>电话</th>
+						<th width=10%>姓名</th>
+						<th width=17%>部门&职位</th>
+						<th width=15%>电话</th>
+						<th width=25%>email</th>
 						<th>操作</th>
 						<th>状态</th>
 					</tr>
@@ -84,7 +88,6 @@ switch ($module_name) {
 				while ($App_verifyStaff_query = $APP_sql -> fetch_assoc($App_verifyStaff)) {
 					$id = $App_verifyStaff_query['id'];
 					$name = $App_verifyStaff_query['name'];
-					$gender = gender_converter($App_verifyStaff_query['gender']);
 					$job = job_converter($App_verifyStaff_query['department'],$App_verifyStaff_query['position']);
 					$tel = $App_verifyStaff_query['tel'];
 					$mail = $App_verifyStaff_query['mail'];
@@ -96,14 +99,14 @@ switch ($module_name) {
 ?>
 					<tr class="verify_<?php echo $id; ?>">
 						<td><?php echo $name;?></td>
-						<td><?php echo $gender;?></td>
 						<td><?php echo $job;?></td>
 						<td><?php echo $tel;?></td>
+						<td><?php echo $mail;?></td>
 						<td>
 						<?php if ($authorizer == "") {?>
 							<button class="btn" id="allowbtn_<?php echo $id; ?>" onclick="verifyStaff_allow(<?php echo $id.",'".$mail."'"; ?>)">允许</button>
 						<?php } ?>
-							<button class="btn red" onclick="verifyStaff_deny(<?php echo $id; ?>)">拒绝</button>
+							<button class="btn blue" onclick="verifyStaff_deny(<?php echo $id; ?>)">拒绝</button>
 						</td>
 						<td class="authorizer_<?php echo $id; ?>"><?php echo $authorizer;?></td>
 					</tr>
@@ -131,12 +134,14 @@ switch ($module_name) {
 					$mailbody = "您在利银运维管理系统的个人信息已经生成，请访问 http://192.168.235.251/valid.php?code=$authorizer 进行账号激活 ";
 					if (send_mail($mail,$mailsubject,$mailbody) == "") {
 						$result = array(
+							"code" => 1,
 							"authorizer" => "邮件发送成功"
 						);
 						header('Content-Type: application/json');
 						echo json_encode($result);
 					} else {
 						$result = array(
+							"code" => 0,
 							"authorizer" => "邮件发送失败"
 						);
 						header('Content-Type: application/json');

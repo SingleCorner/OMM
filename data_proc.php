@@ -3,7 +3,8 @@
  * 前端数据处理程序
  * 功能索引
  *	1.修改密码
- *	2.
+ *	2.服务报告单
+ *	3.WIKI
  *
  */
 
@@ -25,7 +26,7 @@ if (!defined('__ROOT__')) {
 		if (isset($_POST['password']) && $_GET['p'] == "TRUE") {
 			$APP_newpasswd = sha1($_POST['password']);
 			$APP_sql = new APP_SQL();
-			$APP_chgpass = $APP_sql -> updateLoginPasswd($APP_newpasswd,$_SESSION['Login_account']);
+			$APP_sql -> updateLoginPasswd($APP_newpasswd,$_SESSION['Login_account']);
 			$App_affected = $APP_sql -> affected();
 			$APP_sql -> close();
 			if ($App_affected >= 1) {
@@ -51,9 +52,10 @@ if (!defined('__ROOT__')) {
 	 * 功能 - > 2
 	 *
 	 */
-	case 'maintanance':
+	case 'services':
 		echo 123;
 		break;
+		exit;
 	/**
 	 * 功能 - > 其他
 	 *

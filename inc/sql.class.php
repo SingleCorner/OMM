@@ -131,7 +131,9 @@ class APP_SQL {
 		$sql = "SELECT * FROM `view_LoginAuth` WHERE `account` = '{$value_user}';";
 		$query = $this -> db -> query($sql);
 		return $query -> fetch_assoc();
-	}	
+	}
+
+
 	/**
 	 * 更新 -> 修改用户密码
 	 */
@@ -176,14 +178,17 @@ class APP_SQL {
 	 */
 	public function registStaff($id, $account, $passwd) {
 		$sql_updatepasswd = "UPDATE `s_staff` SET `passwd` = '{$passwd}',`authorizer` = '',`status` = '1' WHERE `id` = '{$id}';";
-		$sql_insertauthority = "INSERT INTO `s_authority` (`account`) values ('{$account}');";
-		$sql_result = $this -> transationSQL($sql_updatepasswd, $sql_insertauthority);
+		$sql_insertauthority = "INSERT INTO `s_authority` (`account`,`authority`) values ('{$account}','TMGR');";
+		$sql_insertworktime = "INSERT INTO `s_worktime` (`account`) values ('{$account}');";
+		$sql_result = $this -> transationSQL($sql_updatepasswd, $sql_insertauthority, $sql_insertworktime);
 		if ($sql_result == "commit") {
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+
 	/**
 	 * 删除 -> 审核新账号未通过
 	 */

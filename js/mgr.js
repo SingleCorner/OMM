@@ -116,8 +116,12 @@ function verifyStaff_allow(id,mail) {
 			'mail': mail
 		},
 		success: function(data, status, xhr) {
-			$(tdclass).html(data.authorizer);
-			$(btnclass).hide();
+			if (data.code == 1) {
+				$(tdclass).html(data.authorizer);
+				$(btnclass).hide();
+			} else {
+				$(tdclass).html(data.authorizer);
+			}
 		},
 		dataType: 'json'
 	});

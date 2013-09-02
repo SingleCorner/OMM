@@ -227,6 +227,7 @@ function module_usercheck($val) {
 	}
 	if (!empty($_GET['a']) && !in_array($_GET['a'],$url)) {
 		header('status: 404');
+		exit;
 	} else {
 		return $url;
 	}
@@ -266,6 +267,9 @@ function access_policy() {
 function module_mgrcheck($val) {
 	if (access_policy() == "MGR") {
 		switch ($val) {
+			case "0":
+				$url = 1;
+				break;
 			case "1":
 				break;
 			case "2":
@@ -274,7 +278,6 @@ function module_mgrcheck($val) {
 				break;
 			case "4":
 				$url = array(
-					"公告发布" => "bulletin",
 					"账号管理" => "staff",
 					"客户管理" => "customer",
 					"设备管理" => "device",
@@ -291,7 +294,7 @@ function module_mgrcheck($val) {
 		$urltmp = array("临时管理" => "tmp");
 		$url = array_merge($url,$urltmp);
 	}
-	if (!empty($_GET['a']) && !in_array($_GET['a'],$url) && access_policy() != "MGR") {
+	if (!empty($_GET['a']) && !in_array($_GET['a'],$url) && $val != "0") {
 		header('status: 404');
 	} else {
 		return $url;

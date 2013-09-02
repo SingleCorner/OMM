@@ -101,7 +101,7 @@ function APP_mgr_main() {
 						<option value="0" >女</option>
 					</select>
 					部门
-					<select name="department" id="APP_newStaff_department">
+					<select size="1" name="department" id="APP_newStaff_department">
 						<option value="4" >技术部</option>
 						<option value="5" >商务部</option>
 					</select>
@@ -123,11 +123,12 @@ function APP_mgr_main() {
 				<div class="title_container"><h1>在库账号</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th width=15%>姓名</th>
-						<th width=20%>部门&职位</th>
+						<th width=10%>姓名</th>
+						<th width=17%>部门&职位</th>
 						<th width=15%>电话</th>
-						<th width=15%>状态</th>
-						<th>操作</th>
+						<th width=25%>email</th>
+						<th width=10%>状态</th>
+						<th></th>
 					</tr>
 				<?php 
 				$APP_sql = new APP_SQL();
@@ -137,17 +138,18 @@ function APP_mgr_main() {
 					$name = $App_listStaff_query['name'];
 					$job = job_converter($App_listStaff_query['department'],$App_listStaff_query['position']);
 					$tel = $App_listStaff_query['tel'];
+					$mail = $App_listStaff_query['mail'];
 					$status = status_converter($App_listStaff_query['status']);
 				?>
 					<tr>
 						<td><?php echo $name;?></td>
 						<td><?php echo $job;?></td>
 						<td><?php echo $tel;?></td>
+						<td><?php echo $mail;?></td>
 						<td><?php echo $status;?></td>
 						<td>
-							<button>权限变更</button>
+							<button>账号赋权</button>
 							<button>冻结账号</button>
-							<button>资料变更</button>
 						</td>
 					</tr>
 				<?php

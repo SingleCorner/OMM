@@ -60,7 +60,7 @@ if ($code != "") {
 		$APP_sql -> close();
 	}
 	if ($id == "") {
-		header("Status: 403");
+		header("Status: 404");
 		exit;
 	} else {
 ?>
@@ -137,16 +137,11 @@ if ($code != "") {
 						<td></td>
 					</tr>
 				</table>
-<form id="APP_validStaff_form" action="?p=update" method="post">
-	
-	
-	
-</form>
 <?php
 		APP_html_footer();
 	}
 } else {
-	header("Status: 403");
+	header("Status: 404");
 	exit;
 }
 ?>
