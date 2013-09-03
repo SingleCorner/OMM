@@ -145,17 +145,37 @@ function APP_html_module(){
 					<div>当前日期 <?php echo date("Y-m-d");?></div>
 				<?php
 				if ($App_worktime['recordtime'] != "") {
+					$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
+					$lefttime = $App_worktime['onwork'] + $App_worktime['overwork'] - $App_worktime['rest'];
 				?>
 					<div id="APP_signal_opbtn">
 						<span class="signal_btn"><button>公司签到</button></span>
 						<span class="signal_btn"><button>中心签到</button></span>
 						<span class="signal_btn"><button>今日调休</button></span>
 					</div>
-					<div>
-						<div>累积加班时间</div>
-						<div>累积调休时间</div>
-						<div>当前剩余时间</div>
-
+					<div id="APP_signal_timer">
+						<table class="datatable">
+							<tr>
+								<td width=40%>累积值班时间</td>
+								<td width=25%><?php echo $App_worktime['onwork'];?></td>
+								<td width=35%>小时</td>
+							</tr>
+							<tr>
+								<td>累积加班时间</td>
+								<td><?php echo $App_worktime['overwork'];?></td>
+								<td>小时</td>
+							</tr>
+							<tr>
+								<td>累积调休时间</td>
+								<td><?php echo $App_worktime['rest'];?></td>
+								<td>小时</td>
+							</tr>
+							<tr>
+								<td>当前剩余时间</td>
+								<td><?php echo $lefttime;?></td>
+								<td>小时</td>
+							</tr>
+						</table>
 					</div>
 				<?php
 				} else {

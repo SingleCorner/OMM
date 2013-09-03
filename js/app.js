@@ -109,7 +109,11 @@ function index_recordtime(evt) {
 		},
 		success: function(data, status, xhr) {
 			if (data.code == 1) {
+				alert("信息已录入");
+				window.location.reload();
 			} else if (data.code == 0) {
+				alert("信息未录入");
+				$('#signal_overwork').focus();
 			}
 		},
 		dataType: 'json'

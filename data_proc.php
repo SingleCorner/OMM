@@ -63,6 +63,9 @@ if (!defined('__ROOT__')) {
 	case '':
 		switch ($_GET['p']) {
 			case "recordtime":
+				if (!empty($_SESSION['index_recordtime'])) {
+					exit;
+				}
 				$onwork = $_POST['onwork'];
 				$overwork = $_POST['overwork'];
 				$rest = $_POST['rest'];
@@ -77,10 +80,23 @@ if (!defined('__ROOT__')) {
 				if (!is_numeric($rest)) {
 					$rest = 0;
 				}
-//
+
 				$APP_sql = new APP_SQL();
 				$APP_sql -> updateWorktime($onwork, $overwork, $rest, $_SESSION['Login_account']);
+				$App_affected = $APP_sql -> affected();
 				$APP_sql -> close();
+				if ($App_affected == 1) {
+					$result = array (
+							"code" => 1
+						);
+				} else {
+					$result = array (
+							"code" => 0
+						);
+				}
+				header('Content-Type: application/json');
+				echo json_encode($result);
+				exit;
 				break;
 		}
 		break;
