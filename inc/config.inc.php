@@ -34,7 +34,7 @@ if(empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
 }
 
 /* Login timeout */
-$sys_timeout = '1800';//Logout without operating in 5 minutes
+$sys_timeout = '99999';//Logout without operating in 5 minutes
 
 
 //*******Part2  Variable -> Constant************//

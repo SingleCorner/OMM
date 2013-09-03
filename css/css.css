@@ -496,19 +496,14 @@ body.scroll #APP_top_user {
 	前台CSS
 */
 
-#APP_main_signal {
-	margin-left: 20px;
-	float: left;
-	width: 290px;
-	word-break:break-all;
+#APP_signal {
+	margin-top: 20px;
+	width: 980px;
+	min-height: 300px;
+	word-break: break-all;
 	color: #600;
 }
-#APP_main_signal > div {
-	margin-top: 20px;
-}
-#APP_main_signal > div button {
-}
-#APP_main_signal .signal_center {
+.signal_center {
 	text-align: center;
 
 }
@@ -516,6 +511,24 @@ body.scroll #APP_top_user {
 	padding-right: 10px;
 }
 
+#APP_signal_op {
+	width: 280px;
+	float: left;
+	margin-left: 10px;
+}
+#APP_signal_op > div {
+	margin-bottom: 20px;
+}
+
+#APP_signal_info {
+	width: 680px;
+	float: left;
+	margin-left: 10px;
+}
+
+#APP_signal_noinfo > form >div {
+	margin-top:10px;
+}
 
 
 #APP_home_right {

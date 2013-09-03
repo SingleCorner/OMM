@@ -52,7 +52,7 @@ if (isset($_GET['a']) && $_GET['a'] == 'login'){
 } else {
 	if (isset($_SESSION['AuthToken']) && $_SESSION['AuthToken'] != ""){
 		if (!empty($_GET['p'])) {
-			if ($_GET['a'] != "" && module_usercheck($_SESSION['Login_section'])) {
+			if (isset($_GET['a']) && module_usercheck($_SESSION['Login_section'])) {
 				include("./data_proc.php");
 			} else {
 				exit;

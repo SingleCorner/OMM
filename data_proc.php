@@ -22,7 +22,7 @@ if (!defined('__ROOT__')) {
 	 * 功能 - > 修改密码
 	 *
 	 */
-	case 'chgpasswd':
+	case "chgpasswd":
 		if (isset($_POST['password']) && $_GET['p'] == "TRUE") {
 			$APP_newpasswd = sha1($_POST['password']);
 			$APP_sql = new APP_SQL();
@@ -57,11 +57,38 @@ if (!defined('__ROOT__')) {
 		break;
 		exit;
 	/**
+	 * 功能 - > 3
+	 *
+	 */
+	case '':
+		switch ($_GET['p']) {
+			case "recordtime":
+				$onwork = $_POST['onwork'];
+				$overwork = $_POST['overwork'];
+				$rest = $_POST['rest'];
+
+				//对于非法传入的值全部置0
+				if (!is_numeric($onwork)) {
+					$onwork = 0;
+				}
+				if (!is_numeric($overwork)) {
+					$overwork = 0;
+				}
+				if (!is_numeric($rest)) {
+					$rest = 0;
+				}
+//
+				$APP_sql = new APP_SQL();
+				$APP_sql -> updateWorktime($onwork, $overwork, $rest, $_SESSION['Login_account']);
+				$APP_sql -> close();
+				break;
+		}
+		break;
+	/**
 	 * 功能 - > 其他
 	 *
 	 */
 	default:
-		 
 		break;
 }
 	

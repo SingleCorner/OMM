@@ -136,23 +136,46 @@ function APP_html_module(){
 		case "":
 			$APP_sql = new APP_SQL();
 			$App_worktime = $APP_sql -> getTableAllWhere("s_worktime", "account", $_SESSION['Login_account']);
-			if($App_worktime['account'] != "") {			
+			$APP_sql -> close();
+			if ($App_worktime['account'] != "") {			
 ?>
 			<!-- 签到系统 -->
-			<div id="APP_main_signal">
-				<div>
-					<div><?php echo date("Y-m-d");?></div>
-					<span class="signal_btn"><button>公司签到</button></span>
-					<span class="signal_btn"><button>中心签到</button></span>
-					<span class="signal_btn"><button>今日调休</button></span>
-				</div>
-				<div>
-					<div>累积加班时间</div>
-					<div>累积调休时间</div>
-					<div>当前剩余时间</div>
+			<div id="APP_signal">
+				<div id="APP_signal_op">
+					<div>当前日期 <?php echo date("Y-m-d");?></div>
+				<?php
+				if ($App_worktime['recordtime'] != "") {
+				?>
+					<div id="APP_signal_opbtn">
+						<span class="signal_btn"><button>公司签到</button></span>
+						<span class="signal_btn"><button>中心签到</button></span>
+						<span class="signal_btn"><button>今日调休</button></span>
+					</div>
+					<div>
+						<div>累积加班时间</div>
+						<div>累积调休时间</div>
+						<div>当前剩余时间</div>
 
+					</div>
+				<?php
+				} else {
+				?>
+					<div id="APP_signal_noinfo">
+						<div>请完善加班信息</div>
+						<form id="APP_signal_form" method="post" action="?a=&p=recordtime">
+							<div>累计值班时间 <input id="signal_onwork" name="onwork" type="text" size="8" placeholder="例如0" /> 小时</div>
+							<div>累计加班时间 <input id="signal_overwork" name="overwork" type="text" size="8" placeholder="例如8" /> 小时</div>
+							<div>累计调休时间 <input id="signal_rest" name="rest" type="text" size="8" placeholder="例如0" /> 小时</div>
+							<div><input type="submit" value="开始记录工作时间" /></div>
+							<div>TIPS：如不确定，请仅在加班时间处填写当前剩余时间</div>
+					</form>
+					</div>
+				<?php
+				}
+				?>
 				</div>
-				<div>
+				<div id="APP_signal_info">
+					<div class="signal_center">加班详细信息</div>
 				</div>
 			</div>
 
@@ -161,7 +184,6 @@ function APP_html_module(){
 
 <?php
 			}
-			$APP_sql -> close();
 			 break;
 
 		

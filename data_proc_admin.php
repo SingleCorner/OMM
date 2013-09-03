@@ -126,28 +126,31 @@ switch ($module_name) {
 				$long = mt_rand(5,15);
 				$authorizer = substr(sha1(time()),$start,$long);
 				$APP_sql = new APP_SQL();
-				$APP_sql -> updateStaffAuthorizer($id,$authorizer);
-				$App_affected = $APP_sql -> affected();
-				$APP_sql -> close();
-				if ($App_affected == 1) {
-					$mailsubject = "OMM运维管理系统注册确认邮件";
-					$mailbody = "您在利银运维管理系统的个人信息已经生成，请访问 http://192.168.235.251/valid.php?code=$authorizer 进行账号激活 ";
-					if (send_mail($mail,$mailsubject,$mailbody) == "") {
+				$mailsubject = "OMM运维管理系统注册确认邮件";
+				$mailbody = "您在利银运维管理系统的个人信息已经生成，请访问 http://192.168.235.251/valid.php?code=$authorizer 进行账号激活 ";
+				if (send_mail($mail,$mailsubject,$mailbody) == "") {
+					$APP_sql -> updateStaffAuthorizer($id,$authorizer);
+					$App_affected = $APP_sql -> affected();
+					if ($App_affected == 1) {
 						$result = array(
 							"code" => 1,
 							"authorizer" => "邮件发送成功"
 						);
-						header('Content-Type: application/json');
-						echo json_encode($result);
 					} else {
 						$result = array(
 							"code" => 0,
-							"authorizer" => "邮件发送失败"
+							"authorizer" => "请重发邮件"
 						);
-						header('Content-Type: application/json');
-						echo json_encode($result);
 					}
+				} else {
+					$result = array(
+						"code" => 0,
+						"authorizer" => "邮件发送失败"
+					);
 				}
+				$APP_sql -> close();
+				header('Content-Type: application/json');
+				echo json_encode($result);
 				exit;
 				break;
 			case "denyverify":

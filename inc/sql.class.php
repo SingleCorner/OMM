@@ -156,6 +156,14 @@ class APP_SQL {
 		return $this -> db -> query($sql);
 	}
 
+	/**
+	 * 更新 -> 个性化用户名检查
+	 */
+	public function updateWorktime($onwork, $overwork, $rest, $account) {
+		$sql = "UPDATE `s_worktime` SET `onwork` = '{$onwork}',`overwork` = '{$overwork}',`rest` = '{$rest}',`recordtime` = current_date() WHERE `account` = '{$account}';";
+		return $this -> db -> query($sql);
+	}
+
 
 
 	/**
