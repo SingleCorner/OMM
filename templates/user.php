@@ -147,12 +147,84 @@ function APP_html_module(){
 				if ($App_worktime['recordtime'] != "") {
 					$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
 					$lefttime = $App_worktime['onwork'] + $App_worktime['overwork'] - $App_worktime['rest'];
-				?>
+					$APP_sql = new APP_SQL();
+					$App_workrecord = $APP_sql -> getWorkrecord();
+					if ($App_workrecord === FALSE) {
+						$date = date("Y-m-01");
+						$APP_sql -> insertWorkrecord($date);
+						$APP_sql -> close();
+						header('Location: /');
+					} else {
+						$status = $App_workrecord['checkstatus'];
+						$date = $App_workrecord['date'];
+						if ($status == 4) {
+							if ($date != date("Y-m-d")) {
+								$date = date("Y-m-d", strtotime($date."+ 1 day"));
+								$APP_sql -> insertWorkrecord($date);
+								header('Location: /');
+							} else {
+					?>
 					<div id="APP_signal_opbtn">
-						<span class="signal_btn"><button>公司签到</button></span>
-						<span class="signal_btn"><button>中心签到</button></span>
+						<div><?php echo $date."记录完毕";?></div>
+					</div>
+					<?php
+							}
+							$APP_sql -> close();
+						} else {
+							$APP_sql -> close();
+							if (strtotime($date) < strtotime(date("Y-m-d"))) {
+								$tips = "历史补录";
+							} else {
+								$tips = "今日记录";
+							}
+							$tips = $tips." ".$date;
+							switch ($status) {
+								case "0":
+					?>
+					<div id="APP_signal_opbtn">
+						<div><?php echo $tips;?></div>
+						<span class="signal_btn"><button>公司上班</button></span>
+						<span class="signal_btn"><button>中心值班</button></span>
 						<span class="signal_btn"><button>今日调休</button></span>
 					</div>
+					<?php
+									break;
+								case "1":
+					?>
+					<div id="APP_signal_opbtn">
+						<div><?php echo $tips;?></div>
+						<span class="signal_btn"><button>公司下班</button></span>
+						<span class="signal_btn"><button>中心加班</button></span>
+					</div>
+					<?php
+									break;
+								case "2":
+					?>
+					<div id="APP_signal_opbtn">
+						<div><?php echo $tips;?></div>
+						<span class="signal_btn"><button>公司上班</button></span>
+						<span class="signal_btn"><button>中心值班</button></span>
+						<span class="signal_btn"><button>今日调休</button></span>
+					</div>
+					<?php
+									break;
+								case "3":
+					?>
+					<div id="APP_signal_opbtn">
+						<div><?php echo $tips.$date;?></div>
+						<span class="signal_btn"><button>公司上班</button></span>
+						<span class="signal_btn"><button>中心值班</button></span>
+						<span class="signal_btn"><button>今日调休</button></span>
+					</div>
+					<?php
+									break;
+								default:
+									break;
+							}
+						}
+					}
+
+				?>
 					<div id="APP_signal_timer">
 						<table class="datatable">
 							<tr>

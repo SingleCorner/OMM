@@ -167,6 +167,16 @@ class APP_SQL {
 
 
 	/**
+	 * 插入 -> 工作记录插入
+	 */
+	public function insertWorkrecord($date) {
+		$account = $_SESSION['Login_account'];
+		$sql = "INSERT INTO `s_check` (`account`,`date`,`checkstatus`) values ('{$account}','{$date}','0');";
+		return $this -> db -> query($sql);
+	}
+
+
+	/**
 	 * 查询 -> 列出所有账号
 	 */
 	public function getStaffList() {
@@ -178,6 +188,19 @@ class APP_SQL {
 		}
 		$query = $this -> db -> query($sql);
 		return $query;
+	}
+	/**
+	 * 查询 -> 列出所有账号
+	 */
+	public function getWorkrecord() {
+		$sql = "SELECT * from `s_check` WHERE `account` = '{$_SESSION['Login_account']}' ORDER BY `date` desc LIMIT 0,1;";
+		$query = $this -> db -> query($sql);
+		$num_rows = $query -> num_rows;
+		if ($num_rows == 1) {
+			return $query -> fetch_assoc();
+		} else {
+			return FALSE;
+		}
 	}
 
 
