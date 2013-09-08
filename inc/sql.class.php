@@ -164,6 +164,16 @@ class APP_SQL {
 		return $this -> db -> query($sql);
 	}
 
+	/**
+	 * 更新 -> 工作时间记录
+	 */
+	public function updateWorkrecord($field, $time, $status) {
+		$account = $_SESSION['Login_account'];
+		$date = date("Y-m-d",$time);
+		$sql = "UPDATE `s_check` SET `{$field}` = '{$time}',`checkstatus` = '{$status}' WHERE `account` = '{$account}' AND `date` = '{$_SESSION['workrecord_date']}';";
+		return $this -> db -> query($sql);
+	}
+
 
 
 	/**

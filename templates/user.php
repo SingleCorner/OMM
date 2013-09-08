@@ -157,6 +157,8 @@ function APP_html_module(){
 					} else {
 						$status = $App_workrecord['checkstatus'];
 						$date = $App_workrecord['date'];
+						$_SESSION['workrecord_date'] = $date;
+						$weekno = date("N",strtotime($date));
 						if ($status == 4) {
 							if ($date != date("Y-m-d")) {
 								$date = date("Y-m-d", strtotime($date."+ 1 day"));
@@ -183,9 +185,25 @@ function APP_html_module(){
 					?>
 					<div id="APP_signal_opbtn">
 						<div><?php echo $tips;?></div>
-						<span class="signal_btn"><button>公司上班</button></span>
-						<span class="signal_btn"><button>中心值班</button></span>
-						<span class="signal_btn"><button>今日调休</button></span>
+						<div>
+							是否公休假期
+					<?php
+						if ($weekno == 6 || $weekno == 7) {
+					?>
+							<input type="radio" value="1" name="signal_weekday" checked />是
+							<input type="radio" value="0" name="signal_weekday" />否
+					<?php
+						} else {
+					?>
+							<input type="radio" value="1" name="signal_weekday" />是
+							<input type="radio" value="0" name="signal_weekday" checked />否
+					<?php
+						}
+					?>
+						</div>
+						<span class="signal_btn"><button onclick=check_op("in",1)>公司上班</button></span>
+						<span class="signal_btn"><button onclick=check_op("in",2)>中心值班</button></span>
+						<span class="signal_btn"><button onclick=check_op("in",3)>休息/调休</button></span>
 					</div>
 					<?php
 									break;
@@ -193,8 +211,8 @@ function APP_html_module(){
 					?>
 					<div id="APP_signal_opbtn">
 						<div><?php echo $tips;?></div>
-						<span class="signal_btn"><button>公司下班</button></span>
-						<span class="signal_btn"><button>中心加班</button></span>
+						<span class="signal_btn"><button onclick=check_op("out",1)>公司下班</button></span>
+						<span class="signal_btn"><button onclick=check_op("transfer",2)>中心加班</button></span>
 					</div>
 					<?php
 									break;
@@ -202,19 +220,39 @@ function APP_html_module(){
 					?>
 					<div id="APP_signal_opbtn">
 						<div><?php echo $tips;?></div>
-						<span class="signal_btn"><button>公司上班</button></span>
-						<span class="signal_btn"><button>中心值班</button></span>
-						<span class="signal_btn"><button>今日调休</button></span>
+						<select id="APP_signal_outtimeh">
+							<option value="-1">正常下班</option>
+							<option value="0">18点</option>
+							<option value="1">19点</option>
+							<option value="2">20点</option>
+							<option value="3">21点</option>
+							<option value="4">22点</option>
+							<option value="5">23点</option>
+							<option value="6" selected>00点</option>
+							<option value="7">01点</option>
+							<option value="8">02点</option>
+							<option value="9">03点</option>
+							<option value="10">04点</option>
+							<option value="11">05点</option>
+							<option value="12">06点</option>
+							<option value="13">07点</option>
+							<option value="14">08点</option>
+							<option value="15">09点</option>
+						</select>
+						<select id="APP_signal_outtimem">
+							<option value="0">00分</option>
+							<option value="0.5">30分</option>
+						</select>
+						<span class="signal_btn"><button onclick=check_op("out",2)>中心下班</button></span>
 					</div>
 					<?php
 									break;
 								case "3":
 					?>
 					<div id="APP_signal_opbtn">
-						<div><?php echo $tips.$date;?></div>
-						<span class="signal_btn"><button>公司上班</button></span>
-						<span class="signal_btn"><button>中心值班</button></span>
-						<span class="signal_btn"><button>今日调休</button></span>
+						<div><?php echo $tips;?></div>
+						<span class="signal_btn"><button onclick=check_op("out",3)>无加班</button></span>
+						<span class="signal_btn"><button onclick=check_op("inn",2)>中心加班</button></span>
 					</div>
 					<?php
 									break;
@@ -228,17 +266,17 @@ function APP_html_module(){
 					<div id="APP_signal_timer">
 						<table class="datatable">
 							<tr>
-								<td width=40%>累积值班时间</td>
+								<td width=40%>中心值班时间</td>
 								<td width=25%><?php echo $App_worktime['onwork'];?></td>
 								<td width=35%>小时</td>
 							</tr>
 							<tr>
-								<td>累积加班时间</td>
+								<td>中心加班时间</td>
 								<td><?php echo $App_worktime['overwork'];?></td>
 								<td>小时</td>
 							</tr>
 							<tr>
-								<td>累积调休时间</td>
+								<td>已用调休时间</td>
 								<td><?php echo $App_worktime['rest'];?></td>
 								<td>小时</td>
 							</tr>

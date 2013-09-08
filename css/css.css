@@ -508,6 +508,7 @@ body.scroll #APP_top_user {
 
 }
 .signal_btn {
+	margin-top: 20px;
 	padding-right: 10px;
 }
 
@@ -519,6 +520,10 @@ body.scroll #APP_top_user {
 #APP_signal_op > div {
 	margin-bottom: 20px;
 }
+#APP_signal_op > div > div{
+	margin-bottom: 20px;
+}
+
 
 
 #APP_signal_info {

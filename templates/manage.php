@@ -103,7 +103,6 @@ function APP_mgr_main() {
 					部门
 					<select size="1" name="department" id="APP_newStaff_department">
 						<option value="4" >技术部</option>
-						<option value="5" >商务部</option>
 					</select>
 					职位
 					<select name="position" id="APP_newStaff_position">

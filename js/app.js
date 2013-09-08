@@ -2,11 +2,11 @@ $(document).ready(function() {
 	$(document).scroll(navbar_ajust);
 	navbar_ajust();
 
-	//提交加班时间
-	$('#APP_signal_form').submit(index_recordtime);
-
 	//修改密码
 	$('#APP_chgpass_form').submit(chgpass);
+
+	//提交加班时间
+	$('#APP_signal_form').submit(index_recordtime);
 	
 	//个性化用户名监听
 	$('#APP_valid_account').bind("input propertychange",regist_listen_account);
@@ -69,9 +69,8 @@ function chgpass(evt) {
 		dataType: 'json'
 	});
 }
-
 /* 
- * 数据提交 -> 提交加班时间
+ * 数据提交 -> 提交加班信息
  */
 function index_recordtime(evt) {
 	evt.preventDefault();
@@ -114,6 +113,42 @@ function index_recordtime(evt) {
 			} else if (data.code == 0) {
 				alert("信息未录入");
 				$('#signal_overwork').focus();
+			}
+		},
+		dataType: 'json'
+	});
+}
+/* 
+ * 数据提交 -> 上下班记录
+ * param @op 操作类型
+ * param @item 操作项
+ */
+function check_op(op,item) {
+	var obj = $('#APP_signal_outtimeh').length;
+	if (obj) {
+		var hour = Number($('#APP_signal_outtimeh').val());
+		var min = Number($('#APP_signal_outtimem').val());
+		var time = hour + min;
+	} else {
+		var time = 0;
+	}
+	var weekno = $('input[name="signal_weekday"]:checked').val();
+	$.ajax({
+		type: 'POST',
+		url: './?a=&p=workrecord',
+		data: {
+			'op': op,
+			'item': item,
+			'time': time,
+			'weekno': weekno
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert("操作成功");
+				window.location.reload();
+			} else if (data.code == 0) {
+				alert("操作失败");
+				window.location.reload();
 			}
 		},
 		dataType: 'json'
@@ -202,3 +237,4 @@ function regist_commit() {
 		});
 	}
 }
+

@@ -49,7 +49,7 @@ if (!defined('__ROOT__')) {
 		}
 		break;
 	/**
-	 * 功能 - > 2
+	 * 功能 - > 服务报告单
 	 *
 	 */
 	case 'services':
@@ -57,7 +57,7 @@ if (!defined('__ROOT__')) {
 		break;
 		exit;
 	/**
-	 * 功能 - > 3
+	 * 功能 - > 首页
 	 *
 	 */
 	case '':
@@ -98,13 +98,145 @@ if (!defined('__ROOT__')) {
 				echo json_encode($result);
 				exit;
 				break;
+			case "workrecord":
+				$post = $_POST['op'];
+				$item = $_POST['item'];
+				$APP_sql = new APP_SQL();
+				if ($post == "in") {
+					switch ($item) {
+						case "1":
+							$field = "comcheckin";
+							$time = "09:00:00";
+							$status = "1";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+						case "2":
+							$weekno = $_POST['weekno'];
+							$field = "cencheckin";
+							$time = "09:00:00";
+							$status = "2";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+						case "3":
+							$weekno = $_POST['weekno'];
+							$field = "checkstatus";
+							$time = "3";
+							$status = "3";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+					}
+				} else if ($post == "out") {
+					switch ($item) {
+						case "1":
+							$field = "comcheckout";
+							$time = "17:15:00";
+							$status = "4";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+						case "2":
+							$weekno = $_POST['weekno'];
+							$time = $_POST['time'];
+							if ($time <= 0) {
+								$timestamp = 17 * 3600;
+							} else {
+								$timestamp = $time * 3600 + 18 * 3600;
+							}
+							$field = "cencheckout";
+							$datestamp = strtotime($_SESSION['workrecord_date']);
+							$datestamp = $datestamp + $timestamp;
+							$time = date("H:i:s",$datestamp);
+							$status = "4";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+						case "3":
+							$field = "checkstatus";
+							$time = "4";
+							$status = "4";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+					}
+				} else if ($post == "inn") {
+					switch ($item) {
+						case "2":
+							$field = "cencheckin";
+							$time = "18:00:00";
+							$status = "2";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+					}
+				}
+				break;
 		}
-		break;
-	/**
-	 * 功能 - > 其他
-	 *
-	 */
-	default:
 		break;
 }
 	
