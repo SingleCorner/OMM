@@ -527,9 +527,9 @@ body.scroll #APP_top_user {
 
 
 #APP_signal_info {
-	width: 680px;
+	width: 670px;
 	float: left;
-	margin-left: 10px;
+	margin-left: 20px;
 }
 
 #APP_signal_noinfo > form >div {

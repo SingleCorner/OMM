@@ -125,8 +125,23 @@ if (!defined('__ROOT__')) {
 							$field = "cencheckin";
 							$time = "09:00:00";
 							$status = "2";
-							$APP_sql -> updateWorkrecord($field, $time, $status);
-							$App_affected = $APP_sql -> affected();
+							if ($weekno = 1) {
+								$APP_sql -> initcmt();
+								$query = $APP_sql -> updateWorkrecord($field, $time, $status);
+								if (!$query) {
+									$APP_sql -> cmtroll();
+								}
+								$query = $APP_sql -> changeWorktime("onwork", "8");
+								if (!$query) {
+									$APP_sql -> cmtroll();
+								} else {
+									$App_affected = $APP_sql -> affected();
+									$APP_sql -> cmtcommit();
+								}
+							} else {
+								$APP_sql -> updateWorkrecord($field, $time, $status);
+								$App_affected = $APP_sql -> affected();
+							}
 							$APP_sql -> close();
 							if ($App_affected == 1) {
 								$result = array (
@@ -174,12 +189,13 @@ if (!defined('__ROOT__')) {
 							}
 							break;
 						case "2":
-							$weekno = $_POST['weekno'];
 							$time = $_POST['time'];
 							if ($time <= 0) {
 								$timestamp = 17 * 3600;
-							} else {
+							} else if ($time < 6) {
 								$timestamp = $time * 3600 + 18 * 3600;
+							} else {
+								$timestamp = ($time - 2) * 3600 + 18 * 3600;
 							}
 							$field = "cencheckout";
 							$datestamp = strtotime($_SESSION['workrecord_date']);
@@ -221,6 +237,28 @@ if (!defined('__ROOT__')) {
 							$field = "cencheckin";
 							$time = "18:00:00";
 							$status = "2";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$App_affected = $APP_sql -> affected();
+							$APP_sql -> close();
+							if ($App_affected == 1) {
+								$result = array (
+										"code" => 1
+									);
+								header('Content-Type: application/json');
+								echo json_encode($result);
+								exit;
+							}
+							break;
+					}
+				} else if ($post == "transfer") {
+					switch ($item) {
+						case "2":
+							$field = "comcheckout";
+							$time = "17:00:00";
+							$status = "2";
+							$APP_sql -> updateWorkrecord($field, $time, $status);
+							$field = "cencheckin";
+							$time = "17:00:00";
 							$APP_sql -> updateWorkrecord($field, $time, $status);
 							$App_affected = $APP_sql -> affected();
 							$APP_sql -> close();

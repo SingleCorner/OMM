@@ -190,13 +190,13 @@ function APP_html_module(){
 					<?php
 						if ($weekno == 6 || $weekno == 7) {
 					?>
-							<input type="radio" value="1" name="signal_weekday" checked />是
-							<input type="radio" value="0" name="signal_weekday" />否
+							<input type="radio" value="1" name="signal_weekend" checked />是
+							<input type="radio" value="0" name="signal_weekend" />否
 					<?php
 						} else {
 					?>
-							<input type="radio" value="1" name="signal_weekday" />是
-							<input type="radio" value="0" name="signal_weekday" checked />否
+							<input type="radio" value="1" name="signal_weekend" />是
+							<input type="radio" value="0" name="signal_weekend" checked />否
 					<?php
 						}
 					?>
@@ -228,16 +228,16 @@ function APP_html_module(){
 							<option value="3">21点</option>
 							<option value="4">22点</option>
 							<option value="5">23点</option>
-							<option value="6" selected>00点</option>
-							<option value="7">01点</option>
-							<option value="8">02点</option>
-							<option value="9">03点</option>
-							<option value="10">04点</option>
-							<option value="11">05点</option>
-							<option value="12">06点</option>
-							<option value="13">07点</option>
-							<option value="14">08点</option>
-							<option value="15">09点</option>
+							<option value="8" selected>00点</option>
+							<option value="9">01点</option>
+							<option value="10">02点</option>
+							<option value="11">03点</option>
+							<option value="12">04点</option>
+							<option value="13">05点</option>
+							<option value="14">06点</option>
+							<option value="15">07点</option>
+							<option value="16">08点</option>
+							<option value="17">09点</option>
 						</select>
 						<select id="APP_signal_outtimem">
 							<option value="0">00分</option>
@@ -306,6 +306,32 @@ function APP_html_module(){
 				</div>
 				<div id="APP_signal_info">
 					<div class="signal_center">加班详细信息</div>
+					<table class="datatable">
+						<tr>
+							<th>日期</th>
+							<th>公司上班</th>
+							<th>公司下班</th>
+							<th>中心上班</th>
+							<th>中心下班</th>
+						</tr>
+				<?php
+				$APP_sql = new APP_SQL();
+				$APP_sqlquery = $APP_sql -> getWorkrecordList();
+				$APP_sql -> close();
+				while ($APP_result = $APP_sqlquery -> fetch_assoc()){
+				?>
+						<tr>
+							<th><?php echo $APP_result['date']?></th>
+							<th><?php echo $APP_result['comcheckin']?></th>
+							<th><?php echo $APP_result['comcheckout']?></th>
+							<th><?php echo $APP_result['cencheckin']?></th>
+							<th><?php echo $APP_result['cencheckout']?></th>
+						</tr>
+				<?php
+				
+				}
+				?>
+					</table>
 				</div>
 			</div>
 

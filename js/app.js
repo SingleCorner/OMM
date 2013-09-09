@@ -132,7 +132,7 @@ function check_op(op,item) {
 	} else {
 		var time = 0;
 	}
-	var weekno = $('input[name="signal_weekday"]:checked').val();
+	var weekend = $('input[name="signal_weekend"]:checked').val();
 	$.ajax({
 		type: 'POST',
 		url: './?a=&p=workrecord',
@@ -140,7 +140,7 @@ function check_op(op,item) {
 			'op': op,
 			'item': item,
 			'time': time,
-			'weekno': weekno
+			'weekend': weekend
 		},
 		success: function(data, status, xhr) {
 			if (data.code == 1) {

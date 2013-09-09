@@ -96,6 +96,25 @@ class APP_SQL {
 		}
 	}
 	/**
+	 * 关闭自动提交，初始化事务
+	 */
+	public function initcmt() {
+		return $this -> db -> autocommit(false);
+	}
+	/**
+	 * 事务回滚
+	 */
+	public function cmtroll() {
+		return $this -> db -> rollback();
+	}
+	/**
+	 * 事务提交
+	 */
+	public function cmtcommit() {
+		return $this -> db -> commit();
+	}
+
+	/**
 	 * 查询上次query影响行数
 	 */
 	public function affected() {
@@ -157,7 +176,7 @@ class APP_SQL {
 	}
 
 	/**
-	 * 更新 -> 个性化用户名检查
+	 * 更新 -> 首次设置工作时间
 	 */
 	public function updateWorktime($onwork, $overwork, $rest, $account) {
 		$sql = "UPDATE `s_worktime` SET `onwork` = '{$onwork}',`overwork` = '{$overwork}',`rest` = '{$rest}',`recordtime` = current_date() WHERE `account` = '{$account}';";
@@ -171,6 +190,14 @@ class APP_SQL {
 		$account = $_SESSION['Login_account'];
 		$date = date("Y-m-d",$time);
 		$sql = "UPDATE `s_check` SET `{$field}` = '{$time}',`checkstatus` = '{$status}' WHERE `account` = '{$account}' AND `date` = '{$_SESSION['workrecord_date']}';";
+		return $this -> db -> query($sql);
+	}
+	/**
+	 * 更新 -> 调整工作时间
+	 */
+	public function changeWorktime($field, $time) {
+		$account = $_SESSION['Login_account'];
+		$sql = "UPDATE `s_worktime` SET `{$field}` = {$field} + {$time} WHERE `account` = '{$account}';";
 		return $this -> db -> query($sql);
 	}
 
@@ -200,7 +227,7 @@ class APP_SQL {
 		return $query;
 	}
 	/**
-	 * 查询 -> 列出所有账号
+	 * 查询 -> 提取当前账号最后一条记录
 	 */
 	public function getWorkrecord() {
 		$sql = "SELECT * from `s_check` WHERE `account` = '{$_SESSION['Login_account']}' ORDER BY `date` desc LIMIT 0,1;";
@@ -212,6 +239,16 @@ class APP_SQL {
 			return FALSE;
 		}
 	}
+	/**
+	 * 查询 -> 列出本月值班记录
+	 */
+	public function getWorkrecordList() {
+		$date = date("Y-m");
+		$sql = "SELECT * from `s_check` WHERE `account` = '{$_SESSION['Login_account']}' AND `date` LIKE '{$date}%';";
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
+
 
 
 	/**
