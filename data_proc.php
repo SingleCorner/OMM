@@ -121,11 +121,15 @@ if (!defined('__ROOT__')) {
 							}
 							break;
 						case "2":
-							$weekno = $_POST['weekno'];
 							$field = "cencheckin";
 							$time = "09:00:00";
 							$status = "2";
-							if ($weekno = 1) {
+							if (strtotime($_SESSION['workrecord_date']) <= strtotime($_SESSION['index_recordtime'])) {
+								$weekend = $_POST['weekend'];
+							} else {
+								$weekend = -1;
+							}
+							if ($weekend == 1) {
 								$APP_sql -> initcmt();
 								$query = $APP_sql -> updateWorkrecord($field, $time, $status);
 								if (!$query) {
@@ -153,12 +157,31 @@ if (!defined('__ROOT__')) {
 							}
 							break;
 						case "3":
-							$weekno = $_POST['weekno'];
 							$field = "checkstatus";
 							$time = "3";
 							$status = "3";
-							$APP_sql -> updateWorkrecord($field, $time, $status);
-							$App_affected = $APP_sql -> affected();
+							if (strtotime($_SESSION['workrecord_date']) <= strtotime($_SESSION['index_recordtime'])) {
+								$weekend = -1;
+							} else {
+								$weekend = $_POST['weekend'];
+							}
+							if ($weekend == 0) {
+								$APP_sql -> initcmt();
+								$query = $APP_sql -> updateWorkrecord($field, $time, $status);
+								if (!$query) {
+									$APP_sql -> cmtroll();
+								}
+								$query = $APP_sql -> changeWorktime("rest", "8");
+								if (!$query) {
+									$APP_sql -> cmtroll();
+								} else {
+									$App_affected = $APP_sql -> affected();
+									$APP_sql -> cmtcommit();
+								}
+							} else {
+								$APP_sql -> updateWorkrecord($field, $time, $status);
+								$App_affected = $APP_sql -> affected();
+							}
 							$APP_sql -> close();
 							if ($App_affected == 1) {
 								$result = array (
@@ -190,6 +213,7 @@ if (!defined('__ROOT__')) {
 							break;
 						case "2":
 							$time = $_POST['time'];
+							$hour = $time;
 							if ($time <= 0) {
 								$timestamp = 17 * 3600;
 							} else if ($time < 6) {
@@ -202,8 +226,26 @@ if (!defined('__ROOT__')) {
 							$datestamp = $datestamp + $timestamp;
 							$time = date("H:i:s",$datestamp);
 							$status = "4";
-							$APP_sql -> updateWorkrecord($field, $time, $status);
-							$App_affected = $APP_sql -> affected();
+							if (strtotime($_SESSION['workrecord_date']) <= strtotime($_SESSION['index_recordtime'])) {
+								$hour = 0;
+							}
+							if ($hour > 0) {
+								$APP_sql -> initcmt();
+								$query = $APP_sql -> updateWorkrecord($field, $time, $status);
+								if (!$query) {
+									$APP_sql -> cmtroll();
+								}
+								$query = $APP_sql -> changeWorktime("overwork", $hour);
+								if (!$query) {
+									$APP_sql -> cmtroll();
+								} else {
+									$App_affected = $APP_sql -> affected();
+									$APP_sql -> cmtcommit();
+								}
+							} else {
+								$APP_sql -> updateWorkrecord($field, $time, $status);
+								$App_affected = $APP_sql -> affected();
+							}
 							$APP_sql -> close();
 							if ($App_affected == 1) {
 								$result = array (

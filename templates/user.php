@@ -167,7 +167,7 @@ function APP_html_module(){
 							} else {
 					?>
 					<div id="APP_signal_opbtn">
-						<div><?php echo $date."记录完毕";?></div>
+						<div><?php echo "今日已记录";?></div>
 					</div>
 					<?php
 							}
@@ -321,11 +321,11 @@ function APP_html_module(){
 				while ($APP_result = $APP_sqlquery -> fetch_assoc()){
 				?>
 						<tr>
-							<th><?php echo $APP_result['date']?></th>
-							<th><?php echo $APP_result['comcheckin']?></th>
-							<th><?php echo $APP_result['comcheckout']?></th>
-							<th><?php echo $APP_result['cencheckin']?></th>
-							<th><?php echo $APP_result['cencheckout']?></th>
+							<td><?php echo $APP_result['date']?></td>
+							<td><?php echo $APP_result['comcheckin']?></td>
+							<td><?php echo $APP_result['comcheckout']?></td>
+							<td><?php echo $APP_result['cencheckin']?></td>
+							<td><?php echo $APP_result['cencheckout']?></td>
 						</tr>
 				<?php
 				
