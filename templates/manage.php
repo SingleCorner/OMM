@@ -73,10 +73,6 @@ function APP_mgr_main() {
 	if ($_GET['a']=="") {
 	} else {
 		switch ($_GET['a']) {
-			case "bulletin":
-?>
-<?php
-				break;
 			case "staff":
 ?>
 			<div class="title_container">

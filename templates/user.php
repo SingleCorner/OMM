@@ -372,7 +372,7 @@ function APP_html_module(){
 		 */
 		 case "wiki":
 ?>
-	<center>知识库模块正在开发中，敬请期待</center>
+	<center>即将开工</center>
 <?php
 			 break;
 
