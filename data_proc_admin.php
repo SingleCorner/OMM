@@ -2,8 +2,6 @@
 /**
  * 后端数据处理程序
  * 功能索引
- *	1.添加成员
- *	2.
  *
  */
 
@@ -21,11 +19,11 @@ $module_name = $_GET['a'];
 
 switch ($module_name) {
 	/**
-	 * 功能 - > 1
+	 * 模块 - > 账号管理模块
 	 *
 	 */
 	case "staff":
-		switch($_GET['p']){
+		switch ($_GET['p']) {
 			case "add":
 				$name = string_filter($_POST['name']);
 				$gender = numeric_filter($_POST['gender']);
@@ -173,6 +171,93 @@ switch ($module_name) {
 		}
 		break;
 
+	/**
+	 * 功能 - > 其他
+	 *
+	 */
+	case "customer":
+		switch ($_GET['p']) {
+			case "add":
+				$name = string_filter($_POST['name']);
+				$contact = string_filter($_POST['contact']);
+				$tel = numeric_filter($_POST['tel']);
+				$addr = string_filter($_POST['addr']);
+				if (empty($name)) {
+					$result = array(
+						"code" => 0,
+						"message" => "数据提交异常"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				} else {
+					$APP_sql = new APP_SQL();
+					$sql = "INSERT INTO `s_customer` (`name`,`contact`,`tel`,`address`,`status`) values ('{$name}', '{$contact}', '{$tel}', '{$addr}','1');";
+					$APP_sql -> userDefine($sql);
+					$App_affected = $APP_sql -> affected();
+					$APP_sql -> close();
+				}
+				if ($App_affected == 1) {
+					$result = array(
+						"code" => 1,
+						"message" => "客户信息已录入"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				} else {
+					$result = array(
+						"code" => 0,
+						"message" => "数据提交异常"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				}
+				break;
+			case "freeze":
+				$id = numeric_filter($_POST['id']);
+				if (!empty($id)) {
+					if ($_SESSION['Login_section'] == 0) {
+						$APP_sql = new APP_SQL();
+						$sql = "UPDATE `s_customer` SET `status` = status + 1 WHERE `id` = '{$id}';";
+						$APP_sql -> userDefine($sql);
+						$affected = $APP_sql -> affected();
+						$APP_sql -> close();
+					} else {
+						$APP_sql = new APP_SQL();
+						$sql = "SELECT * from `s_customer` where `id` = '{$id}';";
+						$query = $APP_sql -> userDefine($sql) -> fetch_assoc();
+						if ($query['status'] % 2 == 1) {
+							$sql = "UPDATE `s_customer` SET `status` = status + 1 WHERE `id` = '{$id}';";
+							$APP_sql -> userDefine($sql);
+							$affected = $APP_sql -> affected();
+						}
+						$APP_sql -> close();
+					}
+					if ($affected == 1) {
+						$result = array(
+							"code" => 1,
+							"message" => "修改成功"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					} else {
+						$result = array(
+							"code" => 0,
+							"message" => "修改失败"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					}
+				}
+				break;
+			case "query":
+				break;
+		}
+		break;
 	/**
 	 * 功能 - > 其他
 	 *

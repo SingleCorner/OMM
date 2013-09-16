@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	//控制导航栏
+
 	$(document).scroll(navbar_ajust);
 	navbar_ajust();
 

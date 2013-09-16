@@ -227,6 +227,15 @@ class APP_SQL {
 		return $query;
 	}
 	/**
+	 * 查询 -> 列出客户
+	 * 部门管理可查看合作中客户，超级管理可查看所有客户
+	 */
+	public function getCustomerList() {
+		$sql = "SELECT * from `s_customer`;";
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
+	/**
 	 * 查询 -> 提取当前账号最后一条记录
 	 */
 	public function getWorkrecord() {

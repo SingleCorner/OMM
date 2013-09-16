@@ -305,7 +305,6 @@ function APP_html_module(){
 				?>
 				</div>
 				<div id="APP_signal_info">
-					<div class="signal_center">加班详细信息</div>
 					<table class="datatable">
 						<tr>
 							<th>日期</th>
@@ -319,13 +318,16 @@ function APP_html_module(){
 				$APP_sqlquery = $APP_sql -> getWorkrecordList();
 				$APP_sql -> close();
 				while ($APP_result = $APP_sqlquery -> fetch_assoc()){
+					if ($APP_result['checkstatus'] != 0 && empty($APP_result['comcheckin']) && empty($APP_result['cencheckin'])) {
+						$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "----";
+					}
 				?>
 						<tr>
-							<td><?php echo $APP_result['date']?></td>
-							<td><?php echo $APP_result['comcheckin']?></td>
-							<td><?php echo $APP_result['comcheckout']?></td>
-							<td><?php echo $APP_result['cencheckin']?></td>
-							<td><?php echo $APP_result['cencheckout']?></td>
+							<td><?php echo $APP_result['date']." ".date("D",strtotime($APP_result['date']));?></td>
+							<td><?php echo $APP_result['comcheckin'];?></td>
+							<td><?php echo $APP_result['comcheckout'];?></td>
+							<td><?php echo $APP_result['cencheckin'];?></td>
+							<td><?php echo $APP_result['cencheckout'];?></td>
 						</tr>
 				<?php
 				

@@ -27,7 +27,6 @@ function APP_html_header() {
 	<title>运维管理系统</title>
 	<link rel="stylesheet" href="./css/css.css" />
 	<script src="./js/jquery-1.7.2.min.js"></script>
-	<script src="./js/app.js"></script>
 	<script src="./js/mgr.js"></script>
 </head>
 <body>
@@ -75,13 +74,14 @@ function APP_mgr_main() {
 	} else {
 		switch ($_GET['a']) {
 			case "bulletin":
+?>
+<?php
 				break;
 			case "staff":
 ?>
 			<div class="title_container">
 				<span class="title_more">
 					<form id="APP_queryStaff_form" action="?a=&p=query" method="post">
-						<input type="text" size="10" name="account" id="APP_queryStaff_id" placeholder="编号" />
 						<input type="text" size="10" name="name" id="APP_queryStaff_name" placeholder="姓名" />
 						<input type="submit" value="查询" />
 					</form>
@@ -132,6 +132,7 @@ function APP_mgr_main() {
 				<?php 
 				$APP_sql = new APP_SQL();
 				$App_listStaff = $APP_sql -> getStaffList();
+				$APP_sql -> close();
 				while ($App_listStaff_query = $APP_sql -> fetch_assoc($App_listStaff)) {
 					$id = $App_listStaff_query['id'];
 					$name = $App_listStaff_query['name'];
@@ -159,6 +160,75 @@ function APP_mgr_main() {
 <?php
 				break;
 			case "customer":
+?>
+			<div class="title_container">
+				<span class="title_more">
+					<form id="APP_queryStaff_form" action="?a=&p=query" method="post">
+						<input type="text" size="10" name="name" id="APP_queryCustomer_name" placeholder="公司名称" />
+						<input type="button" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<button onclick="load_newCustomer()">建立新客户</button>
+				</h1>
+			</div>
+			<div id="APP_newCustomer">
+				<div class="title_container"><h1>客户资料</h1></div><br />
+				<form id="APP_newcustomer_form" action="?a=customer&p=add" method="post">
+					客户名称<input type="text" name="name" size="20" id="APP_newCustomer_name" />
+					联系人<input type="text" name="contact" size="10" maxlength="11" id="APP_newCustomer_contact" />
+					联系电话<input type="text" name="tel" size="11" id="APP_newCustomer_tel" />
+					客户地址<input type="text" name="addr" size="11" id="APP_newCustomer_addr" />
+					<input type="submit" value="添加客户" />
+					<span id="APP_new_status"></span>
+				</form>
+			</div>
+			<div id="APP_listCustomer">
+				<div class="title_container"><h1>现有客户</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=10%>客户编号</th>
+						<th width=25%>客户名称</th>
+						<th width=10%>联系人</th>
+						<th width=15%>联系电话</th>
+						<th width=15%>客户地址</th>
+						<th></th>
+					</tr>
+				<?php 
+				$APP_sql = new APP_SQL();
+				$App_listCustomer = $APP_sql -> getCustomerList();
+				$APP_sql -> close();
+				while ($App_listCustomer_query = $APP_sql -> fetch_assoc($App_listCustomer)) {
+					$id = $App_listCustomer_query['id'];
+					$name = $App_listCustomer_query['name'];
+					$contacter = $App_listCustomer_query['contact'];
+					$tel = $App_listCustomer_query['tel'];
+					$address = $App_listCustomer_query['address'];
+					$status = $App_listCustomer_query['status'];
+					if ($_SESSION['Login_section'] == 0 || $status % 2 == 1) {
+				?>
+					<tr class="<?php echo "APP_customer_".$id; ?>">
+						<td onclick=""><?php echo $id;?></td>
+						<td><?php echo $name;?></td>
+						<td><?php echo $contacter;?></td>
+						<td><?php echo $tel;?></td>
+						<td><?php echo $address;?></td>
+						<td>
+							<button onclick="">客户资料修改</button>
+						<?php if ($status % 2 == 1) {?>
+							<button onclick="unlinkCustomer(<?php echo $id;?>)">断开合作</button>
+						<?php } else {?>
+							<button onclick="unlinkCustomer(<?php echo $id;?>)">重新合作</button>
+						<?php }?>
+						</td>
+					</tr>
+				<?php
+					}
+				} 
+				?>
+				</table>
+			</div>
+<?php
 				break;
 			case "device":
 				break;
