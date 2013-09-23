@@ -77,6 +77,8 @@ function APP_html_header() {
 	<script src="./js/jquery-1.7.2.min.js"></script>
 	<script src="./js/jquery.sha1.js"></script>
 	<script src="./js/app.js"></script>
+	<script src="/CKE/ckeditor.js"></script>
+	<script src="/CKE/adapters/jquery.js"></script>
 </head>
 <body scroll=auto>
 	<!-- 顶栏开始 -->
@@ -304,6 +306,7 @@ function APP_html_module(){
 				}
 				?>
 				</div>
+				<!--2个月内签到信息-->
 				<div id="APP_signal_info">
 					<table class="datatable">
 						<tr>
@@ -319,7 +322,7 @@ function APP_html_module(){
 				$APP_sql -> close();
 				while ($APP_result = $APP_sqlquery -> fetch_assoc()){
 					if ($APP_result['checkstatus'] != 0 && empty($APP_result['comcheckin']) && empty($APP_result['cencheckin'])) {
-						$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "----";
+//						$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "休息";
 					}
 				?>
 						<tr>
@@ -372,7 +375,33 @@ function APP_html_module(){
 		 */
 		 case "wiki":
 ?>
-	<center>即将开工</center>
+			<div class="title_container">
+				<span class="title_more">
+					<form id="APP_queryWIKI_form" action="?a=wiki&p=query" method="post">
+						<input type="text" size="10" name="name" id="APP_queryWIKI_title" placeholder="wiki标题" />
+						<input type="submit" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<button onclick="load_newWIKI()">新增技术文档</button>
+				</h1>
+			</div>
+			<div id="APP_newWIKI">
+				<div class="title_container"><h1>新技术文档</h1></div><br />
+				<form id="APP_newWIKI_form" action="?a=wiki&p=add" method="post">
+					文档标题<input type="text" name="title" size="30" id="APP_newWIKI_title" />
+					文档分类
+					<select name="type" id="APP_newWIKI_type">
+						<option value="1" selected>运维规范</option>
+						<option value="0" >技术学习</option>
+					</select>
+					<br /><br />
+					<textarea name="content" class="ckeditor" id="APP_newWIKI_content"></textarea>
+					<br />
+					<input type="submit" value="提交文档" />
+					<input type="reset" value="清空文档" />
+				</form>
+			</div>
 <?php
 			 break;
 

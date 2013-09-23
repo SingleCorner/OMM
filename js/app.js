@@ -19,8 +19,17 @@ $(document).ready(function() {
 	//账号 -> 激活
 	$('#APP_valid_regist').bind("click",regist_commit);
 	
-	//页面焦点 -> 修改密码	
+	//账号 -> 修改密码 -> 页面焦点
 	$('#APP_new_pswda').focus();
+
+	//wiki -> 默认隐藏
+	$('#APP_newWIKI').hide();
+
+	//wiki -> 默认焦点
+	$('#APP_queryWIKI_title').focus();
+
+	//wiki -> 提交新知识
+	$('#APP_newWIKI_form').submit(addwiki);
 });
 
 /* 
@@ -240,3 +249,48 @@ function regist_commit() {
 	}
 }
 
+function load_newWIKI() {
+	if ($('#APP_newWIKI').is(':hidden')) {
+		$('#APP_newWIKI').show();
+		$('#APP_newWIKI_title').focus();
+	} else {
+		$('#APP_newWIKI').hide();
+		$('#APP_queryWIKI_title').focus();
+	}
+}
+
+function addwiki(evt) {
+	// 阻断默认提交过程
+	evt.preventDefault();
+
+	//准备变量
+	var title = $('#APP_newWIKI_title').val();
+	var type = $('#APP_newWIKI_type').val();
+	var content = CKEDITOR.instances.APP_newWIKI_content.getData();
+	
+	// 检查输入
+	if (title == "" || content == "") {
+		alert('OMM：禁止空信息');
+		return false;
+	}
+
+	$.ajax({
+		type: 'POST',
+		url: '?a=wiki&p=add',
+		data: {
+			'title': title,
+			'type': type,
+			'content': content,
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert(data.message);
+				window.location.reload();
+			} else if (data.code == 0) {
+				alert(data.message);
+				window.location.reload();
+			}
+		},
+		dataType: 'json'
+	});
+}

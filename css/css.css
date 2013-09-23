@@ -524,8 +524,6 @@ body.scroll #APP_top_user {
 	margin-bottom: 20px;
 }
 
-
-
 #APP_signal_info {
 	width: 670px;
 	float: left;
@@ -555,6 +553,12 @@ body.scroll #APP_top_user {
 	text-align: left;
 	color: #555;
 }
+
+
+#APP_newWIKI {
+	margin-top:10px;
+}
+
 
 /*
 	后台CSS

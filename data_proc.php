@@ -4,7 +4,8 @@
  * 功能索引
  *	1.修改密码
  *	2.服务报告单
- *	3.WIKI
+ *	3.首页
+ *	4.WIKI
  *
  */
 
@@ -19,7 +20,7 @@ if (!defined('__ROOT__')) {
 
  switch ($_GET['a']) {
 	/**
-	 * 功能 - > 修改密码
+	 * 功能 - > 修改密码(start)
 	 *
 	 */
 	case "chgpasswd":
@@ -49,7 +50,11 @@ if (!defined('__ROOT__')) {
 		}
 		break;
 	/**
-	 * 功能 - > 服务报告单
+	 * 功能 - > 修改密码(end)
+	 *
+	 */
+	/**
+	 * 功能 - > 服务报告单(start)
 	 *
 	 */
 	case 'services':
@@ -57,11 +62,16 @@ if (!defined('__ROOT__')) {
 		break;
 		exit;
 	/**
-	 * 功能 - > 首页
+	 * 功能 - > 服务报告单(end)
+	 *
+	 */
+	/**
+	 * 功能 - > 首页(start)
 	 *
 	 */
 	case '':
 		switch ($_GET['p']) {
+			//处理总时间记录
 			case "recordtime":
 				if (!empty($_SESSION['index_recordtime'])) {
 					exit;
@@ -98,6 +108,8 @@ if (!defined('__ROOT__')) {
 				echo json_encode($result);
 				exit;
 				break;
+			//处理总时间记录结束
+			//处理每日工作时间
 			case "workrecord":
 				$post = $_POST['op'];
 				$item = $_POST['item'];
@@ -316,8 +328,59 @@ if (!defined('__ROOT__')) {
 					}
 				}
 				break;
+			//处理每日工作时间结束
 		}
 		break;
+	/**
+	 * 功能 - > 首页(end)
+	 *
+	 */
+	/**
+	 * 功能 - > WIKI(start)
+	 *
+	 */
+	case "wiki":
+		//添加wiki
+		switch ($_GET['p']) {
+			case "add":
+				$title = string_filter($_POST['title']);
+				$subtype = numeric_filter($_POST['type']);
+				$content = XSS_filter($_POST['content']);
+				if ($title == "" || $subtype == "" || $content == "") {
+					$result = array (
+							"code" => 0,
+							"message" => "文档添加失败"
+						);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				}
+				$APP_sql = new APP_SQL();
+				$APP_sql -> insertWIKI($title, $subtype, $content);
+				$App_affected = $APP_sql -> affected();
+				$APP_sql -> close();
+				if ($App_affected == 1) {
+					$result = array (
+							"code" => 1,
+							"message" => "文档添加成功"
+						);
+				} else {
+					$result = array (
+							"code" => 0,
+							"message" => "文档添加失败"
+						);
+				}
+				header('Content-Type: application/json');
+				echo json_encode($result);
+				exit;
+				break;
+		}
+		//添加wiki结束
+		break;
+	/**
+	 * 功能 - > WIKI(end)
+	 *
+	 */
 }
 	
 ?>

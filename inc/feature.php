@@ -15,6 +15,7 @@ if (!defined('__ROOT__')) {
  *	
  * 1.1	过滤 -> 注入检测
  * 1.2	过滤 -> 数字检测
+ * 1.3	过滤 -> XSS检测
  * 
  * 2.1	转换 -> 职位代码转换
  * 2.2	转换 -> 性别代码转换
@@ -32,7 +33,7 @@ if (!defined('__ROOT__')) {
  *
  * param $string -> 传入的字符串
  */
-function string_filter($string){
+function string_filter($string) {
 	if (preg_match("/[\<\>]+/", $string) !== 0) {
 		return false;
 	}
@@ -49,13 +50,26 @@ function string_filter($string){
  *
  * param $string -> 传入的数字字符串
  */
-function numeric_filter($string){
+function numeric_filter($string) {
 	if (is_numeric($string)) {
 		return $string;
 	} else {
 		return false;
 	}
 	
+}
+
+
+/**
+ * 1.3	过滤 -> XSS检测
+ *
+ * param $string -> 传入的数字字符串
+ */
+function XSS_filter($string) {
+	if (preg_match("/(<script>)/", $string) !== 0) {
+		return false;
+	}	
+	return $string;
 }
 
 

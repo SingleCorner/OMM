@@ -211,6 +211,14 @@ class APP_SQL {
 		$sql = "INSERT INTO `s_check` (`account`,`date`,`checkstatus`) values ('{$account}','{$date}','0');";
 		return $this -> db -> query($sql);
 	}
+	/**
+	 * 插入 -> wiki
+	 */
+	public function insertWIKI($title, $subtype, $content) {
+		$name = $_SESSION['Login_name'];
+		$sql = "INSERT INTO `s_wiki` (`type`,`subtype`,`headline`,`body`,`owner`) values ('4','{$subtype}','{$title}','{$content}','{$name}');";
+		return $this -> db -> query($sql);
+	}
 
 
 	/**
