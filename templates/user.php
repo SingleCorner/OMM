@@ -402,6 +402,36 @@ function APP_html_module(){
 					<input type="reset" value="清空文档" />
 				</form>
 			</div>
+			<div id="APP_listWIKI">
+				<div class="title_container"><h1>文档列表</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=5%>ID</th>
+						<th>文档标题</th>
+						<th>文档内容</th>
+						<th width=10%>贡献者</th>
+					</tr>
+				<?php
+				$APP_sql = new APP_SQL();
+				$App_listWIKI = $APP_sql -> getTableAll("s_wiki");
+				$APP_sql -> close();
+				while ($App_listWIKI_query = $APP_sql -> fetch_assoc($App_listWIKI)) {
+					$id = $App_listWIKI_query['id'];
+					$title = $App_listWIKI_query['headline'];
+					$content = $App_listWIKI_query['body'];
+					$owner = $App_listWIKI_query['owner'];
+				?>
+					<tr>
+						<td><?php echo $id;?></td>
+						<td><?php echo $title;?></td>
+						<td><?php echo $content;?></td>
+						<td><?php echo $owner;?></td>
+					</tr>
+				<?php
+				}
+				?>
+				</table>
+			</div>
 <?php
 			 break;
 

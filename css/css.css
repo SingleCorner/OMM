@@ -556,9 +556,12 @@ body.scroll #APP_top_user {
 
 
 #APP_newWIKI {
-	margin-top:10px;
+	margin-top: 10px;
 }
 
+#APP_listWIKI {
+	margin-top: 10px;
+}
 
 /*
 	后台CSS
