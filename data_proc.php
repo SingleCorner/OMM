@@ -308,11 +308,11 @@ if (!defined('__ROOT__')) {
 					switch ($item) {
 						case "2":
 							$field = "comcheckout";
-							$time = "17:00:00";
+							$time = "16:00:00";
 							$status = "2";
 							$APP_sql -> updateWorkrecord($field, $time, $status);
 							$field = "cencheckin";
-							$time = "17:00:00";
+							$time = "16:00:00";
 							$APP_sql -> updateWorkrecord($field, $time, $status);
 							$App_affected = $APP_sql -> affected();
 							$APP_sql -> close();

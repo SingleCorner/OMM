@@ -260,8 +260,9 @@ class APP_SQL {
 	 * 查询 -> 列出本月值班记录
 	 */
 	public function getWorkrecordList() {
-		$date = date("Y-m");
-		$sql = "SELECT * from `s_check` WHERE `account` = '{$_SESSION['Login_account']}' AND `date` LIKE '{$date}%';";
+		$curmonth = date("Y-m");
+		$premonth = date("Y-m",strtotime($curmonth)-1); 
+		$sql = "SELECT * from `s_check` WHERE `account` = '{$_SESSION['Login_account']}' AND (`date` LIKE '{$curmonth}%' OR `date` LIKE '{$premonth}%');";
 		$query = $this -> db -> query($sql);
 		return $query;
 	}

@@ -238,47 +238,6 @@ input[type="reset"].red:active {
 }
 
 
-.btn.blue,
-button.red,
-input[type="button"].red,
-input[type="submit"].red,
-input[type="reset"].red {
-	color: #FFF;
-	border-color: rgba(40, 40, 160, 0.50);
-	border-bottom-color: rgba(40, 40, 160, 1.00);
-	background: #e8776f;
-	background: -moz-linear-gradient(top,  #e8776f 0%, #bf5b5b 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8776f), color-stop(100%,#bf5b5b));
-	background: -webkit-linear-gradient(top,  #e8776f 0%,#bf5b5b 100%);
-	background: -o-linear-gradient(top,  #e8776f 0%,#bf5b5b 100%);
-	background: -ms-linear-gradient(top,  #e8776f 0%,#bf5b5b 100%);
-	background: linear-gradient(to bottom,  #e8776f 0%,#bf5b5b 100%);
-}
-.btn.blue:hover,
-button.red:hover,
-input[type="button"].red:hover,
-input[type="submit"].red:hover,
-input[type="reset"].red:hover {
-	border-color: rgba(160, 40, 40, 1.00);
-	color: #FFF;
-	background: #e8776f;
-	background: -moz-linear-gradient(top,  #e8776f 0%, #bf5d5d 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8776f), color-stop(100%,#bf5d5d));
-	background: -webkit-linear-gradient(top,  #e8776f 0%,#bf5d5d 100%);
-	background: -o-linear-gradient(top,  #e8776f 0%,#bf5d5d 100%);
-	background: -ms-linear-gradient(top,  #e8776f 0%,#bf5d5d 100%);
-	background: linear-gradient(to bottom,  #e8776f 0%,#bf5d5d 100%);
-}
-.btn.blue:active,
-button.red:active,
-input[type="button"].red:active,
-input[type="submit"].red:active,
-input[type="reset"].red:active {
-	color: #FFF;
-	background: #bf5b5b;
-}
-
-
 input[type="text"],
 input[type="password"] {
 	display: inline-block;
@@ -501,7 +460,7 @@ body.scroll #APP_top_user {
 	width: 980px;
 	min-height: 200px;
 	word-break: break-all;
-	color: #600;
+	color: #555;
 }
 .signal_center {
 	text-align: center;
@@ -534,6 +493,29 @@ body.scroll #APP_top_user {
 #APP_signal_noinfo > form >div {
 	margin-top:10px;
 }
+
+
+#APP_newSrvs {
+	margin: 10px auto;
+	width: 670px;
+}
+#APP_newSrvs > form > div {
+	margin-top: 10px;
+}
+#APP_newSrvs > form > center {
+	margin-top: 20px;
+	color: #999;
+}
+
+#APP_newSrvs label {
+	margin-right: 0px;
+}
+
+#APP_listSrvs {
+	margin-top: 20px;
+	color: #555;
+}
+
 
 
 #APP_chgpass {

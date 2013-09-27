@@ -30,6 +30,12 @@ $(document).ready(function() {
 
 	//wiki -> 提交新知识
 	$('#APP_newWIKI_form').submit(addwiki);
+
+	//服务报告单 -> 默认隐藏
+//	$('#APP_newSrvs').hide();
+
+	//服务报告单 -> 默认焦点
+	$('#APP_querySrvs_id').focus();
 });
 
 /* 
@@ -249,6 +255,9 @@ function regist_commit() {
 	}
 }
 
+/* 
+ * WIKI -> 加载模块
+ */
 function load_newWIKI() {
 	if ($('#APP_newWIKI').is(':hidden')) {
 		$('#APP_newWIKI').show();
@@ -258,7 +267,9 @@ function load_newWIKI() {
 		$('#APP_queryWIKI_title').focus();
 	}
 }
-
+/* 
+ * WIKI -> 新建文档
+ */
 function addwiki(evt) {
 	// 阻断默认提交过程
 	evt.preventDefault();
@@ -293,4 +304,17 @@ function addwiki(evt) {
 		},
 		dataType: 'json'
 	});
+}
+
+/* 
+ * 服务报告单 -> 模块加载
+ */
+function load_newSrvs() {
+	if ($('#APP_newSrvs').is(':hidden')) {
+		$('#APP_newSrvs').show();
+		$('#APP_newSrvs_title').focus();
+	} else {
+		$('#APP_newSrvs').hide();
+		$('#APP_querySrvs_id').focus();
+	}
 }

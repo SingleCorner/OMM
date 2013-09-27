@@ -99,13 +99,16 @@ function APP_html_header() {
 			$module = module_usercheck($_SESSION['Login_section']);
 			foreach ($module as $key => $value) {
 			?>
+				
 				<li><a href="./?a=<?php echo $value;?>"><?php echo $key;?></a></li>
 			<?php
 			}
 			if (access_policy()) { 
 			?>
+
 				<li><a href="./admin.php">后台管理</a></li>
 			<?php } ?>
+
 			</ul>
 		</nav>
 		<!-- 导航区结束 -->
@@ -145,46 +148,46 @@ function APP_html_module(){
 			<div id="APP_signal">
 				<div id="APP_signal_op">
 					<div>当前日期 <?php echo date("Y-m-d");?></div>
-				<?php
-				if ($App_worktime['recordtime'] != "") {
-					$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
-					$lefttime = $App_worktime['onwork'] + $App_worktime['overwork'] - $App_worktime['rest'];
-					$APP_sql = new APP_SQL();
-					$App_workrecord = $APP_sql -> getWorkrecord();
-					if ($App_workrecord === FALSE) {
-						$date = date("Y-m-01");
-						$APP_sql -> insertWorkrecord($date);
-						$APP_sql -> close();
-						header('Location: /');
-					} else {
-						$status = $App_workrecord['checkstatus'];
-						$date = $App_workrecord['date'];
-						$_SESSION['workrecord_date'] = $date;
-						$weekno = date("N",strtotime($date));
-						if ($status == 4) {
-							if ($date != date("Y-m-d")) {
-								$date = date("Y-m-d", strtotime($date."+ 1 day"));
-								$APP_sql -> insertWorkrecord($date);
-								header('Location: /');
-							} else {
-					?>
+<?php
+if ($App_worktime['recordtime'] != "") {
+	$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
+	$lefttime = $App_worktime['onwork'] + $App_worktime['overwork'] - $App_worktime['rest'];
+	$APP_sql = new APP_SQL();
+	$App_workrecord = $APP_sql -> getWorkrecord();
+	if ($App_workrecord === FALSE) {
+		$date = date("Y-m-01");
+		$APP_sql -> insertWorkrecord($date);
+		$APP_sql -> close();
+		header('Location: /');
+	} else {
+		$status = $App_workrecord['checkstatus'];
+		$date = $App_workrecord['date'];
+		$_SESSION['workrecord_date'] = $date;
+		$weekno = date("N",strtotime($date));
+		if ($status == 4) {
+			if ($date != date("Y-m-d")) {
+				$date = date("Y-m-d", strtotime($date."+ 1 day"));
+				$APP_sql -> insertWorkrecord($date);
+				header('Location: /');
+			} else {
+?>
 					<div id="APP_signal_opbtn">
 						<div><?php echo "今日已记录";?></div>
 					</div>
-					<?php
-							}
-							$APP_sql -> close();
-						} else {
-							$APP_sql -> close();
-							if (strtotime($date) < strtotime(date("Y-m-d"))) {
-								$tips = "历史补录";
-							} else {
-								$tips = "今日记录";
-							}
-							$tips = $tips." ".$date;
-							switch ($status) {
-								case "0":
-					?>
+<?php
+		}
+		$APP_sql -> close();
+	} else {
+		$APP_sql -> close();
+		if (strtotime($date) < strtotime(date("Y-m-d"))) {
+			$tips = "历史补录";
+		} else {
+			$tips = "今日记录";
+		}
+		$tips = $tips." ".$date;
+		switch ($status) {
+			case "0":
+?>
 					<div id="APP_signal_opbtn">
 						<div><?php echo $tips;?></div>
 						<div>
@@ -316,15 +319,15 @@ function APP_html_module(){
 							<th>中心上班</th>
 							<th>中心下班</th>
 						</tr>
-				<?php
+<?php
 				$APP_sql = new APP_SQL();
 				$APP_sqlquery = $APP_sql -> getWorkrecordList();
 				$APP_sql -> close();
 				while ($APP_result = $APP_sqlquery -> fetch_assoc()){
 					if ($APP_result['checkstatus'] != 0 && empty($APP_result['comcheckin']) && empty($APP_result['cencheckin'])) {
-//						$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "休息";
+   //					$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "休息";
 					}
-				?>
+?>
 						<tr>
 							<td><?php echo $APP_result['date']." ".date("D",strtotime($APP_result['date']));?></td>
 							<td><?php echo $APP_result['comcheckin'];?></td>
@@ -332,10 +335,10 @@ function APP_html_module(){
 							<td><?php echo $APP_result['cencheckin'];?></td>
 							<td><?php echo $APP_result['cencheckout'];?></td>
 						</tr>
-				<?php
-				
-				}
-				?>
+<?php
+	}
+?>
+
 					</table>
 				</div>
 			</div>
@@ -354,7 +357,121 @@ function APP_html_module(){
 		 */
 		 case "services":
 ?>
-	<center>运维管理模块正在开发中，敬请期待</center>
+			<div class="title_container">
+				<span class="title_more">
+					<form id="APP_querySrvs_form" action="?a=services&p=query" method="post">
+						<input type="text" size="10" name="id" id="APP_querySrvs_id" placeholder="服务编号" />
+						<input type="text" size="10" name="name" id="APP_querySrvs_name" placeholder="服务工程师" />
+						<input type="submit" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<button onclick="load_newSrvs()">填写服务报告单</button>
+				</h1>
+			</div>
+			<div id="APP_newSrvs">
+				<form id="APP_newSrvs_form" action="?a=services&p=add" method="post">
+					<div class="title_container"><img src="/images/leyoung.png" height="30px" /><span class="title_more">LY-QR-09-13</span></div>
+					<h2>客  户 服 务 报 告 单</h2>
+					<div>客户信息：
+						<select>
+							<option value="0">请选择</option>
+							<option>工行数据中心</option>
+						</select>
+					</div>
+					<div>
+						<table class="formtable">
+							<tr>
+								<td>客户名称: </td>
+								<td></td>
+								<td>联 系 人：</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>地 址：</td>
+								<td></td>
+								<td>电 话：</td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+					<div>客户报修/需求：
+						<select>
+							<option value="0">请选择</option>
+							<option>IBM P系列服务器微码升级</option>
+						</select>
+					</div>
+					<div>服务类型：</div>
+					<div>
+						<table class="formtable">
+							<tr>
+								<td><label><input name="Srvs_srvtype" type="radio" value="1" />新机保修</label></td>
+								<td><label><input name="Srvs_srvtype" type="radio" value="2" />利银MA</label></td>
+								<td><label><input name="Srvs_srvtype" type="radio" value="3" />厂商MA</label></td>
+								<td><label><input name="Srvs_srvtype" type="radio" value="4" />无备件MA</label></td>
+								<td><label><input name="Srvs_srvtype" type="radio" value="5" checked />保外服务</label></td>
+							</tr>
+							<tr>
+								<td><label><input name="Srvs_matype" type="radio" value="1" />生产系统维护</label></td>
+								<td><label><input name="Srvs_matype" type="radio" value="2" />备份系统维护</label></td>
+								<td><label><input name="Srvs_matype" type="radio" value="3" />测试系统维护</label></td>
+								<td><label><input name="Srvs_matype" type="radio" value="4" checked />备机维护</label></td>
+							</tr>
+						</table>
+					</div>
+					<div>服务时间：</div>
+					<div>
+						<table class="formtable">
+							<tr>
+								<td>服务开始时间：<input type="text" placeholder="<?php echo date("Y-m-d\ H:i:s");?>" /></td>
+								<td>服务结束时间：<input type="text" placeholder="<?php echo date("Y-m-d\ H:i:s");?>" /></td>
+							</tr>
+						</table>
+					</div>
+					<div>服务人员：</div>
+					<div>
+						<table class="formtable">
+							<tr>
+								<td>主要实施人员：<input type="text" /></td>
+								<td>协助实施人员：<input type="text" /></td>
+							</tr>
+						</table>
+					</div>
+					<div>系统描述：</div>
+					<div><textarea id="test1" class="ckeditor"></textarea></div>
+					<div>具体工作内容：</div>
+					<div><textarea id="test2" class="ckeditor"></textarea></div>
+					<div>操作步骤：</div>
+					<div></div>
+					<div>客户评价：</div>
+					<div>意见与意见：</div>
+					<div>
+						<table class="formtable">
+							<tr>
+								<td>客户签名：</td>
+								<td></td>
+								<td></td>
+								<td>工程师签名：</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>日期：</td>
+								<td></td>
+								<td></td>
+								<td>日期：</td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+					<center>上海利银科技有限公司</center>
+				</form>
+			</div>
+			<div id="APP_listSrvs">
+<?php
+			$APP_sql = new APP_SQL();
+			$APP_sql -> close();
+?>
+			</div>
 <?php
 			 break;
 
@@ -407,7 +524,7 @@ function APP_html_module(){
 				<table class="datatable">
 					<tr>
 						<th width=5%>ID</th>
-						<th>文档标题</th>
+						<th width=30%>文档标题</th>
 						<th>文档内容</th>
 						<th width=10%>贡献者</th>
 					</tr>
@@ -442,30 +559,30 @@ function APP_html_module(){
 		 */
 		 case "chgpasswd":
 ?>
-	<div id="APP_chgpass">
-		<form id="APP_chgpass_form" action="./?a=chgpasswd&p=TRUE" method="post">
-			<ul>
-				<li>
-					<p>
-						<label>新密码</label>
-						<input type="password" name="password" id="APP_new_pswda" placeholder="请输入密码" autocomplete="off" />
-					</p>
-				</li>
-				<li>
-					<p>
-						<label>确认密码</label>
-						<input type="password" name="password2" id="APP_new_pswdb" placeholder="请再输入一次" autocomplete="off" />
-					</p>
-				</li>
-				<li>
-					<p>
-						<input type="submit" value="确认修改" id="APP_chgpass_submit" title="确认更改密码" />
-					</p>
-				</li>
-			</ul>
-		</form>
-		<div id="APP_chgpass_status"></div>
-	</div>
+			<div id="APP_chgpass">
+				<form id="APP_chgpass_form" action="./?a=chgpasswd&p=TRUE" method="post">
+					<ul>
+						<li>
+							<p>
+								<label>新密码</label>
+								<input type="password" name="password" id="APP_new_pswda" placeholder="请输入密码" autocomplete="off" />
+							</p>
+						</li>
+						<li>
+							<p>
+								<label>确认密码</label>
+								<input type="password" name="password2" id="APP_new_pswdb" placeholder="请再输入一次" autocomplete="off" />
+							</p>
+						</li>
+						<li>
+							<p>
+								<input type="submit" value="确认修改" id="APP_chgpass_submit" title="确认更改密码" />
+							</p>
+						</li>
+					</ul>
+				</form>
+				<div id="APP_chgpass_status"></div>
+			</div>
 <?php
 			 break;
 
