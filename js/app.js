@@ -32,10 +32,19 @@ $(document).ready(function() {
 	$('#APP_newWIKI_form').submit(addwiki);
 
 	//服务报告单 -> 默认隐藏
-//	$('#APP_newSrvs').hide();
+	$('#APP_newSrvs').hide();
 
 	//服务报告单 -> 默认焦点
 	$('#APP_querySrvs_id').focus();
+
+	//服务报告单 -> 创建报告单
+	$('#APP_newSrvs_form').submit(addsrvs);
+
+	//服务报告单 -> 加载客户信息
+	$('#APP_newSrvs_customer').bind("change",getcustomer);
+
+	//服务报告单 -> 加载操作步骤
+	$('#APP_newSrvs_fixid').bind("change",getopmethod);
 });
 
 /* 
@@ -317,4 +326,96 @@ function load_newSrvs() {
 		$('#APP_newSrvs').hide();
 		$('#APP_querySrvs_id').focus();
 	}
+}
+/* 
+ * 服务报告单 -> 提交报告单
+ */
+function addsrvs(evt) {
+	// 阻断默认提交过程
+	evt.preventDefault();
+
+	//准备变量
+	var customer = $('#APP_newWIKI_title').val();
+	var fixid = $('#APP_newWIKI_type').val();
+	//var content = CKEDITOR.instances.APP_newWIKI_content.getData();
+	
+	// 检查输入
+	if (customer == 0) {
+		alert('OMM：请选择客户');
+		return false;
+	}
+
+	$.ajax({
+		type: 'POST',
+		url: '?a=services&p=add',
+		data: {
+			'customer': customer,
+			'fixid': fixid,
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert(data.message);
+				window.location.reload();
+			} else if (data.code == 0) {
+				alert(data.message);
+				window.location.reload();
+			}
+		},
+		dataType: 'json'
+	});
+}
+/* 
+ * 服务报告单 -> 获取客户信息
+ */
+function getcustomer() {
+	//准备变量
+	var id = $(this).val();
+	$('#APP_newSrvs_cname').html('获取中...');
+	$('#APP_newSrvs_ccontact').html('获取中...');
+	$('#APP_newSrvs_ctel').html('获取中...');
+	$('#APP_newSrvs_caddr').html('获取中...');
+	
+	$.ajax({
+		type: 'POST',
+		url: '?a=services&p=query_customer',
+		data: {
+			'id': id
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 0) {
+				alert(data.message);
+				window.location.reload();
+			} else {
+				$('#APP_newSrvs_cname').html(data.name);
+				$('#APP_newSrvs_ccontact').html(data.contact);
+				$('#APP_newSrvs_ctel').html(data.tel);
+				$('#APP_newSrvs_caddr').html(data.addr);
+			}
+		},
+		dataType: 'json'
+	});
+}
+/* 
+ * 服务报告单 -> 获取操作步骤
+ */
+function getopmethod() {
+	//准备变量
+	var id = $(this).val();
+	
+	$.ajax({
+		type: 'POST',
+		url: '?a=services&p=query_opmethod',
+		data: {
+			'id': id
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 0) {
+				alert(data.message);
+				window.location.reload();
+			} else {
+				$('#APP_newSrvs_opmethod').html(data.content);
+			}
+		},
+		dataType: 'json'
+	});
 }

@@ -266,6 +266,14 @@ class APP_SQL {
 		$query = $this -> db -> query($sql);
 		return $query;
 	}
+	/**
+	 * 查询 -> 列出本月值班记录
+	 */
+	public function getServicesList() {
+		$sql = "SELECT * from `s_services` ORDER BY `stime` desc;";
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
 
 
 

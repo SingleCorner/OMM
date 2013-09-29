@@ -374,48 +374,49 @@ if ($App_worktime['recordtime'] != "") {
 					<div class="title_container"><img src="/images/leyoung.png" height="30px" /><span class="title_more">LY-QR-09-13</span></div>
 					<h2>客  户 服 务 报 告 单</h2>
 					<div>客户信息：
-						<select>
+						<select id="APP_newSrvs_customer" name="customer">
 							<option value="0">请选择</option>
-							<option>工行数据中心</option>
+							<option value="4">工行数据中心</option>
+							<option value="6">测试选项。。。</option>
 						</select>
 					</div>
 					<div>
 						<table class="formtable">
 							<tr>
-								<td>客户名称: </td>
-								<td></td>
+								<td width=15%>客户名称: </td>
+								<td id="APP_newSrvs_cname" width=40%></td>
 								<td>联 系 人：</td>
-								<td></td>
+								<td id="APP_newSrvs_ccontact"></td>
 							</tr>
 							<tr>
 								<td>地 址：</td>
-								<td></td>
+								<td id="APP_newSrvs_caddr"></td>
 								<td>电 话：</td>
-								<td></td>
+								<td id="APP_newSrvs_ctel"></td>
 							</tr>
 						</table>
 					</div>
 					<div>客户报修/需求：
-						<select>
+						<select id="APP_newSrvs_fixid" name="fixid">
 							<option value="0">请选择</option>
-							<option>IBM P系列服务器微码升级</option>
+							<option value="1">IBM P系列服务器微码升级</option>
 						</select>
 					</div>
 					<div>服务类型：</div>
 					<div>
 						<table class="formtable">
 							<tr>
-								<td><label><input name="Srvs_srvtype" type="radio" value="1" />新机保修</label></td>
-								<td><label><input name="Srvs_srvtype" type="radio" value="2" />利银MA</label></td>
-								<td><label><input name="Srvs_srvtype" type="radio" value="3" />厂商MA</label></td>
-								<td><label><input name="Srvs_srvtype" type="radio" value="4" />无备件MA</label></td>
-								<td><label><input name="Srvs_srvtype" type="radio" value="5" checked />保外服务</label></td>
+								<td><label><input name="stype" type="radio" value="1" />新机保修</label></td>
+								<td><label><input name="stype" type="radio" value="2" />利银MA</label></td>
+								<td><label><input name="stype" type="radio" value="3" />厂商MA</label></td>
+								<td><label><input name="stype" type="radio" value="4" />无备件MA</label></td>
+								<td><label><input name="stype" type="radio" value="5" checked />保外服务</label></td>
 							</tr>
 							<tr>
-								<td><label><input name="Srvs_matype" type="radio" value="1" />生产系统维护</label></td>
-								<td><label><input name="Srvs_matype" type="radio" value="2" />备份系统维护</label></td>
-								<td><label><input name="Srvs_matype" type="radio" value="3" />测试系统维护</label></td>
-								<td><label><input name="Srvs_matype" type="radio" value="4" checked />备机维护</label></td>
+								<td><label><input name="mtype" type="radio" value="1" />生产系统维护</label></td>
+								<td><label><input name="mtype" type="radio" value="2" />备份系统维护</label></td>
+								<td><label><input name="mtype" type="radio" value="3" />测试系统维护</label></td>
+								<td><label><input name="mtype" type="radio" value="4" checked />备机维护</label></td>
 							</tr>
 						</table>
 					</div>
@@ -423,8 +424,8 @@ if ($App_worktime['recordtime'] != "") {
 					<div>
 						<table class="formtable">
 							<tr>
-								<td>服务开始时间：<input type="text" placeholder="<?php echo date("Y-m-d\ H:i:s");?>" /></td>
-								<td>服务结束时间：<input type="text" placeholder="<?php echo date("Y-m-d\ H:i:s");?>" /></td>
+								<td>服务开始时间：<input id="APP_newSrvs_start" name="start" type="text" placeholder="<?php echo date("Y-m-d\ H:i:s");?>" /></td>
+								<td>服务结束时间：<input id="APP_newSrvs_end" name="end" type="text" placeholder="<?php echo date("Y-m-d\ H:i:s");?>" /></td>
 							</tr>
 						</table>
 					</div>
@@ -432,18 +433,18 @@ if ($App_worktime['recordtime'] != "") {
 					<div>
 						<table class="formtable">
 							<tr>
-								<td>主要实施人员：<input type="text" /></td>
-								<td>协助实施人员：<input type="text" /></td>
+								<td>主要实施人员：<input id="APP_newSrvs_main" name="main" type="text" /></td>
+								<td>协助实施人员：<input id="APP_newSrvs_sub" name="sub" type="text" /></td>
 							</tr>
 						</table>
 					</div>
 					<div>系统描述：</div>
-					<div><textarea id="test1" class="ckeditor"></textarea></div>
+					<div><textarea id="APP_newSrvs_sysdescr" name="sysdescr" class="ckeditor"></textarea></div>
 					<div>具体工作内容：</div>
-					<div><textarea id="test2" class="ckeditor"></textarea></div>
+					<div><textarea id="APP_newSrvs_workdescr" name="workdescr" class="ckeditor"></textarea></div>
 					<div>操作步骤：</div>
-					<div></div>
-					<div>客户评价：</div>
+					<div id="APP_newSrvs_opmethod"></div>
+<!--					<div>客户评价：</div>
 					<div>意见与意见：</div>
 					<div>
 						<table class="formtable">
@@ -463,14 +464,42 @@ if ($App_worktime['recordtime'] != "") {
 							</tr>
 						</table>
 					</div>
-					<center>上海利银科技有限公司</center>
+-->					<center>上海利银科技有限公司</center>
+					<div><input class="red" type="submit" value="提交服务报告单" /></div>
 				</form>
 			</div>
 			<div id="APP_listSrvs">
+				<div class="title_container"><h1>服务报告单列表</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=5%>ID</th>
+						<th width=30%>服务需求</th>
+						<th>开始时间</th>
+						<th>结束时间</th>
+						<th width=10%>服务工程师</th>
+					</tr>
 <?php
 			$APP_sql = new APP_SQL();
+			$query = $APP_sql -> getServicesList();
 			$APP_sql -> close();
+			while ($APP_result = $query -> fetch_assoc()) {
+				$id = $APP_result['id'];
+				$need = $APP_result['need'];
+				$start = $APP_result['stime'];
+				$end = $APP_result['etime'];
+				$engineer = $APP_result['egineer'];
 ?>
+					<tr>
+						<td><?php echo $id;?></td>
+						<td><?php echo $need;?></td>
+						<td><?php echo $start;?></td>
+						<td><?php echo $end;?></td>
+						<td><?php echo $engineer;?></td>
+					</tr>
+<?php
+			}
+?>
+				</table>
 			</div>
 <?php
 			 break;

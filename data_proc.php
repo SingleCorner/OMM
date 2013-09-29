@@ -58,7 +58,70 @@ if (!defined('__ROOT__')) {
 	 *
 	 */
 	case 'services':
-		echo 123;
+		switch ($_GET['p']) {
+			//查询客户信息
+			case "query_customer":
+				$id = numeric_filter($_POST['id']);
+				if ($id >= 1) {
+					$APP_sql = new APP_SQL();
+					$query = $APP_sql -> getTableAllWhere("s_customer","id",$id);
+					$APP_sql -> close();
+					if ($query['status'] == 1) {
+						$result = array(
+							"code" => 1,
+							"name" => $query['name'],
+							"contact" => $query['contact'],
+							"tel" => $query['tel'],
+							"addr" => $query['address']
+						);
+					} else {
+						$result = array(
+							"code" => 0,
+							"message" => "客户不存在或已无合作关系"
+						);
+					}
+				} else {
+					$result = array(
+						"code" => 0,
+						"message" => "非法输入"
+					);
+				}
+				header('Content-Type: application/json');
+				echo json_encode($result);
+				exit;
+				break;
+			//查询操作步骤
+			case "query_opmethod":
+				$id = numeric_filter($_POST['id']);
+				if ($id >= 1) {
+					$APP_sql = new APP_SQL();
+					$query = $APP_sql -> getTableAllWhere("s_wiki","id",$id);
+					$APP_sql -> close();
+					if ($query['subtype'] == 1) {
+						$result = array(
+							"code" => 1,
+							"content" => $query['body']
+						);
+					} else {
+						$result = array(
+							"code" => 0,
+							"message" => "文档错误"
+						);
+					}
+				} else {
+					$result = array(
+						"code" => 0,
+						"message" => "非法输入"
+					);
+				}
+				header('Content-Type: application/json');
+				echo json_encode($result);
+				exit;
+				break;
+			case "add":
+
+				break;
+		}
 		break;
 		exit;
 	/**
