@@ -324,8 +324,11 @@ if ($App_worktime['recordtime'] != "") {
 				$APP_sqlquery = $APP_sql -> getWorkrecordList();
 				$APP_sql -> close();
 				while ($APP_result = $APP_sqlquery -> fetch_assoc()){
-					if ($APP_result['checkstatus'] != 0 && empty($APP_result['comcheckin']) && empty($APP_result['cencheckin'])) {
-   //					$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "休息";
+					if ($APP_result['comcheckin'] == "00:00:00") {
+   						$APP_result['comcheckin'] = $APP_result['comcheckout'] = "调休";
+					}
+					if ($APP_result['checkstatus'] == 4 && empty($APP_result['comcheckin']) && empty($APP_result['cencheckin'])) {
+   						$APP_result['comcheckin'] = $APP_result['comcheckout'] = $APP_result['cencheckin'] = $APP_result['cencheckout'] = "---";
 					}
 ?>
 						<tr>
@@ -361,7 +364,7 @@ if ($App_worktime['recordtime'] != "") {
 				<span class="title_more">
 					<form id="APP_querySrvs_form" action="?a=services&p=query" method="post">
 						<input type="text" size="10" name="id" id="APP_querySrvs_id" placeholder="服务编号" />
-						<input type="text" size="10" name="name" id="APP_querySrvs_name" placeholder="服务工程师" />
+						<input type="text" size="10" name="name" id="APP_querySrvs_date" placeholder="日期" />
 						<input type="submit" value="查询" />
 					</form>
 				</span>
@@ -377,7 +380,6 @@ if ($App_worktime['recordtime'] != "") {
 						<select id="APP_newSrvs_customer" name="customer">
 							<option value="0">请选择</option>
 							<option value="4">工行数据中心</option>
-							<option value="6">测试选项。。。</option>
 						</select>
 					</div>
 					<div>
@@ -399,7 +401,7 @@ if ($App_worktime['recordtime'] != "") {
 					<div>客户报修/需求：
 						<select id="APP_newSrvs_fixid" name="fixid">
 							<option value="0">请选择</option>
-							<option value="1">IBM P系列服务器微码升级</option>
+							<option value="1">IBM P系列服务器环境搭建</option>
 						</select>
 					</div>
 					<div>服务类型：</div>
@@ -472,11 +474,12 @@ if ($App_worktime['recordtime'] != "") {
 				<div class="title_container"><h1>服务报告单列表</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th width=5%>ID</th>
-						<th width=30%>服务需求</th>
-						<th>开始时间</th>
-						<th>结束时间</th>
-						<th width=10%>服务工程师</th>
+						<th width=10%>ID</th>
+						<th width=25%>服务需求</th>
+						<th>服务时间</th>
+						<th width=10%>实施工程师</th>
+						<th width=15%>服务单填写人</th>
+						<th width=15%>操作</th>
 					</tr>
 <?php
 			$APP_sql = new APP_SQL();
@@ -484,17 +487,19 @@ if ($App_worktime['recordtime'] != "") {
 			$APP_sql -> close();
 			while ($APP_result = $query -> fetch_assoc()) {
 				$id = $APP_result['id'];
-				$need = $APP_result['need'];
-				$start = $APP_result['stime'];
-				$end = $APP_result['etime'];
-				$engineer = $APP_result['egineer'];
+				$need = $APP_result['headline'];
+				$start = date("Y-m-d",strtotime($APP_result['stime']));
+				$end = date("Y-m-d",strtotime($APP_result['etime']));
+				$engineer = $APP_result['mainmbr'];
+				$writer = $APP_result['engineer'];
 ?>
 					<tr>
 						<td><?php echo $id;?></td>
 						<td><?php echo $need;?></td>
-						<td><?php echo $start;?></td>
-						<td><?php echo $end;?></td>
+						<td><?php echo $start." 至 ".$end;?></td>
 						<td><?php echo $engineer;?></td>
+						<td><?php echo $writer;?></td>
+						<td><button class="query_srvs" value="<?php echo $id;?>">查看</button><button class="print_srvs">打印</button></td>
 					</tr>
 <?php
 			}

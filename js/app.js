@@ -45,6 +45,9 @@ $(document).ready(function() {
 
 	//服务报告单 -> 加载操作步骤
 	$('#APP_newSrvs_fixid').bind("change",getopmethod);
+
+	//服务报告单 -> 查询
+	$('.query_srvs').bind("click",query_srvs);
 });
 
 /* 
@@ -335,13 +338,37 @@ function addsrvs(evt) {
 	evt.preventDefault();
 
 	//准备变量
-	var customer = $('#APP_newWIKI_title').val();
-	var fixid = $('#APP_newWIKI_type').val();
-	//var content = CKEDITOR.instances.APP_newWIKI_content.getData();
+	var customer = $('#APP_newSrvs_customer').val();
+	var fixid = $('#APP_newSrvs_fixid').val();
+	var stype = $('input[name="stype"]:checked').val();
+	var mtype = $('input[name="mtype"]:checked').val();
+	var start = $('#APP_newSrvs_start').val();
+	var end = $('#APP_newSrvs_end').val();
+	var main = $('#APP_newSrvs_main').val();
+	var sub = $('#APP_newSrvs_sub').val();
+	var sysdescr = CKEDITOR.instances.APP_newSrvs_sysdescr.getData();
+	var workdescr = CKEDITOR.instances.APP_newSrvs_workdescr.getData();
 	
 	// 检查输入
 	if (customer == 0) {
 		alert('OMM：请选择客户');
+		$('#APP_newSrvs_customer').focus();
+		return false;
+	} else if (fixid == 0) {
+		alert('OMM：请选择客户需求');
+		$('#APP_newSrvs_fixid').focus();
+		return false;
+	} else if (start == "") {
+		alert('OMM：请输入开始时间');
+		$('#APP_newSrvs_start').focus();
+		return false;
+	} else if (end == "") {
+		alert('OMM：请输入结束时间');
+		$('#APP_newSrvs_end').focus();
+		return false;
+	} else if (main == "") {
+		alert('OMM：请选择主实施人');
+		$('#APP_newSrvs_main').focus();
 		return false;
 	}
 
@@ -351,6 +378,14 @@ function addsrvs(evt) {
 		data: {
 			'customer': customer,
 			'fixid': fixid,
+			'stype': stype,
+			'mtype': mtype,
+			'start': start,
+			'end': end,
+			'main': main,
+			'sub': sub,
+			'sysdescr': sysdescr,
+			'workdescr': workdescr
 		},
 		success: function(data, status, xhr) {
 			if (data.code == 1) {
@@ -375,6 +410,13 @@ function getcustomer() {
 	$('#APP_newSrvs_ctel').html('获取中...');
 	$('#APP_newSrvs_caddr').html('获取中...');
 	
+	if (id == 0) {
+		$('#APP_newSrvs_cname').html('');
+		$('#APP_newSrvs_ccontact').html('');
+		$('#APP_newSrvs_ctel').html('');
+		$('#APP_newSrvs_caddr').html('');
+		return false;
+	}
 	$.ajax({
 		type: 'POST',
 		url: '?a=services&p=query_customer',
@@ -401,6 +443,11 @@ function getcustomer() {
 function getopmethod() {
 	//准备变量
 	var id = $(this).val();
+
+	if (id == 0) {
+		$('#APP_newSrvs_opmethod').html('');
+		return false;
+	}
 	
 	$.ajax({
 		type: 'POST',
@@ -418,4 +465,12 @@ function getopmethod() {
 		},
 		dataType: 'json'
 	});
+}
+/* 
+ * 服务报告单 -> 查询
+ */
+function query_srvs() {
+//	var id = $(this).val();
+//	alert(id);
+	window.open("http://192.168.235.251/?a=services&p=query&id=1");
 }

@@ -506,16 +506,40 @@ body.scroll #APP_top_user {
 	margin-top: 20px;
 	color: #999;
 }
-
 #APP_newSrvs label {
 	margin-right: 0px;
 }
 
+
 #APP_listSrvs {
-	margin-top: 20px;
-	color: #555;
+	margin-top: 10px;
 }
 
+#APP_querySrvs {
+	margin: 10px auto;
+	width: 780px;
+	padding-left: 10px;
+}
+#APP_querySrvs > div {
+	margin-top: 10px;
+}
+#APP_querySrvs > center {
+	margin-top: 20px;
+	color: #999;
+}
+
+#APP_querySrvs_sysdescr {
+	min-height:50px;
+}
+#APP_querySrvs_opmethod {
+	min-height:160px;
+}
+#APP_querySrvs_suggest {
+	min-height:20px;
+}
+.APP_querySrvs_border {
+	border: solid 1px;
+}
 
 
 #APP_chgpass {

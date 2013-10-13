@@ -219,6 +219,19 @@ class APP_SQL {
 		$sql = "INSERT INTO `s_wiki` (`type`,`subtype`,`headline`,`body`,`owner`) values ('4','{$subtype}','{$title}','{$content}','{$name}');";
 		return $this -> db -> query($sql);
 	}
+	/**
+	 * 插入 -> 服务报告单
+	 */
+	public function insertSrvs($data) {
+		foreach ($data as $field => $value) {
+			$sql_field .= ", `{$field}`";
+			$sql_value .= ", '{$value}'"; 
+		}
+		$sql_field = "`id`".$sql_field;
+		$sql_value = "''".$sql_value;
+		$sql = "INSERT INTO `s_services` ({$sql_field}) values ({$sql_value});";
+		return $this -> db -> query($sql);
+	}
 
 
 	/**
@@ -257,7 +270,7 @@ class APP_SQL {
 		}
 	}
 	/**
-	 * 查询 -> 列出本月值班记录
+	 * 查询 -> 列出近2个月值班记录
 	 */
 	public function getWorkrecordList() {
 		$curmonth = date("Y-m");
@@ -270,7 +283,7 @@ class APP_SQL {
 	 * 查询 -> 列出本月值班记录
 	 */
 	public function getServicesList() {
-		$sql = "SELECT * from `s_services` ORDER BY `stime` desc;";
+		$sql = "SELECT * from `view_srvform` ORDER BY `stime` desc;";
 		$query = $this -> db -> query($sql);
 		return $query;
 	}
