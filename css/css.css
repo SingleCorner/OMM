@@ -66,6 +66,7 @@ h3 {
 	/*margin-top: 24px;*/
 	line-height: 50px;
 	font-size: 12px;
+	overflow: hidden;
 }
 
 .light {
@@ -517,25 +518,49 @@ body.scroll #APP_top_user {
 
 #APP_querySrvs {
 	margin: 10px auto;
-	width: 780px;
+	width: 760px;
 	padding-left: 10px;
+	font-size: 12px;
+	font-family: "宋体";
 }
+
 #APP_querySrvs > div {
 	margin-top: 10px;
+	font-size: 16px;
+	font-weight: bold;
+}
+#APP_querySrvs > div > span {
+	font-size: 12px;
+	font-weight: normal;
+}
+#APP_querySrvs > div.APP_querySrvs_border {
+	margin-top: 10px;
+	font-size: 14px;
+	font-weight: normal;
 }
 #APP_querySrvs > center {
 	margin-top: 20px;
 	color: #999;
 }
+#APP_querySrvs h2 {
+	font-size:21px;
+}
+#APP_querySrvs table {
+	font-size: 12px;
+	font-weight: normal;
+}
+#APP_querySrvs table tr > td > strong {
+	font-size: 16px;
+}
+
 
 #APP_querySrvs_sysdescr {
-	min-height:50px;
+	min-height:40px;
 }
 #APP_querySrvs_opmethod {
-	min-height:160px;
+	min-height:170px;
 }
 #APP_querySrvs_suggest {
-	min-height:20px;
 }
 .APP_querySrvs_border {
 	border: solid 1px;

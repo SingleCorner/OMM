@@ -179,6 +179,7 @@ switch ($module_name) {
 		switch ($_GET['p']) {
 			case "add":
 				$name = string_filter($_POST['name']);
+				$nickname = string_filter($_POST['nickname']);
 				$contact = string_filter($_POST['contact']);
 				$tel = numeric_filter($_POST['tel']);
 				$addr = string_filter($_POST['addr']);
@@ -192,7 +193,7 @@ switch ($module_name) {
 					exit;
 				} else {
 					$APP_sql = new APP_SQL();
-					$sql = "INSERT INTO `s_customer` (`name`,`contact`,`tel`,`address`,`status`) values ('{$name}', '{$contact}', '{$tel}', '{$addr}','1');";
+					$sql = "INSERT INTO `s_customer` (`name`,`nickname`,`contact`,`tel`,`address`,`status`) values ('{$name}', '{$nickname}', '{$contact}', '{$tel}', '{$addr}','1');";
 					$APP_sql -> userDefine($sql);
 					$App_affected = $APP_sql -> affected();
 					$APP_sql -> close();
@@ -220,7 +221,7 @@ switch ($module_name) {
 				if (!empty($id)) {
 					if ($_SESSION['Login_section'] == 0) {
 						$APP_sql = new APP_SQL();
-						$sql = "UPDATE `s_customer` SET `status` = status + 1 WHERE `id` = '{$id}';";
+						$sql = "UPDATE `s_customer` SET `display` = '0', `status` = (status + 1)%2 WHERE `id` = '{$id}';";
 						$APP_sql -> userDefine($sql);
 						$affected = $APP_sql -> affected();
 						$APP_sql -> close();
@@ -229,7 +230,7 @@ switch ($module_name) {
 						$sql = "SELECT * from `s_customer` where `id` = '{$id}';";
 						$query = $APP_sql -> userDefine($sql) -> fetch_assoc();
 						if ($query['status'] % 2 == 1) {
-							$sql = "UPDATE `s_customer` SET `status` = status + 1 WHERE `id` = '{$id}';";
+							$sql = "UPDATE `s_customer` SET `display` = '0', `status` = (status + 1)%2 WHERE `id` = '{$id}';";
 							$APP_sql -> userDefine($sql);
 							$affected = $APP_sql -> affected();
 						}
@@ -246,7 +247,34 @@ switch ($module_name) {
 					} else {
 						$result = array(
 							"code" => 0,
-							"message" => "修改失败"
+							"message" => "貌似进行了非法的更改，已忽略"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					}
+				}
+				break;
+			case "display":
+				$id = numeric_filter($_POST['id']);
+				if (!empty($id)) {
+					$APP_sql = new APP_SQL();
+					$sql = "UPDATE `s_customer` SET `display` = (display + 1)%2 WHERE `id` = '{$id}' AND `status` = '1';";
+					$APP_sql -> userDefine($sql);
+					$affected = $APP_sql -> affected();
+					$APP_sql -> close();
+					if ($affected >=1) {
+						$result = array(
+							"code" => 1,
+							"message" => "已更改服务报告单显示状态"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					} else {
+						$result = array(
+							"code" => 0,
+							"message" => "更改显示状态失败"
 						);
 						header('Content-Type: application/json');
 						echo json_encode($result);
@@ -255,6 +283,48 @@ switch ($module_name) {
 				}
 				break;
 			case "query":
+				break;
+			case "chdata":
+				$id = numeric_filter($_POST['id']);
+				$name = string_filter($_POST['name']);
+				$contacter = string_filter($_POST['contacter']);
+				$tel = string_filter($_POST['tel']);
+				$addr = string_filter($_POST['addr']);
+				//此处包含一个后门：
+				//当用户已经不再合作后，管理员虽然看不见，但是仍然可以修改该客户资料
+				//补丁暂留，用于演示。
+				if (!empty($id) && !empty($name)) {
+					$APP_sql = new APP_SQL();
+					$sql = "UPDATE `s_customer` SET `nickname` = '{$name}',`contact` = '{$contacter}',`tel` = '{$tel}',`address` = '{$addr}' WHERE `id` = '{$id}';";
+					$APP_sql -> userDefine($sql);
+					$affected = $APP_sql -> affected();
+					$APP_sql -> close();
+					if ($affected >=1) {
+						$result = array(
+							"code" => 1,
+							"message" => "OMM：客户资料已更新"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					} else {
+						$result = array(
+							"code" => 0,
+							"message" => "OMM：数据更新失败，请重试"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					}
+				} else {
+					$result = array(
+						"code" => 1,
+						"message" => "OMM：遇到非法数据"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				}
 				break;
 		}
 		break;

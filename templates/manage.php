@@ -172,6 +172,7 @@ function APP_mgr_main() {
 				<div class="title_container"><h1>客户资料</h1></div><br />
 				<form id="APP_newcustomer_form" action="?a=customer&p=add" method="post">
 					客户名称<input type="text" name="name" size="20" id="APP_newCustomer_name" />
+					客户别名<input type="text" name="nickname" size="10" id="APP_newCustomer_nickname" />
 					联系人<input type="text" name="contact" size="10" maxlength="11" id="APP_newCustomer_contact" />
 					联系电话<input type="text" name="tel" size="11" id="APP_newCustomer_tel" />
 					客户地址<input type="text" name="addr" size="11" id="APP_newCustomer_addr" />
@@ -201,27 +202,44 @@ function APP_mgr_main() {
 					$tel = $App_listCustomer_query['tel'];
 					$address = $App_listCustomer_query['address'];
 					$status = $App_listCustomer_query['status'];
+					if ($status == 1) {
+						$status_text = "断开合作";
+					} else {
+						$status_text = "重新合作";
+					}
+					$display = $App_listCustomer_query['display'];
+					if ($display == 1) {
+						$display_text = "前端隐藏";
+					} else {
+						$display_text = "前端显示";
+					}
 					if ($_SESSION['Login_section'] == 0 || $status % 2 == 1) {
 				?>
 					<tr class="<?php echo "APP_customer_".$id; ?>">
-						<td onclick=""><?php echo $id;?></td>
-						<td><?php echo $name;?></td>
-						<td><?php echo $contacter;?></td>
-						<td><?php echo $tel;?></td>
-						<td><?php echo $address;?></td>
+						<input type="hidden" value="<?php echo $App_listCustomer_query['nickname'];?>" />
+						<td class="customer_id"><?php echo $id;?></td>
+						<td class="customer_name"><?php echo $name;?></td>
+						<td class="customer_contacter"><?php echo $contacter;?></td>
+						<td class="customer_tel"><?php echo $tel;?></td>
+						<td class="customer_address"><?php echo $address;?></td>
 						<td>
-							<button onclick="">客户资料修改</button>
-						<?php if ($status % 2 == 1) {?>
-							<button onclick="unlinkCustomer(<?php echo $id;?>)">断开合作</button>
-						<?php } else {?>
-							<button onclick="unlinkCustomer(<?php echo $id;?>)">重新合作</button>
-						<?php }?>
-						</td>
+							<button class="APP_customer_chdata">资料修改</button>
+<?php 
+						if ($_SESSION['Login_section'] == 0) {
+?>
+							<button onclick="chstatCustomer(<?php echo $id;?>)"><?php echo $status_text;?></button>
+<?php 
+						} else {
+?>
+							<button onclick="chDisplay(<?php echo $id;?>)"><?php echo $display_text;?></button>
+<?php
+						}
+?>
 					</tr>
-				<?php
-					}
-				} 
-				?>
+<?php
+	}
+} 
+?>
 				</table>
 			</div>
 <?php

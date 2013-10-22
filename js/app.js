@@ -48,6 +48,9 @@ $(document).ready(function() {
 
 	//服务报告单 -> 查询
 	$('.query_srvs').bind("click",query_srvs);
+
+	//服务报告单 -> 打印
+	$('.print_srvs').bind("click",print_srvs);
 });
 
 /* 
@@ -470,7 +473,15 @@ function getopmethod() {
  * 服务报告单 -> 查询
  */
 function query_srvs() {
-//	var id = $(this).val();
-//	alert(id);
-	window.open("http://192.168.235.251/?a=services&p=query&id=1");
+	var id = $(this).val();
+	var url = window.location.href;
+	window.open(url+"&p=query&id="+id);
+}
+/* 
+ * 服务报告单 -> 打印
+ */
+function print_srvs() {
+	var id = $(this).val();
+	var url = window.location.href;
+	window.open(url+"&p=query&id="+ id +"&print");
 }

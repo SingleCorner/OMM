@@ -186,25 +186,26 @@ if (!defined('__ROOT__')) {
 ?>
 			<div id="APP_querySrvs">
 				<div class="title_container"><img src="/images/leyoung.png" height="30px" /><span class="title_more">LY-QR-09-13</span></div>
-				<h2>客  户 服 务 报 告 单</h2>
-				<div class="title_container"><span class="title_more">单号_ _ _ _ _ _ _ _</span></div>
+				<h2>客 户 服 务 报 告 单</h2>
+				<div class="title_container">&nbsp;<span class="title_more">单号_ _ _ _ _ _ _ _ _ _ _</span></div>
+				<div>客 户 信 息 ：</div>
 				<div>
 					<table class="formtable">
 						<tr>
-							<td width=15%>客户名称: </td>
-							<td id="APP_querySrvs_cname" width=40%><u><?php echo $APP_result['name'];?></u></td>
-							<td>联 系 人：</td>
-							<td id="APP_querySrvs_ccontact"><u><?php echo $APP_result['contact'];?></u></td>
+							<td width=15%>客户名称：</td>
+							<td id="APP_querySrvs_cname"><u><?php echo $APP_result['name'];?></u></td>
+							<td width=15%>联 系 人：</td>
+							<td id="APP_querySrvs_ccontact" width=15%><u><?php echo $APP_result['contact'];?></u></td>
 						</tr>
 						<tr>
-							<td>地 址：</td>
+							<td>地&nbsp;&nbsp;&nbsp;&nbsp;址：</td>
 							<td id="APP_querySrvs_caddr"><u><?php echo $APP_result['address'];?></u></td>
-							<td>电 话：</td>
+							<td>电&nbsp;&nbsp;&nbsp;&nbsp;话：</td>
 							<td id="APP_querySrvs_ctel"><u><?php echo $APP_result['tel'];?></u></td>
 						</tr>
 					</table>
 				</div>
-				<div><table><tr><td>客户报修/需求：</td><td><u><?php echo $APP_result['headline'];?></u></td><td></td><td></td></tr></table></div>
+				<div><table><tr><td width=20%><strong>客户报修/需求：</strong></td><td><u><?php echo $APP_result['headline'];?></u></td></tr></table></div>
 				<div>服务类型：</div>
 				<div>
 					<table class="formtable">
@@ -215,6 +216,8 @@ if (!defined('__ROOT__')) {
 				foreach ($stype as $stype_out) {
 					if ($i == $APP_result['srvtype']) {
 						$stype_out = "√{$stype_out}";
+					} else {
+						$stype_out = "口{$stype_out}";
 					}
 ?>
 							<td><?php echo $stype_out;?></td>
@@ -232,6 +235,8 @@ if (!defined('__ROOT__')) {
 				foreach ($mtype as $mtype_out) {
 					if ($i == $APP_result['matype']) {
 						$mtype_out = "√{$mtype_out}";
+					} else {
+						$mtype_out = "口{$mtype_out}";
 					}
 ?>
 							<td><?php echo $mtype_out;?></td>
@@ -246,8 +251,8 @@ if (!defined('__ROOT__')) {
 				<div>
 					<table class="formtable">
 						<tr>
-							<td>服务开始时间：<?php echo $APP_result['stime'];?></td>
-							<td>服务结束时间：<?php echo $APP_result['etime'];?></td>
+							<td>服务开始时间：<u><?php echo date("Y年m月d日 H时i分s秒",strtotime($APP_result['stime']));?></u></td>
+							<td>服务结束时间：<u><?php echo date("Y年m月d日 H时i分s秒",strtotime($APP_result['etime']));?></u></td>
 						</tr>
 					</table>
 				</div>
@@ -263,31 +268,38 @@ if (!defined('__ROOT__')) {
 				<div>系统描述：</div>
 				<div id ="APP_querySrvs_sysdescr" class="APP_querySrvs_border"><?php echo $APP_result['sysinfo'];?></div>
 				<div>具体工作内容：</div>
-				<div class="APP_querySrvs_border"><?php echo $APP_result['workinfo'];?></div>
+				<div id="APP_querySrvs_workdescr" class="APP_querySrvs_border"><?php echo $APP_result['workinfo'];?></div>
 				<div>操作步骤：</div>
 				<div id="APP_querySrvs_opmethod" class="APP_querySrvs_border"><?php echo $APP_result['body'];?></div>
-				<div><table><tr><td>客户评价：</td><td>口满意</td><td>口比较满意</td><td>口不满意</td><td></td><td></td><td></td></tr></table></div>
+				<div><table><tr><td>客户评价：</td><td width=12%>口满意</td><td>口比较满意</td><td>口不满意</td><td></td><td></td><td></td></tr></table></div>
 				<div>客户意见与建议：</div>
 				<div id="APP_querySrvs_suggest"></div>
 				<div>
 					<table class="formtable">
 						<tr>
-							<td>客户签名：</td>
-							<td></td>
-							<td width=25%>工程师签名：</td>
-							<td width=10%></td>
+							<td width=14%>客户签名：</td>
+							<td>___________________</td>
+							<td width=15%>工程师签名：</td>
+							<td width=20%>___________________</td>
 						</tr>
 						<tr>
-							<td>日期：</td>
-							<td></td>
-							<td>日期：</td>
-							<td></td>
+							<td>日&nbsp;&nbsp;&nbsp;&nbsp;期：</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;日</td>
+							<td>日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;日</td>
 						</tr>
 					</table>
 				</div>
 				<center>上海利银科技有限公司</center>
 			</div>
-			<button class="red" onclick="$('#APP_querySrvs').printArea()">打印服务报告单</button>
+<?php
+			if (isset($_GET['print'])) {
+?>
+			<script>$('#APP_querySrvs').jqprint();</script>
+<?php
+			}
+?>
+			<button class="red" onclick="$('#APP_querySrvs').jqprint()">打印服务报告单</button>
 <?php
 				APP_html_footer();
 				break;

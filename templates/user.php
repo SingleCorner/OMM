@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * 文件不允许访问
+ *
+ */
+if (!defined('__ROOT__')) {
+	header("Status: 404");
+	exit;
+}
+
+/**
  * 加载 -> 登录界面
  *
  */
@@ -76,6 +85,7 @@ function APP_html_header() {
 	<link rel="stylesheet" href="./css/css.css" />
 	<script src="./js/jquery-1.7.2.min.js"></script>
 	<script src="./js/jquery.sha1.js"></script>
+	<script src="./js/jquery.print.js"></script>
 	<script src="./js/app.js"></script>
 	<script src="/CKE/ckeditor.js"></script>
 	<script src="/CKE/adapters/jquery.js"></script>
@@ -379,7 +389,20 @@ if ($App_worktime['recordtime'] != "") {
 					<div>客户信息：
 						<select id="APP_newSrvs_customer" name="customer">
 							<option value="0">请选择</option>
-							<option value="4">工行数据中心</option>
+<?php
+					$APP_sql = new APP_SQL();
+					$sql_customer = "SELECT * from `s_customer` WHERE `display` = '1';";
+					$query = $APP_sql -> userDefine($sql_customer);
+					$APP_sql -> close();
+					while ($APP_result = $query -> fetch_assoc()) {
+						$id = $APP_result['id'];
+						$name = $APP_result['nickname'];
+?>
+							<option value="<?php echo $id;?>"><?php echo $name;?></option>
+<?php
+					}
+
+?>
 						</select>
 					</div>
 					<div>
@@ -401,7 +424,20 @@ if ($App_worktime['recordtime'] != "") {
 					<div>客户报修/需求：
 						<select id="APP_newSrvs_fixid" name="fixid">
 							<option value="0">请选择</option>
-							<option value="1">IBM P系列服务器环境搭建</option>
+<?php
+					$APP_sql = new APP_SQL();
+					$sql_wiki = "SELECT * from `s_wiki` WHERE `type` = '4' AND `subtype` = '1';";
+					$query = $APP_sql -> userDefine($sql_wiki);
+					$APP_sql -> close();
+					while ($APP_result = $query -> fetch_assoc()) {
+						$id = $APP_result['id'];
+						$name = $APP_result['headline'];
+?>
+							<option value="<?php echo $id;?>"><?php echo $name;?></option>
+<?php
+					}
+
+?>
 						</select>
 					</div>
 					<div>服务类型：</div>
@@ -499,7 +535,7 @@ if ($App_worktime['recordtime'] != "") {
 						<td><?php echo $start." 至 ".$end;?></td>
 						<td><?php echo $engineer;?></td>
 						<td><?php echo $writer;?></td>
-						<td><button class="query_srvs" value="<?php echo $id;?>">查看</button><button class="print_srvs">打印</button></td>
+						<td><button class="query_srvs" value="<?php echo $id;?>">查看</button><button class="print_srvs" value="<?php echo $id;?>">打印</button></td>
 					</tr>
 <?php
 			}
