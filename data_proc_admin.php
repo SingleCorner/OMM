@@ -193,7 +193,7 @@ switch ($module_name) {
 					exit;
 				} else {
 					$APP_sql = new APP_SQL();
-					$sql = "INSERT INTO `s_customer` (`name`,`nickname`,`contact`,`tel`,`address`,`status`) values ('{$name}', '{$nickname}', '{$contact}', '{$tel}', '{$addr}','1');";
+					$sql = "INSERT INTO `s_customer` (`name`,`nickname`,`contact`,`tel`,`address`,`status`,`regtime`) values ('{$name}', '{$nickname}', '{$contact}', '{$tel}', '{$addr}','1',now());";
 					$APP_sql -> userDefine($sql);
 					$App_affected = $APP_sql -> affected();
 					$APP_sql -> close();
@@ -283,6 +283,187 @@ switch ($module_name) {
 				}
 				break;
 			case "query":
+				if ($_SESSION['query']['customer'] != "" && empty($_POST['name'])) {
+					$customer = $_SESSION['query']['customer'];
+				} else {
+					$_SESSION['query']['customer'] = $customer = string_filter($_POST['name']);
+				}
+				$id = numeric_filter($_GET['id']);
+				if (!empty($customer) || !empty($id)) {
+					if (!empty($id)) {
+						$APP_sql = new APP_SQL();
+						$App_queryCustomer = $APP_sql -> getCustomerMeta($id);
+						$APP_sql -> close();
+						$name = $App_queryCustomer['name'];
+						$nickname = $App_queryCustomer['nickname'];
+						$contact = $App_queryCustomer['contact'];
+						$tel = $App_queryCustomer['tel'];
+						$address = $App_queryCustomer['address'];
+						$regtime = $App_queryCustomer['regtime'];
+						if (empty($name)) {
+							$name = $nickname = $contact = $tel = $address = $regtime = "信息不存在或无权查看";
+						}
+						APP_html_header();
+?>
+			<table class="datatable">
+				<tr>
+					<td>客户编号</td>
+					<td colspan=3><?php echo $id;?></td>
+				</tr>
+				<tr>
+					<td width=15%>客户名称</td>
+					<td width=35%><?php echo $name;?></td>
+					<td width=15%>客户简称</td>
+					<td><?php echo $nickname;?></td>
+				</tr>
+				<tr>
+					<td>客户地址</td>
+					<td colspan=3><?php echo $address;?></td>
+				</tr>
+				<tr>
+					<td>联系人</td>
+					<td><?php echo $contact;?></td>
+					<td>联系电话</td>
+					<td><?php echo $tel;?></td>
+				</tr>
+				<tr>
+					<td>登记时间</td>
+					<td colspan=3><?php echo $regtime;?></td>
+				</tr>
+			</table>
+<?php
+						APP_html_footer();
+					} else {
+						if (isset($_GET['page']) && $_GET['page'] >= 1) {
+							$curpage = floor($_GET['page']); 
+						} else {
+							$curpage = 1; 
+						}
+						if (isset($_GET['record']) && $_GET['record'] >= 1) {
+							$records = $_GET['record'];
+						} else {
+							$records = 15;
+						}
+						$start = ($curpage - 1) * $records;
+						$APP_sql = new APP_SQL();
+						$App_listCustomer = $APP_sql -> getCustomerQueryList($customer,$start,$records);
+						$App_countCustomer = $APP_sql -> getCustomerQueryList($customer);
+						$App_result_rows = $App_countCustomer -> num_rows;
+						$APP_sql -> close();
+						APP_html_header();
+?>
+			<div class="title_container">
+				<span class="title_more">
+					<form id="APP_queryStaff_form" action="?a=customer&p=query" method="post">
+						<input type="text" size="10" name="name" id="APP_queryCustomer_name" placeholder="客户名称" />
+						<input type="submit" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<button onclick="load_newCustomer()">建立新客户</button>
+				</h1>
+			</div>
+			<div id="APP_newCustomer">
+				<div class="title_container"><h1>客户资料</h1></div><br />
+				<form id="APP_newcustomer_form" action="?a=customer&p=add" method="post">
+					客户名称<input type="text" name="name" size="20" id="APP_newCustomer_name" />
+					客户别名<input type="text" name="nickname" size="10" id="APP_newCustomer_nickname" />
+					联系人<input type="text" name="contact" size="10" maxlength="11" id="APP_newCustomer_contact" />
+					联系电话<input type="text" name="tel" size="11" id="APP_newCustomer_tel" />
+					客户地址<input type="text" name="addr" size="11" id="APP_newCustomer_addr" />
+					<input type="submit" value="添加客户" />
+					<span id="APP_new_status"></span>
+				</form>
+			</div>
+			<div id="APP_listCustomer">
+				<div class="title_container"><h1>现有客户</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=10%>客户编号</th>
+						<th width=25%>客户名称</th>
+						<th width=10%>联系人</th>
+						<th width=15%>联系电话</th>
+						<th width=15%>客户地址</th>
+						<th></th>
+					</tr>
+<?php
+						while ($App_listCustomer_query = $App_listCustomer -> fetch_assoc()) {
+							$id = $App_listCustomer_query['id'];
+							$name = $App_listCustomer_query['name'];
+							$contacter = $App_listCustomer_query['contact'];
+							$tel = $App_listCustomer_query['tel'];
+							$address = $App_listCustomer_query['address'];
+							$status = $App_listCustomer_query['status'];
+							if ($status == 1) {
+								$status_text = "断开合作";
+							} else {
+								$status_text = "重新合作";
+							}
+							$display = $App_listCustomer_query['display'];
+							if ($display == 1) {
+								$display_text = "前端隐藏";
+							} else {
+								$display_text = "前端显示";
+							}
+							if ($_SESSION['Login_section'] == 0 || $status % 2 == 1) {
+?>
+					<tr class="<?php echo "APP_customer_".$id; ?>">
+						<input type="hidden" value="<?php echo $App_listCustomer_query['nickname'];?>" />
+						<td class="customer_id"><?php echo $id;?></td>
+						<td class="customer_name"><?php echo $name;?></td>
+						<td class="customer_contacter"><?php echo $contacter;?></td>
+						<td class="customer_tel"><?php echo $tel;?></td>
+						<td class="customer_address"><?php echo $address;?></td>
+						<td>
+							<button class="APP_customer_chdata">资料修改</button>
+<?php 
+								if ($_SESSION['Login_section'] == 0) {
+?>
+							<button onclick="chstatCustomer(<?php echo $id;?>)"><?php echo $status_text;?></button>
+<?php 
+								} else {
+?>
+							<button onclick="chDisplay(<?php echo $id;?>)"><?php echo $display_text;?></button>
+<?php
+								}
+?>
+					</tr>
+<?php
+							}
+						}
+						if (($App_result_rows / $records) > floor($App_result_rows / $records) || $App_result_rows == 0) {
+							$pages = floor($App_result_rows / $records) + 1;
+						} else {
+							$pages = $App_result_rows / $records;
+						}
+						$url_fp = "?a=customer&p=query&record=".$records;
+						if ($curpage == 1) {
+							$prepage = $curpage;
+						} else {
+							$prepage = $curpage - 1;
+						}
+						if ($curpage >= $pages) {
+							$nxpage = $pages;
+							$prepage = $pages;
+						} else {
+							$nxpage = $curpage + 1;
+						}
+						$url_pp = "?a=customer&p=query&record=".$records."&page=".$prepage;
+						$url_np = "?a=customer&p=query&record=".$records."&page=".$nxpage;
+						$url_lp = "?a=customer&p=query&record=".$records."&page=".$pages;
+?>
+				</table>
+				<p></p>
+				<center><a href="<?php echo $url_fp;?>"><<</a><a href="<?php echo $url_pp;?>"><</a><a href="<?php echo $url_np;?>">></a><a href="<?php echo $url_lp;?>">>></a></center>
+				<center><?php echo $_SERVER['PHP_SCRIPT'];?></center>
+			</div>
+<?php
+						APP_html_footer();
+					}
+				} else {
+					header("Status: 404");
+					exit;
+				}
 				break;
 			case "chdata":
 				$id = numeric_filter($_POST['id']);

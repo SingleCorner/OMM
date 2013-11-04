@@ -525,7 +525,7 @@ body.scroll #APP_top_user {
 }
 
 #APP_querySrvs > div {
-	margin-top: 10px;
+	margin-top: 5px;
 	font-size: 16px;
 	font-weight: bold;
 }
@@ -543,7 +543,8 @@ body.scroll #APP_top_user {
 	color: #999;
 }
 #APP_querySrvs h2 {
-	font-size:21px;
+	font-size:25px;
+	font-weight: bolder;
 }
 #APP_querySrvs table {
 	font-size: 12px;
@@ -555,12 +556,19 @@ body.scroll #APP_top_user {
 
 
 #APP_querySrvs_sysdescr {
-	min-height:40px;
+	min-height: 90px;
+	max-height: 90px;
+}
+#APP_querySrvs_workdescr {
+	min-height: 70px;
+	max-height: 100px;
 }
 #APP_querySrvs_opmethod {
-	min-height:170px;
+	min-height: 200px;
+	max-height: 200px
 }
 #APP_querySrvs_suggest {
+	min-height: 10px;
 }
 .APP_querySrvs_border {
 	border: solid 1px;
@@ -620,4 +628,8 @@ body.scroll #APP_top_user {
 
 #APP_newCustomer {
 	margin-top:10px;
+}
+#APP_listCustomer a {
+	margin-left: 20px;
+	cursor:	pointer;
 }

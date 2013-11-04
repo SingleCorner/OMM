@@ -21,6 +21,7 @@ $(document).ready(function() {
 	//页面 -> 默认行为
 
 	$('#APP_queryStaff_id').focus();
+	$('#APP_queryCustomer_name').focus();	
 	$('#APP_newStaff').hide();
 	$('#APP_verifyStaff').hide();
 	$('#APP_newCustomer').hide();

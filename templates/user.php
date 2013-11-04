@@ -157,7 +157,9 @@ function APP_html_module(){
 			<!-- 签到系统 -->
 			<div id="APP_signal">
 				<div id="APP_signal_op">
+					<!--<canvas id="canvas" width="150" height="150"></canvas>-->
 					<div>当前日期 <?php echo date("Y-m-d");?></div>
+					<script>clockinit()</script>
 <?php
 if ($App_worktime['recordtime'] != "") {
 	$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
@@ -313,7 +315,7 @@ if ($App_worktime['recordtime'] != "") {
 							<div>累计调休时间 <input id="signal_rest" name="rest" type="text" size="8" placeholder="例如0" /> 小时</div>
 							<div><input type="submit" value="开始记录工作时间" /></div>
 							<div>TIPS：如不确定，请仅在加班时间处填写当前剩余时间</div>
-					</form>
+						</form>
 					</div>
 				<?php
 				}
@@ -355,10 +357,6 @@ if ($App_worktime['recordtime'] != "") {
 					</table>
 				</div>
 			</div>
-
-
-
-
 <?php
 			}
 			 break;
@@ -444,7 +442,7 @@ if ($App_worktime['recordtime'] != "") {
 					<div>
 						<table class="formtable">
 							<tr>
-								<td><label><input name="stype" type="radio" value="1" />新机保修</label></td>
+								<td><label><input name="stype" type="radio" value="1" />保内服务</label></td>
 								<td><label><input name="stype" type="radio" value="2" />利银MA</label></td>
 								<td><label><input name="stype" type="radio" value="3" />厂商MA</label></td>
 								<td><label><input name="stype" type="radio" value="4" />无备件MA</label></td>
@@ -453,8 +451,9 @@ if ($App_worktime['recordtime'] != "") {
 							<tr>
 								<td><label><input name="mtype" type="radio" value="1" />生产系统维护</label></td>
 								<td><label><input name="mtype" type="radio" value="2" />备份系统维护</label></td>
-								<td><label><input name="mtype" type="radio" value="3" />测试系统维护</label></td>
+								<td><label><input name="mtype" type="radio" value="3" />测试开发系统维护</label></td>
 								<td><label><input name="mtype" type="radio" value="4" checked />备机维护</label></td>
+								<td></td>
 							</tr>
 						</table>
 					</div>

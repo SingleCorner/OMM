@@ -159,9 +159,9 @@ function APP_mgr_main() {
 ?>
 			<div class="title_container">
 				<span class="title_more">
-					<form id="APP_queryStaff_form" action="?a=&p=query" method="post">
-						<input type="text" size="10" name="name" id="APP_queryCustomer_name" placeholder="公司名称" />
-						<input type="button" value="查询" />
+					<form id="APP_queryStaff_form" action="?a=customer&p=query" method="post">
+						<input type="text" size="10" name="name" id="APP_queryCustomer_name" placeholder="客户名称" />
+						<input type="submit" value="查询" />
 					</form>
 				</span>
 				<h1>
@@ -193,10 +193,24 @@ function APP_mgr_main() {
 					</tr>
 				<?php 
 				$APP_sql = new APP_SQL();
-				$App_listCustomer = $APP_sql -> getCustomerList();
+				if (isset($_GET['page']) && $_GET['page'] >= 1) {
+					$curpage = floor($_GET['page']); 
+				} else {
+					$curpage = 1; 
+				}
+				if (isset($_GET['record']) && $_GET['record'] >= 1) {
+					$records = $_GET['record'];
+				} else {
+					$records = 15;
+				}
+				$start = ($curpage - 1) * $records;
+				$App_listCustomer = $APP_sql -> getCustomerList($start,$records);
+				$App_countCustomer = $APP_sql -> getCustomerList();
+				$App_result_rows = $App_countCustomer -> num_rows;
 				$APP_sql -> close();
-				while ($App_listCustomer_query = $APP_sql -> fetch_assoc($App_listCustomer)) {
+				while ($App_listCustomer_query = $App_listCustomer -> fetch_assoc()) {
 					$id = $App_listCustomer_query['id'];
+					$url = "?a=customer&p=query&id=$id";
 					$name = $App_listCustomer_query['name'];
 					$contacter = $App_listCustomer_query['contact'];
 					$tel = $App_listCustomer_query['tel'];
@@ -214,10 +228,10 @@ function APP_mgr_main() {
 						$display_text = "前端显示";
 					}
 					if ($_SESSION['Login_section'] == 0 || $status % 2 == 1) {
-				?>
+?>
 					<tr class="<?php echo "APP_customer_".$id; ?>">
 						<input type="hidden" value="<?php echo $App_listCustomer_query['nickname'];?>" />
-						<td class="customer_id"><?php echo $id;?></td>
+						<td class="customer_id"><a href="<?php echo $url;?>" target="_blank"><?php echo $id;?></a></td>
 						<td class="customer_name"><?php echo $name;?></td>
 						<td class="customer_contacter"><?php echo $contacter;?></td>
 						<td class="customer_tel"><?php echo $tel;?></td>
@@ -237,10 +251,33 @@ function APP_mgr_main() {
 ?>
 					</tr>
 <?php
-	}
-} 
+					}
+				}
+				if (($App_result_rows / $records) > floor($App_result_rows / $records) || $App_result_rows == 0) {
+					$pages = floor($App_result_rows / $records) + 1;
+				} else {
+					$pages = $App_result_rows / $records;
+				}
+				$url_fp = "?a=customer&record=".$records;
+				if ($curpage == 1) {
+					$prepage = $curpage;
+				} else {
+					$prepage = $curpage - 1;
+				}
+				if ($curpage >= $pages) {
+					$nxpage = $pages;
+					$prepage = $pages;
+				} else {
+					$nxpage = $curpage + 1;
+				}
+				$url_pp = "?a=customer&record=".$records."&page=".$prepage;
+				$url_np = "?a=customer&record=".$records."&page=".$nxpage;
+				$url_lp = "?a=customer&record=".$records."&page=".$pages;
 ?>
 				</table>
+				<p></p>
+				<center><a href="<?php echo $url_fp;?>"><<</a><a href="<?php echo $url_pp;?>"><</a><a href="<?php echo $url_np;?>">></a><a href="<?php echo $url_lp;?>">>></a></center>
+				<center><?php echo $_SERVER['PHP_SCRIPT'];?></center>
 			</div>
 <?php
 				break;

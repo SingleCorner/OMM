@@ -212,7 +212,7 @@ if (!defined('__ROOT__')) {
 						<tr>
 <?php
 				$i = 1;
-				$stype = array("新机保修","利银MA","厂商MA","无备件MA","保外服务");
+				$stype = array("保内服务","利银MA","厂商MA","无备件MA","保外服务");
 				foreach ($stype as $stype_out) {
 					if ($i == $APP_result['srvtype']) {
 						$stype_out = "√{$stype_out}";
@@ -231,7 +231,7 @@ if (!defined('__ROOT__')) {
 						<tr>
 <?php
 				$i = 1;
-				$mtype = array("生产系统维护","备份系统维护","测试系统维护","备机维护");
+				$mtype = array("生产系统维护","备份系统维护","测试开发系统维护","备机维护");
 				foreach ($mtype as $mtype_out) {
 					if ($i == $APP_result['matype']) {
 						$mtype_out = "√{$mtype_out}";
@@ -244,6 +244,7 @@ if (!defined('__ROOT__')) {
 					$i++;
 				}
 ?>
+							<td></td>
 						</tr>
 					</table>
 				</div>

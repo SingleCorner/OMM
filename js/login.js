@@ -50,6 +50,7 @@ $(document).ready(function() {
 					$('#APP_login_submit').attr('disabled', false);
 					if (data.code == -1 || data.code == -2) {
 						$('#APP_login_pswd').val('');
+						$('#APP_login_pswd').focus();
 					}
 					$('#APP_login_status').html(data.message);
 				}

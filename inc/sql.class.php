@@ -251,10 +251,51 @@ class APP_SQL {
 	 * 查询 -> 列出客户
 	 * 部门管理可查看合作中客户，超级管理可查看所有客户
 	 */
-	public function getCustomerList() {
-		$sql = "SELECT * from `s_customer`;";
+	public function getCustomerList($start,$records) {
+		if ($_SESSION['Login_section'] == 0) {
+			$sql = "SELECT * from `s_customer`";
+		} else {
+			$sql = "SELECT * from `s_customer` WHERE `status` = 1";
+		}
+		if (isset($start)) {
+			$sql .= " LIMIT {$start},{$records};";
+		} else {
+			$sql .= ";";
+		}
 		$query = $this -> db -> query($sql);
 		return $query;
+	}
+	/**
+	 * 查询 -> 列出查询结果客户
+	 * 部门管理可查看合作中客户，超级管理可查看所有客户
+	 */
+	public function getCustomerQueryList($customer,$start,$records) {
+		$sql = "SELECT * FROM `s_customer` WHERE (`name` LIKE '%{$customer}%' OR `nickname` LIKE '%{$customer}%') ";
+		if ($_SESSION['Login_section'] == 0) {
+		} else {
+			$sql .= "AND `status` = '1' ";
+		}
+		if (isset($start)) {
+			$sql .= "LIMIT {$start},{$records};";
+		} else {
+			$sql .= ";";
+		}
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
+	/**
+	 * 查询 -> 显示客户详细资料
+	 * 部门管理可查看合作中客户，超级管理可查看所有客户
+	 */
+	public function getCustomerMeta($id) {
+		$sql = "SELECT * FROM `s_customer` WHERE `id` = '{$id}'";
+		if ($_SESSION['Login_section'] == 0) {
+			$sql .= ";";
+		} else {
+			$sql .= " AND `status` = '1';";
+		}
+		$query = $this -> db -> query($sql);
+		return $query -> fetch_assoc();
 	}
 	/**
 	 * 查询 -> 提取当前账号最后一条记录
