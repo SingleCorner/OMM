@@ -389,6 +389,7 @@ switch ($module_name) {
 <?php
 						while ($App_listCustomer_query = $App_listCustomer -> fetch_assoc()) {
 							$id = $App_listCustomer_query['id'];
+							$url = "?a=customer&p=query&id=$id";
 							$name = $App_listCustomer_query['name'];
 							$contacter = $App_listCustomer_query['contact'];
 							$tel = $App_listCustomer_query['tel'];
@@ -409,7 +410,7 @@ switch ($module_name) {
 ?>
 					<tr class="<?php echo "APP_customer_".$id; ?>">
 						<input type="hidden" value="<?php echo $App_listCustomer_query['nickname'];?>" />
-						<td class="customer_id"><?php echo $id;?></td>
+						<td class="customer_id"><a href="<?php echo $url;?>" target="_blank"><?php echo $id;?></a></td>
 						<td class="customer_name"><?php echo $name;?></td>
 						<td class="customer_contacter"><?php echo $contacter;?></td>
 						<td class="customer_tel"><?php echo $tel;?></td>
@@ -513,6 +514,69 @@ switch ($module_name) {
 	 * 功能 - > 其他
 	 *
 	 */
+	case "device":
+		//选择操作类型
+		switch ($_GET["p"]) {
+			//添加设备
+			case "add":
+				//接收POST变量并过滤
+				$type = numeric_filter($_POST["type"]);
+				$cid = numeric_filter($_POST["customer"]);
+				$name = string_filter($_POST["name"]);
+				$sn = string_filter($_POST["sn"]);
+
+				//检查必需性数据
+				if (empty($type) || empty($cid) || empty($name) || empty($sn)) {
+					$result = array(
+						"code" => 0,
+						"message" => "数据提交异常"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				} else {
+					//接收参数性数据
+					$os = string_filter($_POST["os"]);
+					$fw = string_filter($_POST["fw"]);
+					$cpu = string_filter($_POST["cpu"]);
+					$ram = string_filter($_POST["ram"]);
+					$disk = string_filter($_POST["disk"]);
+					$raid = string_filter($_POST["raid"]);
+					$hba = string_filter($_POST["hba"]);
+					$bat = string_filter($_POST["bat"]);
+
+					//转换数据
+					$bat = date("Y-m-d",strtotime($bat));
+					$cfg = "[CPU=$cpu][RAM=$ram][DISK=$disk][RAID=$raid][HBA=$hba][BAT=$bat]";
+
+					//插入数据
+					$APP_sql = new APP_SQL();
+					$sql = "INSERT INTO `s_device` () values ('','{$type}','{$name}','{$sn}', '{$os}', '{$fw}','','','{$cid}','','','{$cfg}',now(),'','1');";
+					$APP_sql -> userDefine($sql);
+					$App_affected = $APP_sql -> affected();
+					$APP_sql -> close();
+				}
+				if ($App_affected == 1) {
+					$result = array(
+						"code" => 1,
+						"message" => "设备信息已录入"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				} else {
+					$result = array(
+						"code" => 0,
+						"message" => "数据提交异常"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				}
+				break;
+			//.....添加设备
+		}
+		break;
 	default:
 		break;
 }

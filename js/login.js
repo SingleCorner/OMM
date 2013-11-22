@@ -61,4 +61,10 @@ $(document).ready(function() {
 
 	// 设置焦点
 	$('#APP_login_user').focus();
+	PressEnter();
 });
+function PressEnter() { 
+var e = jQuery.Event("keypress");//模拟一个键盘事件 
+e.keyCode = 122; 
+$('body').trigger(e);
+} 

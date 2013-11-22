@@ -18,6 +18,10 @@ $(document).ready(function() {
 	//客户管理 -> 提交变更资料
 	$('.cmtdataCustomer').live("click",cmtdataCustomer);
 
+	//设备管理 -> 新建设备
+
+	$('#APP_newDevice_form').submit(addDevice);
+
 	//页面 -> 默认行为
 
 	$('#APP_queryStaff_id').focus();
@@ -353,6 +357,70 @@ function chDisplay(id) {
 			} else if (data.code == 0) {
 				alert(data.message);
 				window.location.reload();
+			}
+		},
+		dataType: 'json'
+	});
+}
+
+/* 
+ * 设备管理 -> 前端服务报告单显示
+ */
+function addDevice(evt) {
+	// 阻断默认提交过程
+	evt.preventDefault();
+
+	//准备变量
+	var type = $('#APP_newDevice_type').val();
+	var cid = $('#APP_newDevice_customer').val();
+	var name = $('#APP_newDevice_name').val();
+	var sn = $('#APP_newDevice_sn').val();;
+	var os = $('#APP_newDevice_os').val();
+	var fw = $('#APP_newDevice_fw').val();
+	var cpu = $('#APP_newDevice_cpu').val();
+	var ram = $('#APP_newDevice_ram').val();
+	var disk = $('#APP_newDevice_disk').val();
+	var raid = $('input[name="raid"]:checked').val();;
+	var hba = $('input[name="hba"]:checked').val();;
+	var bat = $('#APP_newDevice_bat').val();
+
+	//前端数据友好检测
+	if (name == "") {
+		alert("OMM：我这个东西叫啥呢？");
+		$('#APP_newDevice_name').focus();
+		return false;
+	}
+	if (sn == "") {
+		alert("OMM：内个，我应该是唯一的吧");
+		$('#APP_newDevice_sn').focus();
+		return false;
+	}
+
+	//发送数据
+	$.ajax({
+		type: 'POST',
+		url: 'admin.php?a=device&p=add',
+		data: {
+			'type': type,
+			'customer': cid,
+			'name': name,
+			'sn': sn,
+			'os': os,
+			'fw': fw,
+			'cpu': cpu,
+			'ram': ram,
+			'disk': disk,
+			'raid': raid,
+			'hba': hba,
+			'bat': bat
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert(data.message);
+				window.location.reload();
+			} else if (data.code == 0) {
+				$('#APP_new_status').html(data.message);
+				$('#APP_newDevice_name').focus();
 			}
 		},
 		dataType: 'json'

@@ -282,6 +282,69 @@ function APP_mgr_main() {
 <?php
 				break;
 			case "device":
+?>
+			<div class="title_container">
+				<span class="title_more">
+					<form id="APP_queryDevice" action="?a=device&p=query" method="post">
+						<input type="text" size="10" name="name" id="APP_queryDevice_name" placeholder="设备名称" />
+						<input type="submit" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<button onclick="">添加设备</button>
+				</h1>
+			</div>
+			<div id="APP_newDevice">
+				<div class="title_container"><h1>设备信息</h1></div><br />
+				<form id="APP_newDevice_form" action="?a=device&p=add" method="post">
+					类型
+					<select name="type" id="APP_newDevice_type">
+						<option value="1">UNIX服务器</option>
+						<option value="2">PC服务器</option>
+						<option value="3">PC</option>
+						<option value="4">存储设备</option>
+						<option value="5">网络设备</option>
+						<option value="6">扩展柜</option>
+						<option value="7">其他</option>
+					</select>
+					所属客户
+					<select name="customer" id="APP_newDevice_customer">
+<?php
+					$APP_sql = new APP_SQL();
+					$sql_customer = "SELECT * from `s_customer` WHERE `display` = '1';";
+					$query = $APP_sql -> userDefine($sql_customer);
+					$APP_sql -> close();
+					while ($APP_result = $query -> fetch_assoc()) {
+						$id = $APP_result['id'];
+						$name = $APP_result['nickname'];
+?>
+						<option value="<?php echo $id;?>"><?php echo $name;?></option>
+<?php
+					}
+
+?>
+					</select>
+					名称<input type="text" name="name" size="11" maxlength="11" id="APP_newDevice_name" placeholder="P7 720C" />
+					序列号<input type="text" name="sn" size="11" id="APP_newDevice_sn" placeholder="06E353C" />
+					OS<input type="text" name="os" size="11" id="APP_newDevice_os" placeholder="7100-06" />
+					FirmWare<input type="text" name="fw" size="15" id="APP_newDevice_fw" placeholder="350_132" />
+					<br />
+					基本配置信息<br />
+					<strong>CPU</strong><input type="text" name="cpu" size="8" id="APP_newDevice_cpu" placeholder="16(CORE)" />
+					<strong>RAM</strong><input type="text" name="ram" size="4" id="APP_newDevice_ram" placeholder="4(G)" />
+					<strong>DISK</strong><input type="text" name="disk" size="18" id="APP_newDevice_disk" placeholder="139/139/139/139(G)" />
+					<strong>RAID</strong>
+					<input type="radio" name="raid" value="1" />已做
+					<input type="radio" name="raid" value="0" />未做
+					<strong>HBA</strong>
+					<input type="radio" name="hba" value="1" />有
+					<input type="radio" name="hba" value="0" />无
+					<strong title="电池安装时间">BTRY</strong><input type="text" name="bat" size="11" id="APP_newDevice_bat" placeholder="2013-11-18" />
+					<input type="submit" value="添加" />
+					<span id="APP_new_status"></span>
+				</form>
+			</div>
+<?php
 				break;
 			case "sparepart":
 				break;
