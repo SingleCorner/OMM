@@ -249,6 +249,7 @@ function APP_mgr_main() {
 <?php
 						}
 ?>
+						</td>
 					</tr>
 <?php
 					}
@@ -291,7 +292,7 @@ function APP_mgr_main() {
 					</form>
 				</span>
 				<h1>
-					<button onclick="">添加设备</button>
+					<button  onclick="load_newDevice()">添加设备</button>
 				</h1>
 			</div>
 			<div id="APP_newDevice">
@@ -311,7 +312,7 @@ function APP_mgr_main() {
 					<select name="customer" id="APP_newDevice_customer">
 <?php
 					$APP_sql = new APP_SQL();
-					$sql_customer = "SELECT * from `s_customer` WHERE `display` = '1';";
+					$sql_customer = "SELECT * from `s_customer` WHERE `status` = '1';";
 					$query = $APP_sql -> userDefine($sql_customer);
 					$APP_sql -> close();
 					while ($APP_result = $query -> fetch_assoc()) {
@@ -343,6 +344,83 @@ function APP_mgr_main() {
 					<input type="submit" value="添加" />
 					<span id="APP_new_status"></span>
 				</form>
+			</div>
+			<div id="APP_listCustomer">
+				<div class="title_container"><h1>现有设备</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=10%>设备类型</th>
+						<th width=25%>设备名称</th>
+						<th width=10%>序列号</th>
+						<th width=15%>当前OS</th>
+						<th width=15%>当前Firmware</th>
+						<th width=15%>当前电池剩余时间</th>
+						<th></th>
+					</tr>
+				<?php 
+				$APP_sql = new APP_SQL();
+				if (isset($_GET['page']) && $_GET['page'] >= 1) {
+					$curpage = floor($_GET['page']); 
+				} else {
+					$curpage = 1; 
+				}
+				if (isset($_GET['record']) && $_GET['record'] >= 1) {
+					$records = $_GET['record'];
+				} else {
+					$records = 15;
+				}
+				$start = ($curpage - 1) * $records;
+				$App_listDevice = $APP_sql -> getDeviceList($start,$records);
+				$App_countDevice = $APP_sql -> getDeviceList();
+				$App_result_rows = $App_countDevice -> num_rows;
+				$APP_sql -> close();
+				while ($App_listDevice_query = $App_listDevice -> fetch_assoc()) {
+					$id = $App_listDevice_query['id'];
+					$url = "?a=device&p=query&id=$id";
+					$name = $App_listDevice_query['name'];
+					$contacter = $App_listDevice_query['contact'];
+					$tel = $App_listDevice_query['tel'];
+					$address = $App_listDevice_query['address'];
+?>
+					<tr class="<?php echo "APP_customer_".$id; ?>">
+						<input type="hidden" value="<?php echo $App_listCustomer_query['nickname'];?>" />
+						<td class="customer_id"><a href="<?php echo $url;?>" target="_blank"><?php echo $id;?></a></td>
+						<td class="customer_name"><?php echo $name;?></td>
+						<td class="customer_contacter"><?php echo $contacter;?></td>
+						<td class="customer_tel"><?php echo $tel;?></td>
+						<td class="customer_address"><?php echo $address;?></td>
+						<td></td>
+						<td>
+							<button>详细信息</button>
+						</td>
+					</tr>
+<?php
+				}
+				if (($App_result_rows / $records) > floor($App_result_rows / $records) || $App_result_rows == 0) {
+					$pages = floor($App_result_rows / $records) + 1;
+				} else {
+					$pages = $App_result_rows / $records;
+				}
+				$url_fp = "?a=customer&record=".$records;
+				if ($curpage == 1) {
+					$prepage = $curpage;
+				} else {
+					$prepage = $curpage - 1;
+				}
+				if ($curpage >= $pages) {
+					$nxpage = $pages;
+					$prepage = $pages;
+				} else {
+					$nxpage = $curpage + 1;
+				}
+				$url_pp = "?a=customer&record=".$records."&page=".$prepage;
+				$url_np = "?a=customer&record=".$records."&page=".$nxpage;
+				$url_lp = "?a=customer&record=".$records."&page=".$pages;
+?>
+				</table>
+				<p></p>
+				<center><a href="<?php echo $url_fp;?>"><<</a><a href="<?php echo $url_pp;?>"><</a><a href="<?php echo $url_np;?>">></a><a href="<?php echo $url_lp;?>">>></a></center>
+				<center><?php echo $_SERVER['PHP_SCRIPT'];?></center>
 			</div>
 <?php
 				break;

@@ -511,7 +511,7 @@ switch ($module_name) {
 		}
 		break;
 	/**
-	 * 功能 - > 其他
+	 * 模块 - > 设备管理模块
 	 *
 	 */
 	case "device":
@@ -546,6 +546,29 @@ switch ($module_name) {
 					$bat = string_filter($_POST["bat"]);
 
 					//转换数据
+					switch ($type) {
+						case "1":
+							$type = "UNIX服务器";
+						break;
+						case "1":
+							$type = "PC服务器";
+						break;
+						case "1":
+							$type = "PC";
+						break;
+						case "1":
+							$type = "存储设备";
+						break;
+						case "1":
+							$type = "网络设备";
+						break;
+						case "1":
+							$type = "拓展柜";
+						break;
+						default:
+							$type = "其他";
+						break;
+					}
 					$bat = date("Y-m-d",strtotime($bat));
 					$cfg = "[CPU=$cpu][RAM=$ram][DISK=$disk][RAID=$raid][HBA=$hba][BAT=$bat]";
 

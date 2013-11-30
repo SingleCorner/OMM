@@ -26,9 +26,11 @@ $(document).ready(function() {
 
 	$('#APP_queryStaff_id').focus();
 	$('#APP_queryCustomer_name').focus();	
+	$('#APP_queryDevice_name').focus();
 	$('#APP_newStaff').hide();
 	$('#APP_verifyStaff').hide();
 	$('#APP_newCustomer').hide();
+	$('#APP_newDevice').hide();
 //	$('#APP_verifyStaff').hide(function() {
 //		$.ajax({
 //			type: 'POST',
@@ -425,4 +427,16 @@ function addDevice(evt) {
 		},
 		dataType: 'json'
 	});
+}
+/* 
+ * 设备管理 -> 加载新设备添加模块
+ */
+function load_newDevice() {
+	if ($('#APP_newDevice').is(':hidden')) {
+		$('#APP_newDevice').show();
+		$('#APP_newDevice_name').focus();
+	} else {
+		$('#APP_newDevice').hide();
+		$('#APP_queryDevice_name').focus();
+	}
 }

@@ -298,6 +298,38 @@ class APP_SQL {
 		return $query -> fetch_assoc();
 	}
 	/**
+	 * 查询 -> 列出设备
+	 * 
+	 */
+	public function getDeviceList($start,$records) {
+		$sql = "SELECT * from `s_device`";
+		if (isset($start)) {
+			$sql .= " LIMIT {$start},{$records};";
+		} else {
+			$sql .= ";";
+		}
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
+	/**
+	 * 查询 -> 列出查询结果客户(代码未修改)
+	 * 
+	 */
+	public function getDeviceQueryList($customer,$start,$records) {
+		$sql = "SELECT * FROM `s_customer` WHERE (`name` LIKE '%{$customer}%' OR `nickname` LIKE '%{$customer}%') ";
+		if ($_SESSION['Login_section'] == 0) {
+		} else {
+			$sql .= "AND `status` = '1' ";
+		}
+		if (isset($start)) {
+			$sql .= "LIMIT {$start},{$records};";
+		} else {
+			$sql .= ";";
+		}
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
+	/**
 	 * 查询 -> 提取当前账号最后一条记录
 	 */
 	public function getWorkrecord() {
