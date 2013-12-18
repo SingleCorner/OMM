@@ -349,12 +349,12 @@ function APP_mgr_main() {
 				<div class="title_container"><h1>现有设备</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th width=10%>设备类型</th>
-						<th width=25%>设备名称</th>
+						<th width=15%>类型</th>
+						<th width=15%>名称</th>
 						<th width=10%>序列号</th>
-						<th width=15%>当前OS</th>
-						<th width=15%>当前Firmware</th>
-						<th width=15%>当前电池剩余时间</th>
+						<th width=10%>OS</th>
+						<th width=10%>微码</th>
+						<th width=15%>电池剩余天</th>
 						<th></th>
 					</tr>
 				<?php 
@@ -376,20 +376,28 @@ function APP_mgr_main() {
 				$APP_sql -> close();
 				while ($App_listDevice_query = $App_listDevice -> fetch_assoc()) {
 					$id = $App_listDevice_query['id'];
-					$url = "?a=device&p=query&id=$id";
+					$type = $App_listDevice_query['type'];
+					//$url = "?a=device&p=query&id=$id";
 					$name = $App_listDevice_query['name'];
-					$contacter = $App_listDevice_query['contact'];
-					$tel = $App_listDevice_query['tel'];
-					$address = $App_listDevice_query['address'];
+					$sn = $App_listDevice_query['sn'];
+					$os = $App_listDevice_query['opsys'];
+					$fw = $App_listDevice_query['firmware'];
+					$base_info = $App_listDevice_query['cfgfiles'];
+						$bat_parttern = "/\[BAT=(.*)\]/U";
+						preg_match_all($bat_parttern,$base_info,$arr);
+						$bat_date = strtotime($arr[1][0]);
+						$bat_useday = floor((time() - $bat_date) / 86400);
+						$bat_leftday = (971 - $bat_useday) ."天";
+						
+
 ?>
-					<tr class="<?php echo "APP_customer_".$id; ?>">
-						<input type="hidden" value="<?php echo $App_listCustomer_query['nickname'];?>" />
-						<td class="customer_id"><a href="<?php echo $url;?>" target="_blank"><?php echo $id;?></a></td>
-						<td class="customer_name"><?php echo $name;?></td>
-						<td class="customer_contacter"><?php echo $contacter;?></td>
-						<td class="customer_tel"><?php echo $tel;?></td>
-						<td class="customer_address"><?php echo $address;?></td>
-						<td></td>
+					<tr class="<?php echo "APP_device_".$id; ?>">
+						<td class="device_type"><?php echo $type;?></td>
+						<td class="device_name"><?php echo $name;?></td>
+						<td class="device_contacter"><?php echo $sn;?></td>
+						<td class="device_tel"><?php echo $os;?></td>
+						<td class="device_address"><?php echo $fw;?></td>
+						<td><?php echo $bat_leftday;?></td>
 						<td>
 							<button>详细信息</button>
 						</td>

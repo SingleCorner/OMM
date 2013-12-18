@@ -550,19 +550,19 @@ switch ($module_name) {
 						case "1":
 							$type = "UNIX服务器";
 						break;
-						case "1":
+						case "2":
 							$type = "PC服务器";
 						break;
-						case "1":
+						case "3":
 							$type = "PC";
 						break;
-						case "1":
+						case "4":
 							$type = "存储设备";
 						break;
-						case "1":
+						case "5":
 							$type = "网络设备";
 						break;
-						case "1":
+						case "6":
 							$type = "拓展柜";
 						break;
 						default:

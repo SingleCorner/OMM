@@ -232,7 +232,7 @@ function module_usercheck($val) {
 			$url = array(
 				"服务报告" => "services",
 				"工作报告" => "report",
-				"WIKI" => "wiki",
+				"运维文库" => "wiki",
 				"修改密码" => "chgpasswd"
 			);
 			break;
