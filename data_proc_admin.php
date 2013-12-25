@@ -438,16 +438,15 @@ switch ($module_name) {
 							$pages = $App_result_rows / $records;
 						}
 						$url_fp = "?a=customer&p=query&record=".$records;
-						if ($curpage == 1) {
-							$prepage = $curpage;
+						if ($curpage < $pages) {
+							$prepage = $curpage - 1;
+							$nxpage = $curpage + 1;
 						} else {
 							$prepage = $curpage - 1;
-						}
-						if ($curpage >= $pages) {
 							$nxpage = $pages;
-							$prepage = $pages;
-						} else {
-							$nxpage = $curpage + 1;
+						}
+						if ($curpage == 1) {
+							$prepage = 1;
 						}
 						$url_pp = "?a=customer&p=query&record=".$records."&page=".$prepage;
 						$url_np = "?a=customer&p=query&record=".$records."&page=".$nxpage;
@@ -598,6 +597,175 @@ switch ($module_name) {
 				}
 				break;
 			//.....添加设备
+			//设备查询列表
+			case "query":
+				//查询重定向路径
+				if (isset($_POST["keyword"])) {
+					$keyword = urlencode($_POST['keyword']);
+					header("Location:?a=device&p=query&keyword={$keyword}");
+				} else if (empty($_GET["keyword"])) {
+					header("Location:?a=device");
+				} else {
+					$keyword = $_GET['keyword'];						
+					if (isset($_GET['page']) && $_GET['page'] >= 1) {
+						$curpage = floor($_GET['page']); 
+					} else {
+						$curpage = 1; 
+					}
+					if (isset($_GET['record']) && $_GET['record'] >= 1) {
+						$records = $_GET['record'];
+					} else {
+						$records = 1;
+					}
+					$start = ($curpage - 1) * $records;
+
+					//定义查询语句
+					$APP_sql = new APP_SQL();
+					$App_listDevice = $APP_sql -> getDeviceQueryList($keyword,$start,$records);
+					$App_countDevice = $APP_sql -> getDeviceQueryList($keyword);
+					$App_result_rows = $App_countDevice -> num_rows;
+					$APP_sql -> close();
+					//$a = $App_listDevice -> fetch_assoc();
+					
+					//生成页码
+					if (($App_result_rows / $records) > floor($App_result_rows / $records) || $App_result_rows == 0) {
+						$pages = floor($App_result_rows / $records) + 1;
+					} else {
+						$pages = $App_result_rows / $records;
+					}
+					$url_fp = "?a=device&p=query&keyword={$keyword}";
+					if ($curpage < $pages) {
+						$prepage = $curpage - 1;
+						$nxpage = $curpage + 1;
+					} else {
+						$prepage = $curpage - 1;
+						$nxpage = $pages;
+					}
+					if ($curpage == 1) {
+						$prepage = 1;
+					}
+					$url_pp = "?a=device&p=query&keyword={$keyword}&page=".$prepage;
+					$url_np = "?a=device&p=query&keyword={$keyword}&page=".$nxpage;
+					$url_lp = "?a=device&p=query&keyword={$keyword}&page=".$pages;
+					
+					//生成查询列表
+					APP_html_header();
+?>
+			<div class="title_container">
+				<span class="title_more">
+					<form id="APP_queryDevice" action="?a=device&p=query" method="post">
+						<input type="text" size="20" name="keyword" id="APP_queryDevice_keyword" placeholder="前置机号/SN/名称" />
+						<input type="submit" value="查询" />
+					</form>
+				</span>
+				<h1>
+					<button  onclick="load_newDevice()">添加设备</button>
+				</h1>
+			</div>
+			<div id="APP_newDevice">
+				<div class="title_container"><h1>设备信息</h1></div><br />
+				<form id="APP_newDevice_form" action="?a=device&p=add" method="post">
+					类型
+					<select name="type" id="APP_newDevice_type">
+						<option value="1">UNIX服务器</option>
+						<option value="2">PC服务器</option>
+						<option value="3">PC</option>
+						<option value="4">存储设备</option>
+						<option value="5">网络设备</option>
+						<option value="6">扩展柜</option>
+						<option value="7">其他</option>
+					</select>
+					所属客户
+					<select name="customer" id="APP_newDevice_customer">
+<?php
+					$APP_sql = new APP_SQL();
+					$sql_customer = "SELECT * from `s_customer` WHERE `status` = '1';";
+					$query = $APP_sql -> userDefine($sql_customer);
+					$APP_sql -> close();
+					while ($APP_result = $query -> fetch_assoc()) {
+						$id = $APP_result['id'];
+						$name = $APP_result['nickname'];
+?>
+						<option value="<?php echo $id;?>"><?php echo $name;?></option>
+<?php
+					}
+
+?>
+					</select>
+					名称<input type="text" name="name" size="11" maxlength="11" id="APP_newDevice_name" placeholder="P7 720C" />
+					序列号<input type="text" name="sn" size="11" id="APP_newDevice_sn" placeholder="06E353C" />
+					OS<input type="text" name="os" size="11" id="APP_newDevice_os" placeholder="7100-06" />
+					FirmWare<input type="text" name="fw" size="15" id="APP_newDevice_fw" placeholder="350_132" />
+					<br />
+					基本配置信息<br />
+					<strong>CPU</strong><input type="text" name="cpu" size="8" id="APP_newDevice_cpu" placeholder="16(CORE)" />
+					<strong>RAM</strong><input type="text" name="ram" size="4" id="APP_newDevice_ram" placeholder="4(G)" />
+					<strong>DISK</strong><input type="text" name="disk" size="18" id="APP_newDevice_disk" placeholder="139/139/139/139(G)" />
+					<strong>RAID</strong>
+					<input type="radio" name="raid" value="1" />已做
+					<input type="radio" name="raid" value="0" />未做
+					<strong>HBA</strong>
+					<input type="radio" name="hba" value="1" />有
+					<input type="radio" name="hba" value="0" />无
+					<strong title="电池安装时间">BTRY</strong><input type="text" name="bat" size="11" id="APP_newDevice_bat" placeholder="2013-11-18" />
+					<input type="submit" value="添加" />
+					<span id="APP_new_status"></span>
+				</form>
+			</div>
+			<div id="APP_listCustomer">
+				<div class="title_container"><h1>查询设备列表</h1></div><br />
+				<table class="datatable">
+					<tr>
+						<th width=15%>类型</th>
+						<th width=15%>名称</th>
+						<th width=10%>前置机号</th>
+						<th width=10%>序列号</th>
+						<th width=10%>OS</th>
+						<th width=10%>微码</th>
+						<th width=10%>电池</th>
+						<th></th>
+					</tr>
+<?php
+					while ($App_listDevice_query = $App_listDevice -> fetch_assoc()) {
+						$id = $App_listDevice_query['id'];
+						$type = $App_listDevice_query['type'];
+						//$url = "?a=device&p=query&id=$id";
+						$name = $App_listDevice_query['name'];
+						$mid = $App_listDevice_query['mid'];
+						$sn = $App_listDevice_query['sn'];
+						$os = $App_listDevice_query['opsys'];
+						$fw = $App_listDevice_query['firmware'];
+						$base_info = $App_listDevice_query['cfgfiles'];
+							$bat_parttern = "/\[BAT=(.*)\]/U";
+							preg_match_all($bat_parttern,$base_info,$arr);
+							$bat_date = strtotime($arr[1][0]);
+							$bat_useday = floor((time() - $bat_date) / 86400);
+							$bat_leftday = (971 - $bat_useday) ."天";
+?>
+					<tr class="<?php echo "APP_device_".$id; ?>">
+						<td class="device_type"><?php echo $type;?></td>
+						<td class="device_name"><?php echo $name;?></td>
+						<td class="device_mid"><?php echo $mid;?></td>
+						<td class="device_contacter"><?php echo $sn;?></td>
+						<td class="device_tel"><?php echo $os;?></td>
+						<td class="device_address"><?php echo $fw;?></td>
+						<td><?php echo $bat_leftday;?></td>
+						<td>
+							<button>详细信息</button>
+						</td>
+					</tr>
+<?php
+					}
+?>
+				</table>
+				<p></p>
+				<center><a href="<?php echo $url_fp;?>"><<</a><a href="<?php echo $url_pp;?>"><</a><a href="<?php echo $url_np;?>">></a><a href="<?php echo $url_lp;?>">>></a></center>
+			</div>
+<?php
+					APP_html_footer();
+				}
+				break;
+			//.....设备查询列表
 		}
 		break;
 	default:

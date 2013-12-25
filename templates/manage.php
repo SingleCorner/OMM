@@ -259,17 +259,16 @@ function APP_mgr_main() {
 				} else {
 					$pages = $App_result_rows / $records;
 				}
-				$url_fp = "?a=customer&record=".$records;
-				if ($curpage == 1) {
-					$prepage = $curpage;
+				$url_fp = "?a=customer";
+				if ($curpage < $pages) {
+					$prepage = $curpage - 1;
+					$nxpage = $curpage + 1;
 				} else {
 					$prepage = $curpage - 1;
-				}
-				if ($curpage >= $pages) {
 					$nxpage = $pages;
-					$prepage = $pages;
-				} else {
-					$nxpage = $curpage + 1;
+				}
+				if ($curpage == 1) {
+					$prepage = 1;
 				}
 				$url_pp = "?a=customer&record=".$records."&page=".$prepage;
 				$url_np = "?a=customer&record=".$records."&page=".$nxpage;
@@ -287,7 +286,7 @@ function APP_mgr_main() {
 			<div class="title_container">
 				<span class="title_more">
 					<form id="APP_queryDevice" action="?a=device&p=query" method="post">
-						<input type="text" size="10" name="name" id="APP_queryDevice_name" placeholder="设备名称" />
+						<input type="text" size="20" name="keyword" id="APP_queryDevice_keyword" placeholder="前置机号/SN/名称" />
 						<input type="submit" value="查询" />
 					</form>
 				</span>
@@ -351,10 +350,11 @@ function APP_mgr_main() {
 					<tr>
 						<th width=15%>类型</th>
 						<th width=15%>名称</th>
+						<th width=10%>前置机号</th>
 						<th width=10%>序列号</th>
 						<th width=10%>OS</th>
 						<th width=10%>微码</th>
-						<th width=15%>电池剩余天</th>
+						<th width=10%>电池</th>
 						<th></th>
 					</tr>
 				<?php 
@@ -379,6 +379,7 @@ function APP_mgr_main() {
 					$type = $App_listDevice_query['type'];
 					//$url = "?a=device&p=query&id=$id";
 					$name = $App_listDevice_query['name'];
+					$mid = $App_listDevice_query['mid'];
 					$sn = $App_listDevice_query['sn'];
 					$os = $App_listDevice_query['opsys'];
 					$fw = $App_listDevice_query['firmware'];
@@ -394,6 +395,7 @@ function APP_mgr_main() {
 					<tr class="<?php echo "APP_device_".$id; ?>">
 						<td class="device_type"><?php echo $type;?></td>
 						<td class="device_name"><?php echo $name;?></td>
+						<td class="device_mid"><?php echo $mid;?></td>
 						<td class="device_contacter"><?php echo $sn;?></td>
 						<td class="device_tel"><?php echo $os;?></td>
 						<td class="device_address"><?php echo $fw;?></td>
@@ -409,21 +411,20 @@ function APP_mgr_main() {
 				} else {
 					$pages = $App_result_rows / $records;
 				}
-				$url_fp = "?a=customer&record=".$records;
-				if ($curpage == 1) {
-					$prepage = $curpage;
+				$url_fp = "?a=device&record=".$records;
+				if ($curpage < $pages) {
+					$prepage = $curpage - 1;
+					$nxpage = $curpage + 1;
 				} else {
 					$prepage = $curpage - 1;
-				}
-				if ($curpage >= $pages) {
 					$nxpage = $pages;
-					$prepage = $pages;
-				} else {
-					$nxpage = $curpage + 1;
 				}
-				$url_pp = "?a=customer&record=".$records."&page=".$prepage;
-				$url_np = "?a=customer&record=".$records."&page=".$nxpage;
-				$url_lp = "?a=customer&record=".$records."&page=".$pages;
+				if ($curpage == 1) {
+					$prepage = 1;
+				}
+				$url_pp = "?a=device&record=".$records."&page=".$prepage;
+				$url_np = "?a=device&record=".$records."&page=".$nxpage;
+				$url_lp = "?a=device&record=".$records."&page=".$pages;
 ?>
 				</table>
 				<p></p>

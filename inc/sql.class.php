@@ -315,19 +315,29 @@ class APP_SQL {
 	 * 查询 -> 列出查询结果客户(代码未修改)
 	 * 
 	 */
-	public function getDeviceQueryList($customer,$start,$records) {
-		$sql = "SELECT * FROM `s_customer` WHERE (`name` LIKE '%{$customer}%' OR `nickname` LIKE '%{$customer}%') ";
-		if ($_SESSION['Login_section'] == 0) {
-		} else {
-			$sql .= "AND `status` = '1' ";
-		}
-		if (isset($start)) {
+	public function getDeviceQueryList($keyword,$start = -1,$records = -1) {
+		$sql = "SELECT * FROM `s_device` WHERE (`name` LIKE '%{$keyword}%' OR `mid` LIKE '%{$keyword}%' OR `sn` LIKE '%{$keyword}%')";
+		if ($start >= 0 && $records >= 0) {
 			$sql .= "LIMIT {$start},{$records};";
 		} else {
 			$sql .= ";";
 		}
 		$query = $this -> db -> query($sql);
 		return $query;
+	}
+	/**
+	 * 查询 -> 显示设备详细资料
+	 * 
+	 */
+	public function getDeviceMeta($id) {
+		$sql = "SELECT * FROM `s_device` WHERE `id` = '{$id}';";
+		//if ($_SESSION['Login_section'] == 0) {
+		//	$sql .= ";";
+		//} else {
+		//	$sql .= " AND `status` = '1';";
+		//}
+		$query = $this -> db -> query($sql);
+		return $query -> fetch_assoc();
 	}
 	/**
 	 * 查询 -> 提取当前账号最后一条记录

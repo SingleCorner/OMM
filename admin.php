@@ -2,8 +2,7 @@
 require_once("global.inc.php");
 
 if (!isset($_SESSION['AuthToken']) || empty($_SESSION['AuthToken'])){
-	header("http/1.1 403 Forbidden");
-	header("Status: 403");
+	header("Location: /");
 	exit;
 }
 //检测权限值通过后加载页面
