@@ -19,7 +19,8 @@ if (access_policy()) {
 		APP_html_footer();
 	}
 } else {
-	header("Status: 403");
+	echo "<script>alert('access denied');</script>";
+	//header("Status: 403");
 	exit;
 }
 ?>

@@ -612,10 +612,117 @@ switch ($module_name) {
 					$type = $App_queryDeviceMeta['type'];
 					$name = $App_queryDeviceMeta['name'];
 					$sn = $App_queryDeviceMeta['sn'];
+					$cid = $App_queryDeviceMeta['cid'];
 					$mid = $App_queryDeviceMeta['mid'];
-					
+					$os = $App_queryDeviceMeta['opsys'];
+					$fw = $App_queryDeviceMeta['firmware'];
+					$lo = $App_queryDeviceMeta['lo'];
+					$app = $App_queryDeviceMeta['appname'];
+					$intime = $App_queryDeviceMeta['intime'];
+					$outtime = $App_queryDeviceMeta['outime'];
+					$base_info = $App_queryDeviceMeta['cfgfiles'];
+						//匹配符提取相应配置信息
+						$bat_parttern = "/\[BAT=(.*)\]/U";
+						$cpu_parttern = "/\[CPU=(.*)\]/U";
+						$ram_parttern = "/\[RAM=(.*)\]/U";
+						$disk_parttern = "/\[DISK=(.*)\]/U";
+						$raid_parttern = "/\[RAID=(.*)\]/U";
+						$hba_parttern = "/\[HBA=(.*)\]/U";
+						//匹配操作
+						preg_match_all($bat_parttern,$base_info,$bat);
+						preg_match_all($cpu_parttern,$base_info,$cpu);
+						preg_match_all($ram_parttern,$base_info,$ram);
+						preg_match_all($disk_parttern,$base_info,$disk);
+						preg_match_all($raid_parttern,$base_info,$raid);
+						preg_match_all($hba_parttern,$base_info,$hba);
+						//配置信息逻辑判断并赋值
+						$bat_date = strtotime($bat[1][0]);
+						$bat_useday = floor((time() - $bat_date) / 86400);
+						$bat_leftday = (971 - $bat_useday) ."天";
+						if ($bat_date < 0) {
+							$bat_leftday = "无电池";
+						}
+						$cpu_info = $cpu[1][0];
+						$ram_info = $ram[1][0];
+						$disk_info = $disk[1][0];
+						if ($raid[1][0] == 1) {
+							$raid_info = "已做raid";
+						} else {
+							$raid_info = "未做raid或系统镜像";
+						}
+						if ($hba[1][0] == 1) {
+							$hba_info = "有";
+						} else {
+							$hba_info = "无";
+						}
 					APP_html_header();
-					print_r($App_queryDeviceMeta);
+?>
+			<div style="margin-left: 0px;width:700px;">
+				<table class="datatable">
+					<tr>
+						<td>设备编号</td>
+						<td><?php echo $id;?></td>
+						<td>设备类型</td>
+						<td><?php echo $type;?></td>
+					</tr>
+					<tr>
+						<td>设备名称</td>
+						<td><?php echo $name;?></td>
+						<td>序列号</td>
+						<td><?php echo $sn;?></td>
+					</tr>
+					<tr>
+						<td>所属客户编号</td>
+						<td><?php echo $cid;?></td>
+						<td>前置机号</td>
+						<td><?php echo $mid;?></td>
+					</tr>
+					<tr>
+						<td>操作系统</td>
+						<td><?php echo $os;?></td>
+						<td>微码版本</td>
+						<td><?php echo $fw;?></td>
+					</tr>
+					<tr>
+						<td>机器位置</td>
+						<td><?php echo $lo;?></td>
+						<td>应用系统</td>
+						<td><?php echo $app;?></td>
+					</tr>
+					<tr>
+						<td>入库时间</td>
+						<td><?php echo $intime;?></td>
+						<td>交付时间</td>
+						<td><?php echo $outtime;?></td>
+					</tr>
+					<tr>
+						<td colspan=2 style="text-align: center;">机器基本配置信息</td>
+					</tr>
+					<tr>
+						<td>CPU（核）</td>
+						<td><?php echo $cpu_info;?></td>
+						<td>mem（G）</td>
+						<td><?php echo $ram_info;?></td>
+					</tr>
+					<tr>
+						<td>硬盘（G）</td>
+						<td colspan=3><?php echo $disk_info;?></td>
+					</tr>
+					<tr>
+						<td>RAID</td>
+						<td><?php echo $raid_info;?></td>
+						<td>HBA（光纤卡）</td>
+						<td><?php echo $hba_info;?></td>
+					</tr>
+					<tr>
+						<td>电池更换时间</td>
+						<td><?php echo $bat[1][0];?></td>
+						<td>电池剩余时间</td>
+						<td><?php echo $bat_leftday;?></td>
+					</tr>
+				</table>
+			</div>
+<?php
 					APP_html_footer();
 				} else if (empty($_GET["keyword"])) {
 					header("Location:?a=device");
