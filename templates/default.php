@@ -25,8 +25,8 @@ function APP_html_footer(){
 			<a  href="https://github.com/SingleCorner/OMM" target="_blank">https://github.com/SingleCorner/OMM</a>
 		</div>
 		<div id="APP_foot_license">
-			<div>SingleCorner 版权所有</div>
-			<div>运行于 <a href="http://www.leyoung.com.cn" target="_blank">Leyoung</a> 平台</div>
+			<div>开源项目已托管在Github平台</div>
+			<div>运行于 <a href="<?php echo __COM_WEB__;?>" target="_blank"><?php echo __COM__;?></a></div>
 		</div>
 	</footer>
 	<!-- 页脚结束 -->

@@ -440,3 +440,11 @@ function load_newDevice() {
 		$('#APP_queryDevice_name').focus();
 	}
 }
+/* 跳转至设备详细信息
+ *
+ */
+function show_DeviceMeta(id) {
+	var url = window.location.pathname;
+	//alert(url);
+	window.open(url+"?a=device&p=query&id=" + id);
+}

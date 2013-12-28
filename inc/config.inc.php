@@ -14,6 +14,9 @@ if (!defined('__ROOT__')) {
 /* Company Name */
 $COM = "Leyoung";
 
+/* Company Website*/
+$COM_WEB = "http://www.leyoung.com.cn";
+
 /* Database Address */
 $DB_HOST = "localhost";
 
@@ -42,6 +45,7 @@ $sys_timeout = '99999';//Logout without operating in 5 minutes
 /* Prevent the program has change extremely */
 
 define("__COM__",$COM);
+define("__COM_WEB__",$COM_WEB);
 define("__DB_HOST__",$DB_HOST);
 define("__DB_USER__",$DB_USER);
 define("__DB_PASSWD__",$DB_PASSWD);

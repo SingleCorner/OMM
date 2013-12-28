@@ -301,9 +301,9 @@ class APP_SQL {
 	 * 查询 -> 列出设备
 	 * 
 	 */
-	public function getDeviceList($start,$records) {
+	public function getDeviceList($start = -1,$records = 30) {
 		$sql = "SELECT * from `s_device`";
-		if (isset($start)) {
+		if ($start >= 0) {
 			$sql .= " LIMIT {$start},{$records};";
 		} else {
 			$sql .= ";";
@@ -330,12 +330,7 @@ class APP_SQL {
 	 * 
 	 */
 	public function getDeviceMeta($id) {
-		$sql = "SELECT * FROM `s_device` WHERE `id` = '{$id}';";
-		//if ($_SESSION['Login_section'] == 0) {
-		//	$sql .= ";";
-		//} else {
-		//	$sql .= " AND `status` = '1';";
-		//}
+		$sql = "SELECT * FROM `s_device` WHERE (`id` = '{$id}' AND `stale` = '1');";
 		$query = $this -> db -> query($sql);
 		return $query -> fetch_assoc();
 	}

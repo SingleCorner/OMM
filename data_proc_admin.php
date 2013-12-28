@@ -603,10 +603,24 @@ switch ($module_name) {
 				if (isset($_POST["keyword"])) {
 					$keyword = urlencode($_POST['keyword']);
 					header("Location:?a=device&p=query&keyword={$keyword}");
+				} else if (isset($_GET['id'])) {
+					$id = numeric_filter($_GET['id']);
+					$APP_sql = new APP_SQL();
+					$App_queryDeviceMeta = $APP_sql -> getDeviceMeta($id);
+					$APP_sql -> close();
+					$id = $App_queryDeviceMeta['id'];
+					$type = $App_queryDeviceMeta['type'];
+					$name = $App_queryDeviceMeta['name'];
+					$sn = $App_queryDeviceMeta['sn'];
+					$mid = $App_queryDeviceMeta['mid'];
+					
+					APP_html_header();
+					print_r($App_queryDeviceMeta);
+					APP_html_footer();
 				} else if (empty($_GET["keyword"])) {
 					header("Location:?a=device");
 				} else {
-					$keyword = $_GET['keyword'];						
+					$keyword = urldecode($_GET['keyword']);						
 					if (isset($_GET['page']) && $_GET['page'] >= 1) {
 						$curpage = floor($_GET['page']); 
 					} else {
@@ -615,7 +629,7 @@ switch ($module_name) {
 					if (isset($_GET['record']) && $_GET['record'] >= 1) {
 						$records = $_GET['record'];
 					} else {
-						$records = 1;
+						$records = 15;
 					}
 					$start = ($curpage - 1) * $records;
 
@@ -729,7 +743,6 @@ switch ($module_name) {
 					while ($App_listDevice_query = $App_listDevice -> fetch_assoc()) {
 						$id = $App_listDevice_query['id'];
 						$type = $App_listDevice_query['type'];
-						//$url = "?a=device&p=query&id=$id";
 						$name = $App_listDevice_query['name'];
 						$mid = $App_listDevice_query['mid'];
 						$sn = $App_listDevice_query['sn'];
@@ -741,6 +754,9 @@ switch ($module_name) {
 							$bat_date = strtotime($arr[1][0]);
 							$bat_useday = floor((time() - $bat_date) / 86400);
 							$bat_leftday = (971 - $bat_useday) ."天";
+							if ($bat_date < 0) {
+								$bat_leftday = "无电池";
+							}
 ?>
 					<tr class="<?php echo "APP_device_".$id; ?>">
 						<td class="device_type"><?php echo $type;?></td>
@@ -751,7 +767,7 @@ switch ($module_name) {
 						<td class="device_address"><?php echo $fw;?></td>
 						<td><?php echo $bat_leftday;?></td>
 						<td>
-							<button>详细信息</button>
+							<button onclick="show_DeviceMeta(<?php echo $id;?>)">详细信息</button>
 						</td>
 					</tr>
 <?php

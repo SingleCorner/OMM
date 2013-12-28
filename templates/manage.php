@@ -389,8 +389,9 @@ function APP_mgr_main() {
 						$bat_date = strtotime($arr[1][0]);
 						$bat_useday = floor((time() - $bat_date) / 86400);
 						$bat_leftday = (971 - $bat_useday) ."天";
-						
-
+						if ($bat_date < 0) {
+							$bat_leftday = "无电池";
+						}
 ?>
 					<tr class="<?php echo "APP_device_".$id; ?>">
 						<td class="device_type"><?php echo $type;?></td>
@@ -401,7 +402,7 @@ function APP_mgr_main() {
 						<td class="device_address"><?php echo $fw;?></td>
 						<td><?php echo $bat_leftday;?></td>
 						<td>
-							<button>详细信息</button>
+							<button onclick="show_DeviceMeta(<?php echo $id;?>)">详细信息</button>
 						</td>
 					</tr>
 <?php
