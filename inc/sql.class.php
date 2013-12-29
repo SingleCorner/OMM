@@ -360,8 +360,13 @@ class APP_SQL {
 	/**
 	 * 查询 -> 列出本月值班记录
 	 */
-	public function getServicesList() {
-		$sql = "SELECT * from `view_srvform` ORDER BY `stime` desc;";
+	public function getServicesList($start = -1,$records = 30) {
+		$sql = "SELECT * from `view_srvform` ORDER BY `stime` desc ";
+		if ($start >= 0) {
+			$sql .= "LIMIT {$start},{$records};";
+		} else {
+			$sql .= ";";
+		}
 		$query = $this -> db -> query($sql);
 		return $query;
 	}

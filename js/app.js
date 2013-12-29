@@ -343,12 +343,14 @@ function addsrvs(evt) {
 	//准备变量
 	var customer = $('#APP_newSrvs_customer').val();
 	var fixid = $('#APP_newSrvs_fixid').val();
+	var requirement = $('#APP_newSrvs_requirement').val();
 	var stype = $('input[name="stype"]:checked').val();
 	var mtype = $('input[name="mtype"]:checked').val();
 	var start = $('#APP_newSrvs_start').val();
 	var end = $('#APP_newSrvs_end').val();
 	var main = $('#APP_newSrvs_main').val();
 	var sub = $('#APP_newSrvs_sub').val();
+	var accompany = $('#APP_newSrvs_accompany').val();
 	var sysdescr = CKEDITOR.instances.APP_newSrvs_sysdescr.getData();
 	var workdescr = CKEDITOR.instances.APP_newSrvs_workdescr.getData();
 	
@@ -381,12 +383,14 @@ function addsrvs(evt) {
 		data: {
 			'customer': customer,
 			'fixid': fixid,
+			'requirement': requirement,
 			'stype': stype,
 			'mtype': mtype,
 			'start': start,
 			'end': end,
 			'main': main,
 			'sub': sub,
+			'accompany': accompany,
 			'sysdescr': sysdescr,
 			'workdescr': workdescr
 		},
@@ -464,6 +468,7 @@ function getopmethod() {
 				window.location.reload();
 			} else {
 				$('#APP_newSrvs_opmethod').html(data.content);
+				$('#APP_newSrvs_requirement').val(data.requirement);
 			}
 		},
 		dataType: 'json'
@@ -474,16 +479,16 @@ function getopmethod() {
  */
 function query_srvs() {
 	var id = $(this).val();
-	var url = window.location.href;
-	window.open(url+"&p=query&id="+id);
+	var url = window.location.pathname;
+	window.open(url+"?a=services&p=query&id="+id);
 }
 /* 
  * 服务报告单 -> 打印
  */
 function print_srvs() {
 	var id = $(this).val();
-	var url = window.location.href;
-	window.open(url+"&p=query&id="+ id +"&print");
+	var url = window.location.pathname;
+	window.open(url+"?a=services&p=query&id="+ id +"&print");
 }
 function clockinit(){  
 //	  clock();  

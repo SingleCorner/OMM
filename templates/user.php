@@ -437,6 +437,7 @@ if ($App_worktime['recordtime'] != "") {
 
 ?>
 						</select>
+						<input id="APP_newSrvs_requirement" name="requirement" type="text" placeholder="请先选择需求后更改" />
 					</div>
 					<div>服务类型：</div>
 					<div>
@@ -446,13 +447,13 @@ if ($App_worktime['recordtime'] != "") {
 								<td><label><input name="stype" type="radio" value="2" />利银MA</label></td>
 								<td><label><input name="stype" type="radio" value="3" />厂商MA</label></td>
 								<td><label><input name="stype" type="radio" value="4" />无备件MA</label></td>
-								<td><label><input name="stype" type="radio" value="5" checked />保外服务</label></td>
+								<td><label><input name="stype" type="radio" value="5" />保外服务</label></td>
 							</tr>
 							<tr>
 								<td><label><input name="mtype" type="radio" value="1" />生产系统维护</label></td>
 								<td><label><input name="mtype" type="radio" value="2" />备份系统维护</label></td>
 								<td><label><input name="mtype" type="radio" value="3" />测试系统维护</label></td>
-								<td><label><input name="mtype" type="radio" value="4" checked />备机维护</label></td>
+								<td><label><input name="mtype" type="radio" value="4" />备机维护</label></td>
 							</tr>
 						</table>
 					</div>
@@ -525,8 +526,40 @@ if ($App_worktime['recordtime'] != "") {
 					</tr>
 <?php
 			$APP_sql = new APP_SQL();
-			$query = $APP_sql -> getServicesList();
+			if (isset($_GET['page']) && $_GET['page'] >= 1) {
+				$curpage = floor($_GET['page']); 
+			} else {
+				$curpage = 1; 
+			}
+			if (isset($_GET['record']) && $_GET['record'] >= 1) {
+				$records = $_GET['record'];
+			} else {
+				$records = 15;
+			}
+			$start = ($curpage - 1) * $records;
+			$query = $APP_sql -> getServicesList($start,$records);
+			$APP_countSrvs = $APP_sql ->getServicesList();
+			$App_result_rows = $APP_countSrvs -> num_rows;
 			$APP_sql -> close();
+			if (($App_result_rows / $records) > floor($App_result_rows / $records) || $App_result_rows == 0) {
+				$pages = floor($App_result_rows / $records) + 1;
+			} else {
+				$pages = $App_result_rows / $records;
+			}
+			$url_fp = "?a=services";
+			if ($curpage < $pages) {
+				$prepage = $curpage - 1;
+				$nxpage = $curpage + 1;
+			} else {
+				$prepage = $curpage - 1;
+				$nxpage = $pages;
+			}
+			if ($curpage == 1) {
+				$prepage = 1;
+			}
+			$url_pp = "?a=services&record=".$records."&page=".$prepage;
+			$url_np = "?a=services&record=".$records."&page=".$nxpage;
+			$url_lp = "?a=services&record=".$records."&page=".$pages;
 			while ($APP_result = $query -> fetch_assoc()) {
 				$id = $APP_result['id'];
 				$need = $APP_result['headline'];
@@ -547,6 +580,9 @@ if ($App_worktime['recordtime'] != "") {
 			}
 ?>
 				</table>
+				<p></p>
+				<center><a href="<?php echo $url_fp;?>"><<</a><a href="<?php echo $url_pp;?>"><</a><a href="<?php echo $url_np;?>">></a><a href="<?php echo $url_lp;?>">>></a></center>
+				<center><?php echo $_SERVER['PHP_SCRIPT'];?></center>
 			</div>
 <?php
 			 break;

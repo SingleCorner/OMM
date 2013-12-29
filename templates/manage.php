@@ -344,7 +344,7 @@ function APP_mgr_main() {
 					<span id="APP_new_status"></span>
 				</form>
 			</div>
-			<div id="APP_listCustomer">
+			<div id="APP_listDevice">
 				<div class="title_container"><h1>现有设备</h1></div><br />
 				<table class="datatable">
 					<tr>

@@ -100,7 +100,8 @@ if (!defined('__ROOT__')) {
 					if ($query['subtype'] == 1) {
 						$result = array(
 							"code" => 1,
-							"content" => $query['body']
+							"content" => $query['body'],
+							"requirement" => $query['headline']
 						);
 					} else {
 						$result = array(
@@ -121,25 +122,32 @@ if (!defined('__ROOT__')) {
 			case "add":
 				$customer = numeric_filter($_POST['customer']);
 				$fixid = numeric_filter($_POST['fixid']);
+				$requirement = string_filter($_POST['requirement']);
 				$stype = numeric_filter($_POST['stype']);
 				$mtype = numeric_filter($_POST['mtype']);
 				$start = date("Y-m-d\ H:i:s",strtotime($_POST['start']));
 				$end = date("Y-m-d\ H:i:s",strtotime($_POST['end']));
 				$main = string_filter($_POST['main']);
 				$sub = string_filter($_POST['sub']);
+				$accompany = string_filter($_POST['accompany']);
 				$sysdescr = XSS_filter($_POST['sysdescr']);
 				$workdescr = XSS_filter($_POST['workdescr']);
+				if (empty($stype) || empty($mtype)) {
+					$stype = $mtype = -1;
+				}
 				if (!empty($customer) && !empty($fixid) && !empty($stype) && !empty($mtype) && !empty($start) && !empty($end) && !empty($main)) {
 					$APP_sql = new APP_SQL();
 					$data = array(
 						"cid" => $customer,
 						"wid" => $fixid,
+						"requirement" => $requirement,
 						"srvtype" => $stype,
 						"matype" => $mtype,
 						"stime" => $start,
 						"etime" => $end,
 						"mainmbr" => $main,
 						"submbr" => $sub,
+						"accompany" => $accompany,
 						"sysinfo" => $sysdescr,
 						"workinfo" => $workdescr,
 						"engineer" => $_SESSION["Login_name"]
@@ -176,11 +184,14 @@ if (!defined('__ROOT__')) {
 					$id = numeric_filter($_GET['id']);
 				}
 				if (empty($id)) {
-					header("Status: 404");
+					header("Location: ?a=services");
 					exit;
 				}
 				$APP_sql = new APP_SQL();
 				$APP_result = $APP_sql -> getTableAllWhere("view_srvform","id",$id);
+				if ($APP_result['id'] == "") {
+					header("Location: ?a=services&CannotFindSevice");
+				}
 				$APP_sql -> close();
 				APP_html_header();
 ?>

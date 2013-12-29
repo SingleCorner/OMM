@@ -556,16 +556,16 @@ body.scroll #APP_top_user {
 
 
 #APP_querySrvs_sysdescr {
-	min-height: 90px;
-	max-height: 90px;
+	min-height: 50px;
+	max-height: 50px;
 }
 #APP_querySrvs_workdescr {
 	min-height: 70px;
-	max-height: 100px;
+	max-height: 70px;
 }
 #APP_querySrvs_opmethod {
-	min-height: 200px;
-	max-height: 200px
+	min-height: 170px;
+	max-height: 170px
 }
 #APP_querySrvs_suggest {
 	min-height: 10px;
@@ -630,6 +630,16 @@ body.scroll #APP_top_user {
 	margin-top:10px;
 }
 #APP_listCustomer a {
+	margin-left: 20px;
+	cursor:	pointer;
+}
+
+#APP_listDevice a {
+	margin-left: 20px;
+	cursor:	pointer;
+}
+
+#APP_listSrvs a {
 	margin-left: 20px;
 	cursor:	pointer;
 }
