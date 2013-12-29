@@ -382,7 +382,7 @@ if ($App_worktime['recordtime'] != "") {
 			</div>
 			<div id="APP_newSrvs">
 				<form id="APP_newSrvs_form" action="?a=services&p=add" method="post">
-					<div class="title_container"><img src="/images/leyoung.png" height="30px" /><span class="title_more">LY-QR-09-13</span></div>
+					<div class="title_container"><img src="<?php echo __COM_LOGO__;?>" height="30px" /><span class="title_more">LY-QR-09-13</span></div>
 					<h2>客  户 服 务 报 告 单</h2>
 					<div>客户信息：
 						<select id="APP_newSrvs_customer" name="customer">
@@ -451,9 +451,8 @@ if ($App_worktime['recordtime'] != "") {
 							<tr>
 								<td><label><input name="mtype" type="radio" value="1" />生产系统维护</label></td>
 								<td><label><input name="mtype" type="radio" value="2" />备份系统维护</label></td>
-								<td><label><input name="mtype" type="radio" value="3" />测试开发系统维护</label></td>
+								<td><label><input name="mtype" type="radio" value="3" />测试系统维护</label></td>
 								<td><label><input name="mtype" type="radio" value="4" checked />备机维护</label></td>
-								<td></td>
 							</tr>
 						</table>
 					</div>
@@ -472,6 +471,14 @@ if ($App_worktime['recordtime'] != "") {
 							<tr>
 								<td>主要实施人员：<input id="APP_newSrvs_main" name="main" type="text" /></td>
 								<td>协助实施人员：<input id="APP_newSrvs_sub" name="sub" type="text" /></td>
+							</tr>
+						</table>
+					</div>
+					<div>陪同人员：</div>
+					<div>
+						<table class="formtable">
+							<tr>
+								<td>客户陪同人 ： <input id="APP_newSrvs_accompany" name="accompany" type="text" /></td>
 							</tr>
 						</table>
 					</div>

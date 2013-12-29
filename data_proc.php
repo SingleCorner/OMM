@@ -266,6 +266,14 @@ if (!defined('__ROOT__')) {
 						</tr>
 					</table>
 				</div>
+				<div>陪同人员：</div>
+				<div>
+					<table class="formtable">
+						<tr>
+							<td>客户陪同人 ： <u><?php echo $APP_result['accompany'];?></u></td>
+						</tr>
+					</table>
+				</div>
 				<div>系统描述：</div>
 				<div id ="APP_querySrvs_sysdescr" class="APP_querySrvs_border"><?php echo $APP_result['sysinfo'];?></div>
 				<div>具体工作内容：</div>

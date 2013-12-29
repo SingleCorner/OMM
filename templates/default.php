@@ -25,7 +25,7 @@ function APP_html_footer(){
 			<a  href="https://github.com/SingleCorner/OMM" target="_blank">https://github.com/SingleCorner/OMM</a>
 		</div>
 		<div id="APP_foot_license">
-			<div>开源项目已托管在Github平台</div>
+			<div>本项目基于GPLv2协议开源在github</div>
 			<div>运行于 <a href="<?php echo __COM_WEB__;?>" target="_blank"><?php echo __COM__;?></a></div>
 		</div>
 	</footer>

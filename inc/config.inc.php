@@ -17,6 +17,9 @@ $COM = "Leyoung";
 /* Company Website*/
 $COM_WEB = "http://www.leyoung.com.cn";
 
+/* Company logo*/
+$COM_LOGO = "/images/"."leyoung.png";
+
 /* Database Address */
 $DB_HOST = "localhost";
 
@@ -37,7 +40,7 @@ if(empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
 }
 
 /* Login timeout */
-$sys_timeout = '99999';//Logout without operating in 5 minutes
+$sys_timeout = '9999';//Logout without operating in 5 minutes
 
 
 //*******Part2  Variable -> Constant************//
@@ -46,6 +49,7 @@ $sys_timeout = '99999';//Logout without operating in 5 minutes
 
 define("__COM__",$COM);
 define("__COM_WEB__",$COM_WEB);
+define("__COM_LOGO__",$COM_LOGO);
 define("__DB_HOST__",$DB_HOST);
 define("__DB_USER__",$DB_USER);
 define("__DB_PASSWD__",$DB_PASSWD);
