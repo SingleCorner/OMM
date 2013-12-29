@@ -473,8 +473,7 @@ body.scroll #APP_top_user {
 }
 
 #APP_signal_op {
-	width: 280px;
-	float: left;
+	width: 980px;
 	margin-left: 10px;
 }
 #APP_signal_op > div {
@@ -485,13 +484,13 @@ body.scroll #APP_top_user {
 }
 
 #APP_signal_info {
-	width: 670px;
-	float: left;
+	width: 980px;
+	margin-top: 30px;
 	margin-left: 20px;
 	margin-bottom: 50px;
 }
 
-#APP_signal_noinfo > form >div {
+#APP_signal_noinfo > form {
 	margin-top:10px;
 }
 

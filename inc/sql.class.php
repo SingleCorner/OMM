@@ -312,7 +312,7 @@ class APP_SQL {
 		return $query;
 	}
 	/**
-	 * 查询 -> 列出查询结果客户(代码未修改)
+	 * 查询 -> 列出查询结果设备
 	 * 
 	 */
 	public function getDeviceQueryList($keyword,$start = -1,$records = -1) {
@@ -334,6 +334,7 @@ class APP_SQL {
 		$query = $this -> db -> query($sql);
 		return $query -> fetch_assoc();
 	}
+	
 	/**
 	 * 查询 -> 提取当前账号最后一条记录
 	 */
@@ -357,8 +358,9 @@ class APP_SQL {
 		$query = $this -> db -> query($sql);
 		return $query;
 	}
+	
 	/**
-	 * 查询 -> 列出本月值班记录
+	 * 查询 -> 列出服务报告单
 	 */
 	public function getServicesList($start = -1,$records = 30) {
 		$sql = "SELECT * from `view_srvform` ORDER BY `stime` desc ";
@@ -370,8 +372,22 @@ class APP_SQL {
 		$query = $this -> db -> query($sql);
 		return $query;
 	}
+	/**
+	 * 查询 -> 列出查询结果服务报告单 -- 工程师
+	 * 
+	 */
+	public function getServicesQueryList($engineer,$start = -1,$records = -1) {
+		$sql = "SELECT * FROM `view_srvform` WHERE (`mainmbr` LIKE '%{$engineer}%' OR `submbr` LIKE '%{$engineer}%') ORDER BY `stime` desc ";
+		if ($start >= 0 && $records >= 0) {
+			$sql .= "LIMIT {$start},{$records};";
+		} else {
+			$sql .= ";";
+		}
+		$query = $this -> db -> query($sql);
+		return $query;
+	}
 
-
+	
 
 	/**
 	 * 事务操作 -> 注册账号{更新密码，清除授权码，加入授权表}

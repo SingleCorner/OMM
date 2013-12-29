@@ -397,12 +397,13 @@ function APP_mgr_main() {
 						<td class="device_type"><?php echo $type;?></td>
 						<td class="device_name"><?php echo $name;?></td>
 						<td class="device_mid"><?php echo $mid;?></td>
-						<td class="device_contacter"><?php echo $sn;?></td>
-						<td class="device_tel"><?php echo $os;?></td>
-						<td class="device_address"><?php echo $fw;?></td>
+						<td class="device_sn"><?php echo $sn;?></td>
+						<td class="device_os"><?php echo $os;?></td>
+						<td class="device_fw"><?php echo $fw;?></td>
 						<td><?php echo $bat_leftday;?></td>
 						<td>
 							<button onclick="show_DeviceMeta(<?php echo $id;?>)">详细信息</button>
+							<button class="APP_device_chdata">前置机号</button>
 						</td>
 					</tr>
 <?php

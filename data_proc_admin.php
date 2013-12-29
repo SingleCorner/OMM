@@ -889,6 +889,44 @@ switch ($module_name) {
 				}
 				break;
 			//.....设备查询列表
+			//设备前置机号赋值
+			case "chdata":
+				$mid = string_filter($_POST['mid']);
+				$sn = string_filter($_POST['sn']);
+				if (!empty($mid) && !empty($sn)) {
+					$APP_sql = new APP_SQL();
+					$sql = "UPDATE `s_device` SET `mid` = '{$mid}' WHERE `sn` = '{$sn}';";
+					$APP_sql -> userDefine($sql);
+					$affected = $APP_sql -> affected();
+					$APP_sql -> close();
+					if ($affected >=1) {
+						$result = array(
+							"code" => 1,
+							"message" => "OMM：前置机号已设置"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					} else {
+						$result = array(
+							"code" => 0,
+							"message" => "OMM：数据更新失败，请重试"
+						);
+						header('Content-Type: application/json');
+						echo json_encode($result);
+						exit;
+					}
+				} else {
+					$result = array(
+						"code" => 1,
+						"message" => "OMM：遇到非法数据"
+					);
+					header('Content-Type: application/json');
+					echo json_encode($result);
+					exit;
+				}
+				break;
+			//.....设备前置机号赋值
 		}
 		break;
 	default:

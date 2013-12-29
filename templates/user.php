@@ -157,121 +157,141 @@ function APP_html_module(){
 			<!-- 签到系统 -->
 			<div id="APP_signal">
 				<div id="APP_signal_op">
-					<!--<canvas id="canvas" width="150" height="150"></canvas>-->
-					<div>当前日期 <?php echo date("Y-m-d");?></div>
-					<script>clockinit()</script>
+					<table class=formtable>
+						<tr>
+							<td>当前日期 <?php echo date("Y-m-d");?></td>
 <?php
-if ($App_worktime['recordtime'] != "") {
-	$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
-	$lefttime = $App_worktime['onwork'] + $App_worktime['overwork'] - $App_worktime['rest'];
-	$APP_sql = new APP_SQL();
-	$App_workrecord = $APP_sql -> getWorkrecord();
-	if ($App_workrecord === FALSE) {
-		$date = date("Y-m-01");
-		$APP_sql -> insertWorkrecord($date);
-		$APP_sql -> close();
-		header('Location: /');
-	} else {
-		$status = $App_workrecord['checkstatus'];
-		$date = $App_workrecord['date'];
-		$_SESSION['workrecord_date'] = $date;
-		$weekno = date("N",strtotime($date));
-		if ($status == 4) {
-			if ($date != date("Y-m-d")) {
-				$date = date("Y-m-d", strtotime($date."+ 1 day"));
-				$APP_sql -> insertWorkrecord($date);
-				header('Location: /');
-			} else {
+				if ($App_worktime['recordtime'] != "") {
+					$_SESSION['index_recordtime'] = $App_worktime['recordtime'];
+					$lefttime = $App_worktime['onwork'] + $App_worktime['overwork'] - $App_worktime['rest'];
+					$APP_sql = new APP_SQL();
+					$App_workrecord = $APP_sql -> getWorkrecord();
+					if ($App_workrecord === FALSE) {
+						$date = date("Y-m-01");
+						$APP_sql -> insertWorkrecord($date);
+						$APP_sql -> close();
+						header('Location: /');
+					} else {
+						$status = $App_workrecord['checkstatus'];
+						$date = $App_workrecord['date'];
+						$_SESSION['workrecord_date'] = $date;
+						$weekno = date("N",strtotime($date));
+						if ($status == 4) {
+							if ($date != date("Y-m-d")) {
+								$date = date("Y-m-d", strtotime($date."+ 1 day"));
+								$APP_sql -> insertWorkrecord($date);
+								header('Location: /');
+							} else {
 ?>
-					<div id="APP_signal_opbtn">
-						<div><?php echo "今日已记录";?></div>
-					</div>
+							<td><?php echo "今日已记录";?></td>
 <?php
-		}
-		$APP_sql -> close();
-	} else {
-		$APP_sql -> close();
-		if (strtotime($date) < strtotime(date("Y-m-d"))) {
-			$tips = "历史补录";
-		} else {
-			$tips = "今日记录";
-		}
-		$tips = $tips." ".$date;
-		switch ($status) {
-			case "0":
+							}
+							$APP_sql -> close();
+						} else {
+							$APP_sql -> close();
+							if (strtotime($date) < strtotime(date("Y-m-d"))) {
+								$tips = "历史补录";
+							} else {
+								$tips = "今日记录";
+							}
+							$tips = $tips." ".$date;
 ?>
-					<div id="APP_signal_opbtn">
-						<div><?php echo $tips;?></div>
-						<div>
-							是否公休假期
-					<?php
-						if ($weekno == 6 || $weekno == 7) {
-					?>
+							<td><?php echo $tips;?></td>
+<?php
+							switch ($status) {
+								case "0":
+?>
+							<td>
+							公休假期
+<?php
+									if ($weekno == 6 || $weekno == 7) {
+?>
 							<input type="radio" value="1" name="signal_weekend" checked />是
 							<input type="radio" value="0" name="signal_weekend" />否
-					<?php
-						} else {
-					?>
+<?php
+									} else {
+?>
 							<input type="radio" value="1" name="signal_weekend" />是
 							<input type="radio" value="0" name="signal_weekend" checked />否
-					<?php
-						}
-					?>
-						</div>
-						<span class="signal_btn"><button onclick=check_op("in",1)>公司上班</button></span>
-						<span class="signal_btn"><button onclick=check_op("in",2)>中心值班</button></span>
-						<span class="signal_btn"><button onclick=check_op("in",3)>休息/调休</button></span>
-					</div>
-					<?php
+<?php
+									}
+?>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="signal_btn"><button onclick=check_op("in",1)>公司上班</button></td>
+							<td class="signal_btn"><button onclick=check_op("in",2)>中心值班</button></td>
+							<td class="signal_btn"><button onclick=check_op("in",3)>休息/调休</button></td>
+							<td class="signal_btn"><button onclick=check_op("in",5)>其他上班</button></td>
+						</tr>
+<?php
 									break;
 								case "1":
-					?>
-					<div id="APP_signal_opbtn">
-						<div><?php echo $tips;?></div>
-						<span class="signal_btn"><button onclick=check_op("out",1)>公司下班</button></span>
-						<span class="signal_btn"><button onclick=check_op("transfer",2)>中心加班</button></span>
-					</div>
-					<?php
+?>
+						</tr>
+						<tr>
+							<td class="signal_btn"><button onclick=check_op("out",1)>公司下班</button></td>
+							<td class="signal_btn"><button onclick=check_op("transfer",2)>中心加班</button></td>
+							<td class="signal_btn"><button onclick=>客户出差</button></td>
+							<td class="signal_btn"><button onclick=check_op("transfer",3)>调休</button></td>
+						</tr>
+<?php
 									break;
 								case "2":
-					?>
-					<div id="APP_signal_opbtn">
-						<div><?php echo $tips;?></div>
-						<select id="APP_signal_outtimeh">
-							<option value="-1">正常下班</option>
-							<option value="0">18点</option>
-							<option value="1">19点</option>
-							<option value="2">20点</option>
-							<option value="3">21点</option>
-							<option value="4">22点</option>
-							<option value="5">23点</option>
-							<option value="8" selected>00点</option>
-							<option value="9">01点</option>
-							<option value="10">02点</option>
-							<option value="11">03点</option>
-							<option value="12">04点</option>
-							<option value="13">05点</option>
-							<option value="14">06点</option>
-							<option value="15">07点</option>
-							<option value="16">08点</option>
-							<option value="17">09点</option>
-						</select>
-						<select id="APP_signal_outtimem">
-							<option value="0">00分</option>
-							<option value="0.5">30分</option>
-						</select>
-						<span class="signal_btn"><button onclick=check_op("out",2)>中心下班</button></span>
+?>
+						</tr>
+						<tr>
+							<td>
+								<select id="APP_signal_outtimeh">
+									<option value="-1">正常下班</option>
+									<option value="0">18点</option>
+									<option value="1">19点</option>
+									<option value="2">20点</option>
+									<option value="3">21点</option>
+									<option value="4">22点</option>
+									<option value="5">23点</option>
+									<option value="8" selected>00点</option>
+									<option value="9">01点</option>
+									<option value="10">02点</option>
+									<option value="11">03点</option>
+									<option value="12">04点</option>
+									<option value="13">05点</option>
+									<option value="14">06点</option>
+									<option value="15">07点</option>
+									<option value="16">08点</option>
+									<option value="17">09点</option>
+								</select>
+								<select id="APP_signal_outtimem">
+									<option value="0">00分</option>
+									<option value="0.5">30分</option>
+								</select>
+							</td>
+							<td class="signal_btn"><button onclick=check_op("out",2)>中心下班</button></td>
+						</tr>
 					</div>
-					<?php
+<?php
 									break;
 								case "3":
-					?>
-					<div id="APP_signal_opbtn">
-						<div><?php echo $tips;?></div>
-						<span class="signal_btn"><button onclick=check_op("out",3)>无加班</button></span>
-						<span class="signal_btn"><button onclick=check_op("inn",2)>中心加班</button></span>
-					</div>
-					<?php
+?>
+						</tr>
+						<tr>
+							<td class="signal_btn"><button onclick=check_op("out",3)>无加班</button></td>
+							<td class="signal_btn"><button onclick=check_op("inn",2)>中心加班</button></td>
+							<td class="signal_btn"><button onclick=check_op("inn",1)>公司上班</button></td>
+							<td class="signal_btn"><button onclick=>客户出差</button></td>
+						</tr>
+<?php
+									break;
+								case "5":
+?>
+						</tr>
+						<tr>
+							<td class="signal_btn"><button onclick=check_op("transfer",1)>回公司</button></td>
+							<td class="signal_btn"><button onclick=check_op("out",5)>直接下班</button></td>
+						</tr>
+<?php
 									break;
 								default:
 									break;
@@ -279,57 +299,47 @@ if ($App_worktime['recordtime'] != "") {
 						}
 					}
 
-				?>
-					<div id="APP_signal_timer">
-						<table class="datatable">
-							<tr>
-								<td width=40%>中心值班时间</td>
-								<td width=25%><?php echo $App_worktime['onwork'];?></td>
-								<td width=35%>小时</td>
-							</tr>
-							<tr>
-								<td>中心加班时间</td>
-								<td><?php echo $App_worktime['overwork'];?></td>
-								<td>小时</td>
-							</tr>
-							<tr>
-								<td>已用调休时间</td>
-								<td><?php echo $App_worktime['rest'];?></td>
-								<td>小时</td>
-							</tr>
-							<tr>
-								<td>当前剩余时间</td>
-								<td><?php echo $lefttime;?></td>
-								<td>小时</td>
-							</tr>
-						</table>
-					</div>
-				<?php
+?>
+						<tr>
+							<td><strong>当前加班信息</strong></td>
+							<td>中心值班时间<strong><?php echo $App_worktime['onwork'];?>小时</strong></td>
+							<td>中心加班时间<strong><?php echo $App_worktime['overwork'];?>小时</strong></td>
+							<td>已用调休时间<strong><?php echo $App_worktime['rest'];?>小时</strong></td>
+							<td>当前剩余时间<strong><?php echo $lefttime;?>小时</strong></td>
+						</tr>
+<?php
 				} else {
-				?>
-					<div id="APP_signal_noinfo">
-						<div>请完善加班信息</div>
-						<form id="APP_signal_form" method="post" action="?a=&p=recordtime">
-							<div>累计值班时间 <input id="signal_onwork" name="onwork" type="text" size="8" placeholder="例如0" /> 小时</div>
-							<div>累计加班时间 <input id="signal_overwork" name="overwork" type="text" size="8" placeholder="例如8" /> 小时</div>
-							<div>累计调休时间 <input id="signal_rest" name="rest" type="text" size="8" placeholder="例如0" /> 小时</div>
-							<div><input type="submit" value="开始记录工作时间" /></div>
-							<div>TIPS：如不确定，请仅在加班时间处填写当前剩余时间</div>
-						</form>
-					</div>
-				<?php
+?>
+						<tr>
+							<td>请完善加班信息</td>
+						</tr>
+						<tr>
+							<form id="APP_signal_form" method="post" action="?a=&p=recordtime">
+								<td>累计值班时间 <input id="signal_onwork" name="onwork" type="text" size="8" placeholder="例如0" /> 小时</td>
+								<td>累计加班时间 <input id="signal_overwork" name="overwork" type="text" size="8" placeholder="例如8" /> 小时</td>
+								<td>累计调休时间 <input id="signal_rest" name="rest" type="text" size="8" placeholder="例如0" /> 小时</td>
+								<td><input type="submit" value="开始记录工作时间" /></div>
+							</form>
+						</tr>
+						<tr id="APP_signal_noinfo">
+							<td colspan=3>TIPS：如不确定，请仅在加班时间处填写当前剩余时间</td>
+						</tr>
+<?php
 				}
-				?>
+?>
+					</table>
 				</div>
 				<!--2个月内签到信息-->
 				<div id="APP_signal_info">
 					<table class="datatable">
 						<tr>
-							<th>日期</th>
+							<th width=15%>日期</th>
 							<th>公司上班</th>
 							<th>公司下班</th>
 							<th>中心上班</th>
 							<th>中心下班</th>
+							<th>其他上班</th>
+							<th>其他下班</th>
 						</tr>
 <?php
 				$APP_sql = new APP_SQL();
@@ -349,9 +359,11 @@ if ($App_worktime['recordtime'] != "") {
 							<td><?php echo $APP_result['comcheckout'];?></td>
 							<td><?php echo $APP_result['cencheckin'];?></td>
 							<td><?php echo $APP_result['cencheckout'];?></td>
+							<td><?php echo $APP_result['othcheckin'];?></td>
+							<td><?php echo $APP_result['othcheckout'];?></td>
 						</tr>
 <?php
-	}
+				}
 ?>
 
 					</table>
@@ -372,7 +384,7 @@ if ($App_worktime['recordtime'] != "") {
 				<span class="title_more">
 					<form id="APP_querySrvs_form" action="?a=services&p=query" method="post">
 						<input type="text" size="10" name="id" id="APP_querySrvs_id" placeholder="服务编号" />
-						<input type="text" size="10" name="name" id="APP_querySrvs_date" placeholder="日期" />
+						<input type="text" size="10" name="engineer" id="APP_querySrvs_engineer" placeholder="服务工程师" />
 						<input type="submit" value="查询" />
 					</form>
 				</span>
@@ -517,11 +529,11 @@ if ($App_worktime['recordtime'] != "") {
 				<div class="title_container"><h1>服务报告单列表</h1></div><br />
 				<table class="datatable">
 					<tr>
-						<th width=10%>ID</th>
+						<th width=8%>ID</th>
 						<th width=25%>服务需求</th>
-						<th>服务时间</th>
-						<th width=10%>实施工程师</th>
-						<th width=15%>服务单填写人</th>
+						<th width=20%>服务时间</th>
+						<th width=15%>实施工程师</th>
+						<th width=10%>陪同人</th>
 						<th width=15%>操作</th>
 					</tr>
 <?php
@@ -566,14 +578,14 @@ if ($App_worktime['recordtime'] != "") {
 				$start = date("Y-m-d",strtotime($APP_result['stime']));
 				$end = date("Y-m-d",strtotime($APP_result['etime']));
 				$engineer = $APP_result['mainmbr'];
-				$writer = $APP_result['engineer'];
+				$accompany = $APP_result['accompany'];
 ?>
 					<tr>
 						<td><?php echo $id;?></td>
 						<td><?php echo $need;?></td>
 						<td><?php echo $start." 至 ".$end;?></td>
 						<td><?php echo $engineer;?></td>
-						<td><?php echo $writer;?></td>
+						<td><?php echo $accompany;?></td>
 						<td><button class="query_srvs" value="<?php echo $id;?>">查看</button><button class="print_srvs" value="<?php echo $id;?>">打印</button></td>
 					</tr>
 <?php

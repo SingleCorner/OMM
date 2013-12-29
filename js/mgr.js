@@ -19,9 +19,12 @@ $(document).ready(function() {
 	$('.cmtdataCustomer').live("click",cmtdataCustomer);
 
 	//设备管理 -> 新建设备
-
 	$('#APP_newDevice_form').submit(addDevice);
 
+	//设备管理 -> 变更数据初始化
+	$('.APP_device_chdata').bind("click",chdataDevice);
+
+	$('.cmtdataDevice').live("click",cmtdataDevice);
 	//页面 -> 默认行为
 
 	$('#APP_queryStaff_id').focus();
@@ -447,4 +450,58 @@ function show_DeviceMeta(id) {
 	var url = window.location.pathname;
 	//alert(url);
 	window.open(url+"?a=device&p=query&id=" + id);
+}
+/* 设备管理 -> 变更前置机号
+ *
+ */
+function chdataDevice() {
+	//定义到父级元素
+	var e = $(this).parent().parent();
+
+	//获取到需要修改的表格元素
+	var device_mid = e.children('td.device_mid');
+	var device_op = e.children('td.device_fw').next().next();
+
+	//获取元素的值
+	var data_mid = device_mid.html();
+
+	//替换原表格元素
+	device_mid.html('<input id="APP_updtDevice_mid" type="text" value='+data_mid+' />');
+	device_op.html('<button class="cmtdataDevice">提交变更</button><button onclick="window.location.reload()">取消变更</button>');
+}
+/* 
+ * 设备管理 -> 提交变更资料
+ */
+function cmtdataDevice() {
+	//定义到元素
+	var e = $(this).parent().parent();
+
+	//提取数据
+	var sn = e.children('td.device_sn').html();
+	var mid = e.children('td.device_mid').children('input').val();
+
+	if (mid == "") {
+		alert('OMM：前置机号呢！！');
+		return false;
+	}
+	
+	//发送数据
+	$.ajax({
+		type: 'POST',
+		url: 'admin.php?a=device&p=chdata',
+		data: {
+			'mid': mid,
+			'sn': sn
+		},
+		success: function(data, status, xhr) {
+			if (data.code == 1) {
+				alert(data.message);
+				window.location.reload();
+			} else if (data.code == 0) {
+				alert(data.message);
+				window.location.reload();
+			}
+		},
+		dataType: 'json'
+	});
 }
